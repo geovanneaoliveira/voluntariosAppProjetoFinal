@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class PessoasEventoDTO {
-    private Long id_pessoa;
-    private Long id_evento;
-    private Boolean presenca;
+    private Long idPessoa;
+    private Long idEvento;
+
 }
