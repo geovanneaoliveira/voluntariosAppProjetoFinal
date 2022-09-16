@@ -55,7 +55,7 @@ public class EventoService {
             EventoDTO dto = new EventoDTO();
             dto.setNome(ev.getNome());
             dto.setData(ev.getData());
-            dto.setIdOrganizacao(ev.getId());
+            dto.setIdOrganizacao(ev.getOrganizacao().getId());
             return dto;
         }).collect(Collectors.toList());
 
@@ -66,9 +66,14 @@ public class EventoService {
                 .filter(pv -> pv.getPresenca().booleanValue()).collect(Collectors.toList());
         return pessoasEvento.stream().map(pv -> {
             PessoasEventoDTO dto = new PessoasEventoDTO();
-            dto.setId(pv.getId());
+            dto.setId_evento(pv.getIdEvento());
+            dto.setId_pessoa(pv.getIdPessoa());
             dto.setPresenca(pv.getPresenca());
             return dto;
         }).collect(Collectors.toList());
     }
 }
+//
+//    public void adicionarPessoa(PessoasEventoDTO pessoasEventoDTO){
+//
+//    }

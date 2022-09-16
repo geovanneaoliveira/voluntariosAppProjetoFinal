@@ -32,6 +32,5 @@ public class EventoEntity {
     )
     private List<PatrocinadorEntity> patrocinadores;
 
-    //@ManyToOne
-    //@JoinColumn(name = "tags_evento", referencedColumnName = "id")
+
 }
