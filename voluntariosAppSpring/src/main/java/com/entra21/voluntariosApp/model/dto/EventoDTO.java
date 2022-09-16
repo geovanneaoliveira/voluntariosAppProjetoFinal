@@ -9,5 +9,5 @@ import java.time.LocalDateTime;
 public class EventoDTO {
     private String nome;
     private LocalDateTime data;
-    private OrganizacaoEntity organizacaoEntity;
+    private Long idOrganizacao;
 }

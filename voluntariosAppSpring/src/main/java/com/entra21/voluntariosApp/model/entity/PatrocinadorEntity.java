@@ -21,4 +21,6 @@ public class PatrocinadorEntity {
     @JoinColumn(name = "id_representante", referencedColumnName = "id")
     private PessoaEntity representante;
 
+
+
 }
