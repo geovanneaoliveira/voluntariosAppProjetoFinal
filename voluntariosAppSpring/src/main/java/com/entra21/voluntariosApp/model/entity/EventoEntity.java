@@ -39,6 +39,4 @@ public class EventoEntity {
             inverseJoinColumns = @JoinColumn(name = "id_patrocinador", referencedColumnName = "id")
     )
     private List<PatrocinadorEntity> patrocinadores;
-
-
 }
