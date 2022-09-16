@@ -6,8 +6,10 @@ import com.entra21.voluntariosApp.view.repository.EventoRepository;
 import com.entra21.voluntariosApp.view.repository.OrganizacaoRepository;
 import org.apache.catalina.LifecycleState;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -18,24 +20,29 @@ import java.util.stream.Collectors;
 public class EventoService {
     @Autowired
     private EventoRepository eventoRepository;
+    @Autowired
+    private OrganizacaoRepository organizacaoRepository;
 
 
-    public void adicionarEvento(EventoDTO eventoDTO){
-        EventoEntity eventoEntity = new EventoEntity();
-        eventoEntity.setNome(eventoDTO.getNome());
-        eventoEntity.setData(eventoDTO.getData());
-        eventoEntity.setOrganizacao(eventoDTO.getOrganizacaoEntity());
-        eventoRepository.save(eventoEntity);
+    public void adicionarEvento(EventoDTO eventoDTO) {
+        organizacaoRepository.findById(eventoDTO.getIdOrganizacao()).ifPresentOrElse(org -> {
+            EventoEntity eventoEntity = new EventoEntity();
+            eventoEntity.setNome(eventoDTO.getNome());
+            eventoEntity.setData(eventoDTO.getData());
+            eventoEntity.setOrganizacao(org);
+            eventoRepository.save(eventoEntity);
+        }, () -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrada!");
+        });
     }
 
     public List<EventoDTO> buscarEvento(String nome) {
-        List<EventoEntity> eventos = eventoRepository.findAll().stream()
-                .filter(ev -> ev.getNome().contains(nome)).collect(Collectors.toList());
+        List<EventoEntity> eventos = eventoRepository.findAll().stream().filter(ev -> ev.getNome().contains(nome)).collect(Collectors.toList());
         return eventos.stream().map(ev -> {
             EventoDTO dto = new EventoDTO();
             dto.setNome(ev.getNome());
             dto.setData(ev.getData());
-            dto.setOrganizacaoEntity(ev.getOrganizacao());
+            dto.setIdOrganizacao(ev.getOrganizacao().getId());
             return dto;
         }).collect(Collectors.toList());
 

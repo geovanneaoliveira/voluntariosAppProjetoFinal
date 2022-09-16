@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class ContribuicaoDTO {
 
     private LocalDateTime data;
-    private double valor;
+    private Double valor;
     private Long idPessoa;
     private Long idOrganizacao;
 }

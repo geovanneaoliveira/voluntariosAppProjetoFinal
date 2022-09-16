@@ -34,6 +34,8 @@ public class PessoaEntity implements UserDetails {
     private String login;
     @Column(name = "senha")
     private String senha;
+    @Column(name = "ativo", nullable = false)
+    private Boolean ativo;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

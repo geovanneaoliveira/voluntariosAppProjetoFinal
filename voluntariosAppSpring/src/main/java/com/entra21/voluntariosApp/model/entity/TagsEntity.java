@@ -1,9 +1,9 @@
 package com.entra21.voluntariosApp.model.entity;
 
 import lombok.Data;
-import lombok.Generated;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @Entity
@@ -17,5 +17,4 @@ public class TagsEntity {
 
     @Column(name = "nome")
     private String nome;
-
 }
