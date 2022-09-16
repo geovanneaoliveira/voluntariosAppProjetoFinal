@@ -56,19 +56,24 @@ public class EventoService {
 
     }
 
-    public List<PessoasEventoDTO> buscarpresenca(Long idEvento){
+    public List<PessoasEventoDTO> buscarPresenca(Long idEvento){
         List<PessoasEventoEntity> pessoasEvento = pessoasEventoRepository.findAll().stream()
                 .filter(pv -> pv.getPresenca().booleanValue()).collect(Collectors.toList());
         return pessoasEvento.stream().map(pv -> {
             PessoasEventoDTO dto = new PessoasEventoDTO();
-            dto.setId_evento(pv.getIdEvento());
-            dto.setId_pessoa(pv.getIdPessoa());
-            dto.setPresenca(pv.getPresenca());
+            dto.setIdEvento(pv.getIdEvento());
+            dto.setIdPessoa(pv.getIdPessoa());
             return dto;
         }).collect(Collectors.toList());
     }
+
+
+    public void adicionarPessoaEvento(PessoasEventoDTO pessoasEventoDTO){
+        PessoasEventoEntity pessoasEventoEntity = new PessoasEventoEntity();
+        pessoasEventoEntity.setIdPessoa(pessoasEventoDTO.getIdPessoa());
+        pessoasEventoEntity.setIdEvento(pessoasEventoDTO.getIdEvento());
+        pessoasEventoEntity.setPresenca(true);
+        pessoasEventoRepository.save(pessoasEventoEntity);
+    }
+
 }
-//
-//    public void adicionarPessoa(PessoasEventoDTO pessoasEventoDTO){
-//
-//    }
