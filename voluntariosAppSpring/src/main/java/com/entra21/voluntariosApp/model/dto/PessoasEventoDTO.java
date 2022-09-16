@@ -6,5 +6,5 @@ import lombok.Data;
 public class PessoasEventoDTO {
     private Long id_pessoa;
     private Long id_evento;
-    private boolean presenca;
+    private Boolean presenca;
 }
