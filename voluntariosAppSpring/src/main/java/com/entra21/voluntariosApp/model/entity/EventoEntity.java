@@ -24,7 +24,7 @@ public class EventoEntity {
     @JoinColumn(name = "id_organizadora",referencedColumnName = "id")
     private OrganizacaoEntity organizacao;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(
             name = "tags_evento",
             joinColumns = @JoinColumn(name = "id_evento", referencedColumnName = "id"),
