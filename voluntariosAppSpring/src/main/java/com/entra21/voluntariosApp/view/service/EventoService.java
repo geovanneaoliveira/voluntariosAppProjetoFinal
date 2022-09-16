@@ -32,8 +32,6 @@ public class EventoService {
     @Autowired
     private OrganizacaoRepository organizacaoRepository;
 
-
-
     public void adicionarEvento(EventoDTO eventoDTO) {
         organizacaoRepository.findById(eventoDTO.getIdOrganizacao()).ifPresentOrElse(org -> {
             EventoEntity eventoEntity = new EventoEntity();
@@ -46,16 +44,13 @@ public class EventoService {
         });
     }
 
-
-
     public List<EventoDTO> buscarEvento(String nome) {
-        List<EventoEntity> eventos = eventoRepository.findAll().stream()
-                .filter(ev -> ev.getNome().contains(nome)).collect(Collectors.toList());
+        List<EventoEntity> eventos = eventoRepository.findAll().stream().filter(ev -> ev.getNome().contains(nome)).collect(Collectors.toList());
         return eventos.stream().map(ev -> {
             EventoDTO dto = new EventoDTO();
             dto.setNome(ev.getNome());
             dto.setData(ev.getData());
-            dto.setIdOrganizacao(ev.getId());
+            dto.setIdOrganizacao(ev.getOrganizacao().getId());
             return dto;
         }).collect(Collectors.toList());
 
