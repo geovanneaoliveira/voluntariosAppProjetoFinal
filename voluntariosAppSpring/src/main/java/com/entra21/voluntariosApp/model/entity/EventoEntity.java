@@ -32,4 +32,14 @@ public class EventoEntity {
     )
     private List<TagsEntity> tags;
 
+    @ManyToMany
+    @JoinTable(
+            name = "patrocinadores_evento",
+            joinColumns = @JoinColumn(name = "id_evento", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id_patrocinador", referencedColumnName = "id")
+    )
+    private List<PatrocinadorEntity> patrocinadores;
+
+    //@ManyToOne
+    //@JoinColumn(name = "tags_evento", referencedColumnName = "id")
 }
