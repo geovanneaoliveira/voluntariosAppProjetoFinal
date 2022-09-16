@@ -9,5 +9,5 @@ import javax.persistence.Column;
 public class OrganizacaoDTO {
     private String nome;
     private String descricao;
-    private Long id; //!!!!!!!!!!!!!!!!!!!
+    private Long id;
 }

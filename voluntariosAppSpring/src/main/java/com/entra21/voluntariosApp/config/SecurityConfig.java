@@ -22,7 +22,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().httpBasic().and().authorizeRequests((req) -> req
-                .antMatchers("/pessoa/cadastro/").permitAll()
+                .antMatchers("/pessoa/cadastro").permitAll()
                 .anyRequest().authenticated());
         return http.build();
     }
