@@ -6,12 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
 
@@ -37,6 +32,14 @@ public class PessoaEntity implements UserDetails {
     private String senha;
     @Column(name = "ativo", nullable = false)
     private Boolean ativo;
+
+    @ManyToMany
+    @JoinTable(
+            name ="tags_interesse_pessoa",
+            joinColumns = @JoinColumn(name = "id_pessoa",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn (name = "id_tag",referencedColumnName = "id")
+    )
+    private List<PessoaEntity> pessoaEntity;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
