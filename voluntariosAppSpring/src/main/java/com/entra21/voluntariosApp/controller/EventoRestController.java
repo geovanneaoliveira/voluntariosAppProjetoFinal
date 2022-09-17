@@ -39,7 +39,7 @@ public class EventoRestController {
     }
 
     @GetMapping("/presentes")
-    public List<PessoasEventoDTO> buscarPresenca(@RequestBody Long idEvento){
+    public List<PessoasEventoDTO> buscarPresenca(@RequestParam(name = "idEvento") Long idEvento){
         return eventoService.buscarPresenca(idEvento);
     }
 }

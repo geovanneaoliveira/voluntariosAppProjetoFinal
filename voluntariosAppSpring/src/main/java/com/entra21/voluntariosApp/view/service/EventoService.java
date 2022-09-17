@@ -57,8 +57,8 @@ public class EventoService {
     }
 
     public List<PessoasEventoDTO> buscarPresenca(Long idEvento){
-        List<PessoasEventoEntity> pessoasEvento = pessoasEventoRepository.findAll().stream()
-                .filter(pv -> pv.getPresenca().booleanValue()).collect(Collectors.toList());
+        List<PessoasEventoEntity> pessoasEvento = pessoasEventoRepository.findAllByidEvento(idEvento).stream()
+                .filter(PessoasEventoEntity::getPresenca).collect(Collectors.toList());
         return pessoasEvento.stream().map(pv -> {
             PessoasEventoDTO dto = new PessoasEventoDTO();
             dto.setIdEvento(pv.getIdEvento());
