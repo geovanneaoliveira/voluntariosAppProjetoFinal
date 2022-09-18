@@ -8,6 +8,7 @@ import com.entra21.voluntariosApp.model.entity.OrganizacaoEntity;
 import com.entra21.voluntariosApp.model.entity.PessoasEventoEntity;
 import com.entra21.voluntariosApp.view.repository.EventoRepository;
 import com.entra21.voluntariosApp.view.repository.OrganizacaoRepository;
+import com.entra21.voluntariosApp.view.repository.PessoaRepository;
 import com.entra21.voluntariosApp.view.repository.PessoasEventoRepository;
 import org.apache.catalina.LifecycleState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class EventoService {
 
     @Autowired
     private OrganizacaoRepository organizacaoRepository;
+
+    @Autowired
+    private PessoaRepository pessoaRepository;
 
     public void adicionarEvento(EventoDTO eventoDTO) {
         organizacaoRepository.findById(eventoDTO.getIdOrganizacao()).ifPresentOrElse(org -> {
@@ -64,18 +68,16 @@ public class EventoService {
         return pessoasEvento.stream().map(pv -> {
             PessoasEventoDTO dto = new PessoasEventoDTO();
             dto.setIdEvento(pv.getIdEvento());
-            dto.setIdPessoa(pv.getIdPessoa());
+            dto.setIdPessoa(pv.getIdPessoa().getId());
             return dto;
         }).collect(Collectors.toList());
     }
 
-
-    public void adicionarPessoaEvento(PessoasEventoDTO pessoasEventoDTO){
-        PessoasEventoEntity pessoasEventoEntity = new PessoasEventoEntity();
-        pessoasEventoEntity.setIdPessoa(pessoasEventoDTO.getIdPessoa());
-        pessoasEventoEntity.setIdEvento(pessoasEventoDTO.getIdEvento());
-        pessoasEventoEntity.setPresenca(true);
-        pessoasEventoRepository.save(pessoasEventoEntity);
-    }
-
+//    public void adicionarPessoaEvento(PessoasEventoDTO pessoasEventoDTO){
+//        PessoasEventoEntity pessoasEventoEntity = new PessoasEventoEntity();
+//        pessoasEventoEntity.setIdPessoa(pessoasEventoDTO.getIdPessoa());
+//        pessoasEventoEntity.setIdEvento(pessoasEventoDTO.getIdEvento());
+//        pessoasEventoEntity.setPresenca(true);
+//        pessoasEventoRepository.save(pessoasEventoEntity);
+//    }
 }

@@ -6,7 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface PessoasEventoRepository extends JpaRepository<PessoasEventoEntity,Long> {
-
-    public List<PessoasEventoEntity> findAllByidEvento(Long idEvento);
-
+    List<PessoasEventoEntity> findAllByidEvento(Long idEvento);
 }

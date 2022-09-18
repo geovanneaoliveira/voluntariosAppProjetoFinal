@@ -37,7 +37,6 @@ public class PessoaService implements UserDetailsService {
         pE.setLogin(dto.getLogin());
         pE.setSenha(dto.getSenha());
         pessoaRepository.save(pE);
-
     }
 
     @Override
