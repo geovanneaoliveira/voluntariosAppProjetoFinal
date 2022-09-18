@@ -1,5 +1,6 @@
 package com.entra21.voluntariosApp.view.service;
 
+import com.entra21.voluntariosApp.model.dto.EventoBuscaDTO;
 import com.entra21.voluntariosApp.model.dto.EventoDTO;
 import com.entra21.voluntariosApp.model.dto.PessoasEventoDTO;
 import com.entra21.voluntariosApp.model.entity.EventoEntity;
@@ -44,13 +45,14 @@ public class EventoService {
         });
     }
 
-    public List<EventoDTO> buscarEvento(String nome) {
-        List<EventoEntity> eventos = eventoRepository.findAll().stream().filter(ev -> ev.getNome().contains(nome)).collect(Collectors.toList());
+    public List<EventoBuscaDTO> buscarEvento(String nome) {
+        List<EventoEntity> eventos = eventoRepository.findAll().stream()
+                .filter(ev -> ev.getNome().toLowerCase().contains(nome.toLowerCase())).collect(Collectors.toList());
         return eventos.stream().map(ev -> {
-            EventoDTO dto = new EventoDTO();
+            EventoBuscaDTO dto = new EventoBuscaDTO();
             dto.setNome(ev.getNome());
             dto.setData(ev.getData());
-            dto.setIdOrganizacao(ev.getOrganizacao().getId());
+            dto.setNomeOrganizacao(ev.getOrganizacao().getNome());
             return dto;
         }).collect(Collectors.toList());
 
