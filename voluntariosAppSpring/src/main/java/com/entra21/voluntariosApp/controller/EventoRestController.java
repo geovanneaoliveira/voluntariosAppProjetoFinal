@@ -2,6 +2,7 @@ package com.entra21.voluntariosApp.controller;
 
 import com.entra21.voluntariosApp.model.dto.EventoBuscaDTO;
 import com.entra21.voluntariosApp.model.dto.EventoDTO;
+import com.entra21.voluntariosApp.model.dto.PessoasEventoDTO;
 import com.entra21.voluntariosApp.model.entity.EventoEntity;
 import com.entra21.voluntariosApp.view.service.EventoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ public class EventoRestController {
 
     @Autowired
     private EventoService eventoService;
+
 
     //todo - buscar um evento
     //todo - buscar eventos com uma tag()
@@ -31,4 +33,14 @@ public class EventoRestController {
         eventoService.adicionarEvento(eventoDTO);
     }
 
+    @PostMapping("/presenca")
+    public void adicionarPessoaEvento(@RequestBody PessoasEventoDTO pessoasEventoDTO){
+        eventoService.adicionarPessoaEvento(pessoasEventoDTO);
+
+    }
+
+    @GetMapping("/presentes")
+    public List<PessoasEventoDTO> buscarPresenca(@RequestParam(name = "idEvento") Long idEvento){
+        return eventoService.buscarPresenca(idEvento);
+    }
 }

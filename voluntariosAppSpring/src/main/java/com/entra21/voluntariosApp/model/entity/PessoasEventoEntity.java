@@ -20,7 +20,7 @@ public class PessoasEventoEntity {
     private Boolean presenca;
 
     @Column(name = "id_pessoa")
-    private Long idPessoa;
+    private PessoaEntity idPessoa;
 
     @Column(name = "id_evento")
     private Long idEvento;
