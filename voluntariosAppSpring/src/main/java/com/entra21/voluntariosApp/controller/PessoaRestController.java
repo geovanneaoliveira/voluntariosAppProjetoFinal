@@ -17,18 +17,10 @@ public class PessoaRestController {
     @Autowired
     private PessoaService pessoaService;
 
-//    @Autowired
-//    private PessoaRepository pessoaRepository;
-
     @GetMapping
     public String teste(){
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
-
-//    @GetMapping("/teste")
-//    public Optional<PessoaEntity> testeP(){
-//        return pessoaRepository.findById(1L);
-//    }
 
     @PostMapping("/cadastro")
     public void cadastrar(@RequestBody PessoaDTO cadastro){
