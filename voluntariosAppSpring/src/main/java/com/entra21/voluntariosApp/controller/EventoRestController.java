@@ -1,6 +1,8 @@
 package com.entra21.voluntariosApp.controller;
 
+import com.entra21.voluntariosApp.model.dto.EventoBuscaDTO;
 import com.entra21.voluntariosApp.model.dto.EventoDTO;
+import com.entra21.voluntariosApp.model.dto.PessoaEventoPresencaDTO;
 import com.entra21.voluntariosApp.model.dto.PessoasEventoDTO;
 import com.entra21.voluntariosApp.model.entity.EventoEntity;
 import com.entra21.voluntariosApp.view.service.EventoService;
@@ -23,7 +25,7 @@ public class EventoRestController {
     //todo - atualizar infos do evento
 
     @GetMapping("/buscar")
-    public List<EventoDTO> buscarEvento(@RequestBody String nome){
+    public List<EventoBuscaDTO> buscarEvento(@RequestBody String nome){
         return eventoService.buscarEvento(nome);
     }
 
@@ -39,7 +41,7 @@ public class EventoRestController {
     }
 
     @GetMapping("/presentes")
-    public List<PessoasEventoDTO> buscarPresenca(@RequestBody Long idEvento){
+    public List<PessoaEventoPresencaDTO> buscarPresenca(@RequestParam(name = "idEvento") Long idEvento){
         return eventoService.buscarPresenca(idEvento);
     }
 }

@@ -1,8 +1,10 @@
 package com.entra21.voluntariosApp.view.service;
 
 import com.entra21.voluntariosApp.model.dto.TagsEventoDTO;
+import com.entra21.voluntariosApp.model.dto.TagsPessoaDTO;
 import com.entra21.voluntariosApp.model.entity.TagsEntity;
 import com.entra21.voluntariosApp.view.repository.EventoRepository;
+import com.entra21.voluntariosApp.view.repository.PessoaRepository;
 import com.entra21.voluntariosApp.view.repository.TagsRepositoy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,10 +17,13 @@ import java.util.List;
 @Service
 public class TagsService {
     @Autowired
-    private TagsRepositoy tagsRepositoy;
+    private TagsRepository tagsRepositoy;
 
     @Autowired
     private EventoRepository eventoRepository;
+
+    @Autowired
+    private PessoaRepository pessoaRepository;
 
     public void addTag(String nomeTag) {
         TagsEntity tagsEntity = new TagsEntity();
@@ -31,7 +36,14 @@ public class TagsService {
             List<TagsEntity> tagsEntities = new ArrayList<>(tagsRepositoy.findAllById(tagsEventoDTO.getIdTagsEvento()));
             ev.setTags(tagsEntities);
             eventoRepository.save(ev);
-            System.out.println(ev.getTags());
         }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");});
+    }
+
+    public void setTagsPessoa(TagsPessoaDTO tagsPessoaDTO) {
+        pessoaRepository.findById(tagsPessoaDTO.getIdPessoa()).ifPresentOrElse(user -> {
+            List<TagsEntity> tagsEntities = new ArrayList<>(tagsRepositoy.findAllById(tagsPessoaDTO.getIdTagsPessoa()));
+            user.setTags(tagsEntities);
+            pessoaRepository.save(user);
+        }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário não encontrado!");});
     }
 }
