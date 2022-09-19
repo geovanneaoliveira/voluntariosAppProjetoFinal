@@ -1,5 +1,6 @@
 package com.entra21.voluntariosApp.controller;
 
+import com.entra21.voluntariosApp.model.dto.GetContribuicoesDTO;
 import com.entra21.voluntariosApp.model.dto.ContribuicaoDTO;
 import com.entra21.voluntariosApp.view.service.ContribuicaoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,13 @@ public class ContribuicaoRestController {
         contribuicaoService.addContribuicao(contribuicaoAdd);
     }
 
-    @GetMapping
-    public List<ContribuicaoDTO> getFranquias() {
+    @GetMapping("/todos")
+    public List<GetContribuicoesDTO> getContribuicoes() {
         return contribuicaoService.findAllContribuicao();
     }
 
+    @GetMapping("/porOrg")
+    public List<GetContribuicoesDTO> getContribuicoesOrg(@RequestParam(name = "idOrg") Long idOrg){
+        return contribuicaoService.findContribuicoesByOrg(idOrg);
+    }
 }

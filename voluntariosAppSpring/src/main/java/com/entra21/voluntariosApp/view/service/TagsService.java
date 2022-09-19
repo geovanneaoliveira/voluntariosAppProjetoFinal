@@ -5,7 +5,7 @@ import com.entra21.voluntariosApp.model.dto.TagsPessoaDTO;
 import com.entra21.voluntariosApp.model.entity.TagsEntity;
 import com.entra21.voluntariosApp.view.repository.EventoRepository;
 import com.entra21.voluntariosApp.view.repository.PessoaRepository;
-import com.entra21.voluntariosApp.view.repository.TagsRepositoy;
+import com.entra21.voluntariosApp.view.repository.TagsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
