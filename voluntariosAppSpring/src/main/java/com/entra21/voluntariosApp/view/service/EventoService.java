@@ -4,13 +4,11 @@ import com.entra21.voluntariosApp.model.dto.EventoDTO;
 import com.entra21.voluntariosApp.model.dto.PessoaEventoPresencaDTO;
 import com.entra21.voluntariosApp.model.dto.PessoasEventoDTO;
 import com.entra21.voluntariosApp.model.entity.EventoEntity;
-import com.entra21.voluntariosApp.model.entity.OrganizacaoEntity;
 import com.entra21.voluntariosApp.model.entity.PessoasEventoEntity;
 import com.entra21.voluntariosApp.view.repository.EventoRepository;
 import com.entra21.voluntariosApp.view.repository.OrganizacaoRepository;
 import com.entra21.voluntariosApp.view.repository.PessoaRepository;
 import com.entra21.voluntariosApp.view.repository.PessoasEventoRepository;
-import org.apache.catalina.LifecycleState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
