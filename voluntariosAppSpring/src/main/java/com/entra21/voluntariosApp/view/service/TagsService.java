@@ -3,7 +3,7 @@ package com.entra21.voluntariosApp.view.service;
 import com.entra21.voluntariosApp.model.dto.TagsEventoDTO;
 import com.entra21.voluntariosApp.model.entity.TagsEntity;
 import com.entra21.voluntariosApp.view.repository.EventoRepository;
-import com.entra21.voluntariosApp.view.repository.TagsRepositoy;
+import com.entra21.voluntariosApp.view.repository.TagsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class TagsService {
     @Autowired
-    private TagsRepositoy tagsRepositoy;
+    private TagsRepository tagsRepositoy;
 
     @Autowired
     private EventoRepository eventoRepository;
