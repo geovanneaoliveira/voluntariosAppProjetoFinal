@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class TagsService {
     @Autowired
-    private TagsRepositoy tagsRepositoy;
+    private TagsRepository tagsRepositoy;
 
     @Autowired
     private EventoRepository eventoRepository;

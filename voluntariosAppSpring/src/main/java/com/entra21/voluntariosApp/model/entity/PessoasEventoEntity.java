@@ -19,17 +19,13 @@ public class PessoasEventoEntity {
     @Column(name = "presenca")
     private Boolean presenca;
 
-    @Column(name = "id_pessoa")
-    private PessoaEntity idPessoa;
+    @ManyToOne
+    @JoinColumn(name = "id_pessoa", referencedColumnName = "id")
+    private PessoaEntity pessoa;
 
-    @Column(name = "id_evento")
-    private Long idEvento;
+    @ManyToOne
+    @JoinColumn(name = "id_evento", referencedColumnName = "id")
+    private EventoEntity idEvento;
 
-    @ManyToMany
-    @JoinTable(
-            name = "pessoas_evento",
-            joinColumns = @JoinColumn(name = "id_pessoa", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "id_evento", referencedColumnName = "id")
-    )
-    private List<PessoasEventoEntity> pessoasEvento;
+
 }
