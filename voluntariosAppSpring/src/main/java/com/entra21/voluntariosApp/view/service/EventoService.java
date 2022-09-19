@@ -72,7 +72,6 @@ public class EventoService {
         }).collect(Collectors.toList());
     }
 
-
     public void adicionarPessoaEvento(PessoasEventoDTO dto) {
         eventoRepository.findById(dto.getIdEvento()).ifPresentOrElse(ev -> {
             pessoaRepository.findById(dto.getIdPessoa()).ifPresentOrElse(pe -> {
