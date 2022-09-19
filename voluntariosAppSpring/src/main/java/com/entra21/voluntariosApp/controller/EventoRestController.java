@@ -34,11 +34,10 @@ public class EventoRestController {
         eventoService.adicionarEvento(eventoDTO);
     }
 
-    @PostMapping("/presenca")
-    public void adicionarPessoaEvento(@RequestBody PessoasEventoDTO pessoasEventoDTO){
-        eventoService.adicionarPessoaEvento(pessoasEventoDTO);
-
-    }
+//    @PostMapping("/presenca")
+//    public void adicionarPessoaEvento(@RequestBody PessoasEventoDTO pessoasEventoDTO){
+//        eventoService.adicionarPessoaEvento(pessoasEventoDTO);
+//    }
 
     @GetMapping("/presentes")
     public List<PessoaEventoPresencaDTO> buscarPresenca(@RequestParam(name = "idEvento") Long idEvento){

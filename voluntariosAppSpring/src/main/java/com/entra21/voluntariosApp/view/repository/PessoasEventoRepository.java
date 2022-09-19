@@ -7,7 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface PessoasEventoRepository extends JpaRepository<PessoasEventoEntity,Long> {
-
     List<PessoasEventoEntity> findAllByidEvento_Id(Long idEvento);
-
 }

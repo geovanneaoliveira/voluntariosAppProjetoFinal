@@ -47,5 +47,4 @@ public class EventoEntity {
             inverseJoinColumns = @JoinColumn(name = "id_evento", referencedColumnName = "id")
     )
     private List<PessoasEventoEntity> pessoasEvento;
-
 }
