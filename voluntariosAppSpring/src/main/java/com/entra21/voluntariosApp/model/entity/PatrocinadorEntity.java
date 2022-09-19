@@ -20,7 +20,4 @@ public class PatrocinadorEntity {
     @ManyToOne
     @JoinColumn(name = "id_representante", referencedColumnName = "id")
     private PessoaEntity representante;
-
-
-
 }
