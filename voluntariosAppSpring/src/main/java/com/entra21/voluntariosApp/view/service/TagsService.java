@@ -52,13 +52,13 @@ public class TagsService {
     public void deleteTag(Long idTag) {
         eventoRepository.findAll().forEach(ev -> ev.getTags().removeIf(tag -> Objects.equals(tag.getId(), idTag)));
         pessoaRepository.findAll().forEach(pe -> pe.getTags().removeIf(tag -> Objects.equals(tag.getId(), idTag)));
-        tagsRepositoy.deleteById(idTag);
+        tagsRepository.deleteById(idTag);
     }
 
     public void atualizarTag(Long idTag, String novoNome) {
-        tagsRepositoy.findById(idTag).ifPresentOrElse(tag -> {
+        tagsRepository.findById(idTag).ifPresentOrElse(tag -> {
             tag.setNome(novoNome);
-            tagsRepositoy.save(tag);
+            tagsRepository.save(tag);
         }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tag não encontrada!");});
     }
 }

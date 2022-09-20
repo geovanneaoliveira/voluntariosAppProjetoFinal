@@ -4,12 +4,10 @@ import com.entra21.voluntariosApp.model.dto.PessoaDTO;
 import com.entra21.voluntariosApp.model.entity.PessoaEntity;
 import com.entra21.voluntariosApp.view.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class PessoaService implements UserDetailsService {
@@ -25,7 +23,6 @@ public class PessoaService implements UserDetailsService {
         pE.setTelefone(input.getTelefone());
         pE.setLogin(input.getLogin());
         pE.setSenha(input.getSenha());
-        pE.getAtivo();
         pessoaRepository.save(pE);
     }
 
