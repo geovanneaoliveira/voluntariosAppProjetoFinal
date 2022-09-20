@@ -13,6 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class TagsService {
@@ -31,7 +33,7 @@ public class TagsService {
         tagsRepositoy.save(tagsEntity);
     }
 
-    public void addTagsEvento(TagsEventoDTO tagsEventoDTO) {
+    public void setTagsEvento(TagsEventoDTO tagsEventoDTO) {
         eventoRepository.findById(tagsEventoDTO.getIdEvento()).ifPresentOrElse(ev -> {
             List<TagsEntity> tagsEntities = new ArrayList<>(tagsRepositoy.findAllById(tagsEventoDTO.getIdTagsEvento()));
             ev.setTags(tagsEntities);
@@ -45,5 +47,18 @@ public class TagsService {
             user.setTags(tagsEntities);
             pessoaRepository.save(user);
         }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário não encontrado!");});
+    }
+
+    public void deleteTag(Long idTag) {
+        eventoRepository.findAll().forEach(ev -> ev.getTags().removeIf(tag -> Objects.equals(tag.getId(), idTag)));
+        pessoaRepository.findAll().forEach(pe -> pe.getTags().removeIf(tag -> Objects.equals(tag.getId(), idTag)));
+        tagsRepositoy.deleteById(idTag);
+    }
+
+    public void atualizarTag(Long idTag, String novoNome) {
+        tagsRepositoy.findById(idTag).ifPresentOrElse(tag -> {
+            tag.setNome(novoNome);
+            tagsRepositoy.save(tag);
+        }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tag não encontrada!");});
     }
 }
