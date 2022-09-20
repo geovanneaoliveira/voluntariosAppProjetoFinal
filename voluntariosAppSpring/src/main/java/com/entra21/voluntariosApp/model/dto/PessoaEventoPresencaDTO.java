@@ -3,7 +3,8 @@ package com.entra21.voluntariosApp.model.dto;
 import lombok.Data;
 
 @Data
-public class PessoasEventoDTO {
+public class PessoaEventoPresencaDTO {
     private Long idPessoa;
-    private Long idEvento;
+    private String nome;
+    private String sobrenome;
 }
