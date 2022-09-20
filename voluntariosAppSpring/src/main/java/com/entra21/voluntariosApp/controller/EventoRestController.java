@@ -44,7 +44,7 @@ public class EventoRestController {
     }
 
     @GetMapping("/idTag")
-    public List<EventoEntity> findEventoByIdTag(@RequestParam(name = "idTag") Long idTag){
+    public List<EventoBuscaDTO> findEventoByIdTag(@RequestParam(name = "idTag") Long idTag){
         return eventoService.findEventoByTags(idTag);
     }
 }

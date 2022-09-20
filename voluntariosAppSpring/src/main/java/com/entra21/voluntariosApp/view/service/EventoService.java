@@ -89,7 +89,13 @@ public class EventoService {
         });
     }
 
-    public List<EventoEntity> findEventoByTags(Long idTag){
-        return eventoRepository.findAllBytags_Id(idTag);
+    public List<EventoBuscaDTO> findEventoByTags(Long idTag){
+        return eventoRepository.findAllBytags_Id(idTag).stream().map(ev -> {
+            EventoBuscaDTO eBD = new EventoBuscaDTO();
+            eBD.setNome(ev.getNome());
+            eBD.setData(ev.getData());
+            eBD.setNomeOrganizacao(ev.getOrganizacao().getNome());
+            return eBD;
+        }).collect(Collectors.toList());
     }
 }
