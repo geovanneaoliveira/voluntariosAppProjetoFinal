@@ -25,7 +25,8 @@ public class EventoRestController {
     //todo - atualizar infos do evento
 
     @GetMapping("/buscar")
-    public List<EventoBuscaDTO> buscarEvento(@RequestBody String nome){
+    public List<EventoBuscaDTO> buscarEvento(@RequestParam(name = "nome") String nome)
+    {
         return eventoService.buscarEvento(nome);
     }
 
@@ -34,10 +35,10 @@ public class EventoRestController {
         eventoService.adicionarEvento(eventoDTO);
     }
 
-//    @PostMapping("/presenca")
-//    public void adicionarPessoaEvento(@RequestBody PessoasEventoDTO pessoasEventoDTO){
-//        eventoService.adicionarPessoaEvento(pessoasEventoDTO);
-//    }
+    @PostMapping("/presenca")
+    public void adicionarPessoaEvento(@RequestBody PessoasEventoDTO pessoasEventoDTO){
+        eventoService.adicionarPessoaEvento(pessoasEventoDTO);
+    }
 
     @GetMapping("/presentes")
     public List<PessoaEventoPresencaDTO> buscarPresenca(@RequestParam(name = "idEvento") Long idEvento){
