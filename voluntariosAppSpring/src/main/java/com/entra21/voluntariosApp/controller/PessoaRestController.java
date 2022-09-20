@@ -31,4 +31,9 @@ public class PessoaRestController {
     public void atualizar(@PathVariable (name = "antigoLogin") String antigoLogin, @RequestBody PessoaDTO dto){
         pessoaService.atualizar(antigoLogin, dto);
     }
+
+    @PutMapping("/status")
+    public void status(@RequestParam(name = "login") String login) {
+        pessoaService.status(login);
+    }
 }

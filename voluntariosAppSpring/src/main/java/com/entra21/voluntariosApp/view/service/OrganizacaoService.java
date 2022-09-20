@@ -41,6 +41,7 @@ public class OrganizacaoService {
             dto.setNomeOrg(orgE.getNome());
             dto.setDescricao(orgE.getDescricao());
             dto.setNomeSupervisor(orgE.getSupervisor().getNome());
+            dto.setSobrenomeSupervisor(orgE.getSupervisor().getSobrenome());
             return dto;
         }).collect(Collectors.toList());
     }

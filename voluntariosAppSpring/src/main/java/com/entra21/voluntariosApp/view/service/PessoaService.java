@@ -25,6 +25,7 @@ public class PessoaService implements UserDetailsService {
         pE.setTelefone(input.getTelefone());
         pE.setLogin(input.getLogin());
         pE.setSenha(input.getSenha());
+        pE.getAtivo();
         pessoaRepository.save(pE);
     }
 
@@ -38,6 +39,13 @@ public class PessoaService implements UserDetailsService {
         pE.setSenha(dto.getSenha());
         pessoaRepository.save(pE);
     }
+
+    public void status(String login){
+        PessoaEntity pE = pessoaRepository.findByLogin(login);
+        pE.setAtivo(!pE.getAtivo());
+        pessoaRepository.save(pE);
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

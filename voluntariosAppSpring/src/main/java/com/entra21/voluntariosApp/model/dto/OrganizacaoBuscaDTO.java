@@ -7,4 +7,5 @@ public class OrganizacaoBuscaDTO {
     private String nomeOrg;
     private String descricao;
     private String nomeSupervisor;
+    private String sobrenomeSupervisor;
 }
