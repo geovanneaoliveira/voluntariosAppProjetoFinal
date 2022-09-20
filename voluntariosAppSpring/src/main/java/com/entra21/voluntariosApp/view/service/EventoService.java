@@ -1,7 +1,11 @@
 package com.entra21.voluntariosApp.view.service;
 
+<<<<<<< Updated upstream
 import com.entra21.voluntariosApp.model.dto.EventoDTO;
 import com.entra21.voluntariosApp.model.dto.PessoasEventoDTO;
+=======
+import com.entra21.voluntariosApp.model.dto.*;
+>>>>>>> Stashed changes
 import com.entra21.voluntariosApp.model.entity.EventoEntity;
 import com.entra21.voluntariosApp.model.entity.OrganizacaoEntity;
 import com.entra21.voluntariosApp.model.entity.PessoasEventoEntity;
@@ -15,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import java.util.Optional;
@@ -76,4 +81,35 @@ public class EventoService {
         pessoasEventoRepository.save(pessoasEventoEntity);
     }
 
+<<<<<<< Updated upstream
+=======
+//    private List<EventoDTO> buscarEventoComtag(String buscarTag){
+//        List<EventoEntity> Eventoentity =eventoRepository.findAll().stream().filter(eE -> eE.getTags().equals(buscarTag)).collect(Collectors.toList());
+//        return Eventoentity.stream().map(cE ->{
+//            EventoDTO edto=new EventoDTO();
+//            edto.setData(cE.getData());
+//            edto.setNome(cE.getNome());
+//            edto.setIdOrganizacao(cE.getId());
+//            return edto;
+//        }).collect(Collectors.toList());
+//    }
+
+    public List<EventoDTO> getAll(Long idTag) {
+        List<EventoEntity> list= new ArrayList<>();
+        if(idTag != null){
+            list = eventoRepository.findAllByTags_Id(idTag);
+        }else{
+            list=eventoRepository.findAll();
+        }
+        return list.stream().map(i -> {
+            EventoDTO dto = new EventoDTO();
+            dto.setNome(i.getNome());
+            dto.setData(i.getData());
+            dto.setIdOrganizacao(i.getOrganizacao().getId());
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+
+>>>>>>> Stashed changes
 }

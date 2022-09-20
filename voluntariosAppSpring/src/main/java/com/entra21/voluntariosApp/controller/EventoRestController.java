@@ -17,7 +17,7 @@ public class EventoRestController {
     private EventoService eventoService;
 
 
-    //todo - buscar um evento
+    //todo //- buscar um evento
     //todo - buscar eventos com uma tag()
     //todo - deletar evento
     //todo - atualizar infos do evento
@@ -32,14 +32,22 @@ public class EventoRestController {
         eventoService.adicionarEvento(eventoDTO);
     }
 
+<<<<<<< Updated upstream
     @PostMapping("/presenca")
     public void adicionarPessoaEvento(@RequestBody PessoasEventoDTO pessoasEventoDTO){
         eventoService.adicionarPessoaEvento(pessoasEventoDTO);
 
     }
+=======
+>>>>>>> Stashed changes
 
     @GetMapping("/presentes")
     public List<PessoasEventoDTO> buscarPresenca(@RequestBody Long idEvento){
         return eventoService.buscarPresenca(idEvento);
     }
+    @GetMapping
+    public List<EventoDTO> getAll(@RequestParam(name = "idTag", required = false) Long id) {
+        return eventoService.getAll(id);
+    }
+
 }
