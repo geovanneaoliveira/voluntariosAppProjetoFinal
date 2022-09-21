@@ -18,9 +18,6 @@ public class EventoRestController {
     @Autowired
     private EventoService eventoService;
 
-
-    //todo - buscar um evento
-    //todo - buscar eventos com uma tag()
     //todo - deletar evento
     //todo - atualizar infos do evento
 
@@ -43,5 +40,10 @@ public class EventoRestController {
     @GetMapping("/presentes")
     public List<PessoaEventoPresencaDTO> buscarPresenca(@RequestParam(name = "idEvento") Long idEvento){
         return eventoService.buscarPresenca(idEvento);
+    }
+
+    @GetMapping("/idTag")
+    public List<EventoBuscaDTO> findEventoByIdTag(@RequestParam(name = "idTag") Long idTag){
+        return eventoService.findEventoByTags(idTag);
     }
 }

@@ -3,7 +3,6 @@ package com.entra21.voluntariosApp.model.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -21,8 +20,16 @@ public class OrganizacaoEntity {
     @Column(name = "descricao")
     private String descricao;
 
+    @Column(name = "cnpj")
+    private String cnpj;
+
+    @Column(name = "ativo")
+    private Boolean ativo;
+
     @ManyToOne
     @JoinColumn(name = "id_supervisor",referencedColumnName = "id")
     private PessoaEntity supervisor;
+
+
 
 }
