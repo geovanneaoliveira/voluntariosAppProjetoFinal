@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,5 +64,34 @@ public class ContribuicaoService {
                     gcd.setSobrenome(cE.getPessoa().getSobrenome());
                     return gcd;
                 }).collect(Collectors.toList());
+    }
+
+    public List<GetContribuicoesDTO> findContribuicoesByUser(Long idUser) {
+        return contribuicaoRepository.findAllBypessoa_Id(idUser).stream()
+                .filter(cE -> Objects.equals(cE.getPessoa().getId(), idUser)).map(cE -> {
+                    GetContribuicoesDTO contribuicaoUser = new GetContribuicoesDTO();
+                    contribuicaoUser.setData(cE.getData());
+                    contribuicaoUser.setValor(cE.getValor());
+                    contribuicaoUser.setNomeUsuario(cE.getPessoa().getNome());
+                    contribuicaoUser.setSobrenome(cE.getPessoa().getSobrenome());
+                    contribuicaoUser.setNomeOrg(cE.getOrganizacao().getNome());
+                    return contribuicaoUser;
+                }).collect(Collectors.toList());
+    }
+
+    public Double getTotalContribuicoesByOrg(Long idOrg) {
+        AtomicReference<Double> valorTotal = new AtomicReference<>(0.0);
+        findContribuicoesByOrg(idOrg).forEach(cE -> {
+            valorTotal.updateAndGet(v -> v + cE.getValor());
+        });
+        return valorTotal.get();
+    }
+
+    public Double getTotalContribuicoesByUser(Long idUser) {
+        AtomicReference<Double> valorTotal = new AtomicReference<>(0.0);
+        findContribuicoesByUser(idUser).forEach(cE -> {
+            valorTotal.updateAndGet(v -> v + cE.getValor());
+        });
+        return valorTotal.get();
     }
 }

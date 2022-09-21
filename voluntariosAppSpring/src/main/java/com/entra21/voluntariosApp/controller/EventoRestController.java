@@ -18,9 +18,12 @@ public class EventoRestController {
     @Autowired
     private EventoService eventoService;
 
+<<<<<<< Updated upstream
 
     //todo - buscar um evento
     //todo - buscar eventos com uma tag()
+=======
+>>>>>>> Stashed changes
     //todo - deletar evento
     //todo - atualizar infos do evento
 
