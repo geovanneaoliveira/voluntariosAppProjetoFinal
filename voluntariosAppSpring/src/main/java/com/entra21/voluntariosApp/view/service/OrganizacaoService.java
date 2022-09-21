@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +30,8 @@ public class OrganizacaoService {
             organizacaoEntity.setNome(organizacaoDTO.getNome());
             organizacaoEntity.setDescricao(organizacaoDTO.getDescricao());
             organizacaoEntity.setSupervisor(pessoa);
+            organizacaoEntity.setCnpj(organizacaoDTO.getCnpj());
+            organizacaoEntity.setAtivo(true);
             organizacaoRepository.save(organizacaoEntity);
         }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não encontrada!");});
     }
@@ -44,5 +47,38 @@ public class OrganizacaoService {
             dto.setSobrenomeSupervisor(orgE.getSupervisor().getSobrenome());
             return dto;
         }).collect(Collectors.toList());
+    }
+
+    public void atualizarOrganizacao(Long id, OrganizacaoDTO dto) {
+        organizacaoRepository.findById(id).ifPresentOrElse(org -> {
+            org.setNome(dto.getNome());
+            org.setDescricao(dto.getDescricao());
+            org.setSupervisor(org.getSupervisor());
+            org.setCnpj(dto.getCnpj());
+            organizacaoRepository.save(org);
+        }, () -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrada!");
+        });
+    }
+
+    public void status(Long id){
+        organizacaoRepository.findById(id).ifPresentOrElse(org -> {
+            org.setAtivo(!org.getAtivo());
+            organizacaoRepository.save(org);
+        } , () -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrada!");
+        });
+    }
+
+    public List<OrganizacaoBuscaDTO> buscarOrgPorSurpervisor (Long idSupervisor){
+        return organizacaoRepository.findAllBysupervisor_Id(idSupervisor).stream().map(orgs -> {
+            OrganizacaoBuscaDTO dto = new OrganizacaoBuscaDTO();
+            dto.setNomeOrg(orgs.getNome());
+            dto.setDescricao(orgs.getDescricao());
+            dto.setNomeSupervisor(orgs.getSupervisor().getNome());
+            dto.setSobrenomeSupervisor(orgs.getSupervisor().getSobrenome());
+            return dto;
+        }).collect(Collectors.toList());
+
     }
 }
