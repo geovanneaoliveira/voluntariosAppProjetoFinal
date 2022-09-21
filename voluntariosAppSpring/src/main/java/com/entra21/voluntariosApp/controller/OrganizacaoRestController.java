@@ -23,4 +23,17 @@ public class OrganizacaoRestController {
     public void criarOrg(@RequestBody OrganizacaoDTO organizacaoDTO){
         organizacaoService.addOrganizacao(organizacaoDTO);
     }
+    @PutMapping("/atualizar")
+    public  void atualizarOrg(@RequestParam(name = "id")Long id, @RequestBody OrganizacaoDTO dto) {
+        organizacaoService.atualizarOrganizacao(id, dto);
+    }
+    @PutMapping("/status")
+    public void status(@RequestParam(name = "id") Long id) {
+        organizacaoService.status(id);
+    }
+
+    @GetMapping("/porSupervisor")
+    public List<OrganizacaoBuscaDTO> buscarOrgPorSurpervisor (@RequestParam(name = "idSupervisor")Long idSupervisor){
+       return organizacaoService.buscarOrgPorSurpervisor(idSupervisor);
+    }
 }

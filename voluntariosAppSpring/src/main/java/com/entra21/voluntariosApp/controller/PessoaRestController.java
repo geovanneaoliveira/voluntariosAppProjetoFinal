@@ -27,8 +27,8 @@ public class PessoaRestController {
         pessoaService.cadastrar(cadastro);
     }
 
-    @PutMapping("/atualizar/{antigoLogin}")
-    public void atualizar(@PathVariable (name = "antigoLogin") String antigoLogin, @RequestBody PessoaDTO dto){
+    @PutMapping("/atualizar")
+    public void atualizar(@RequestParam(name = "antigoLogin") String antigoLogin, @RequestBody PessoaDTO dto){
         pessoaService.atualizar(antigoLogin, dto);
     }
 

@@ -10,4 +10,5 @@ public class OrganizacaoDTO {
     private String nome;
     private String descricao;
     private Long idSupervisor;
+    private String cnpj;
 }
