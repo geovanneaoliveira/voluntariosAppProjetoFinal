@@ -18,12 +18,12 @@ public class PessoaRestController {
     private PessoaService pessoaService;
 
     @GetMapping
-    public String teste(){
+    public String teste() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
     @PostMapping("/cadastro")
-    public void cadastrar(@RequestBody PessoaDTO cadastro){
+    public void cadastrar(@RequestBody PessoaDTO cadastro) {
         pessoaService.cadastrar(cadastro);
     }
 

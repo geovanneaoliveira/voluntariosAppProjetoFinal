@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -86,5 +87,15 @@ public class EventoService {
         }, () -> {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");
         });
+    }
+
+    public List<EventoBuscaDTO> findEventoByTags(Long idTag){
+        return eventoRepository.findAllBytags_Id(idTag).stream().map(ev -> {
+            EventoBuscaDTO eBD = new EventoBuscaDTO();
+            eBD.setNome(ev.getNome());
+            eBD.setData(ev.getData());
+            eBD.setNomeOrganizacao(ev.getOrganizacao().getNome());
+            return eBD;
+        }).collect(Collectors.toList());
     }
 }
