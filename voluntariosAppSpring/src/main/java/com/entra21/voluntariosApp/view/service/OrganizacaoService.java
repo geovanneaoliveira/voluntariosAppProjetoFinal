@@ -24,6 +24,7 @@ public class OrganizacaoService {
     private PessoaRepository pessoaRepository;
 
     public void addOrganizacao(OrganizacaoDTO organizacaoDTO) {
+        //A
         pessoaRepository.findById(organizacaoDTO.getIdSupervisor()).ifPresentOrElse(pessoa -> {
             OrganizacaoEntity organizacaoEntity = new OrganizacaoEntity();
             organizacaoEntity.setNome(organizacaoDTO.getNome());
