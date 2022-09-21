@@ -41,6 +41,14 @@ public class PessoaEntity implements UserDetails {
     )
     private List<TagsEntity> tags;
 
+    @OneToMany
+    @JoinTable(
+            name = "contribuicao",
+            joinColumns = @JoinColumn(name = "id_organizacao", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id_pessoa", referencedColumnName = "id")
+    )
+    private List<ContribuicaoEntity> contribuicoes;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("USER"));

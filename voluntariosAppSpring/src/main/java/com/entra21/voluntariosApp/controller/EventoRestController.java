@@ -18,7 +18,6 @@ public class EventoRestController {
     @Autowired
     private EventoService eventoService;
 
-    //todo - buscar eventos com uma tag()
     //todo - deletar evento
     //todo - atualizar infos do evento
 

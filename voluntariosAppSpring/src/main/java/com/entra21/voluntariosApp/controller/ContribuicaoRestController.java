@@ -30,4 +30,19 @@ public class ContribuicaoRestController {
     public List<GetContribuicoesDTO> getContribuicoesOrg(@RequestParam(name = "idOrg") Long idOrg){
         return contribuicaoService.findContribuicoesByOrg(idOrg);
     }
+
+    @GetMapping("/porUser")
+    public List<GetContribuicoesDTO> getContribuicoesUser(@RequestParam(name = "idUser")Long idUser){
+        return contribuicaoService.findContribuicoesByUser(idUser);
+    }
+
+    @GetMapping("/porOrg/total")
+    public Double getTotalContribuicoesByOrg(@RequestParam(name = "idOrg") Long idOrg){
+        return contribuicaoService.getTotalContribuicoesByOrg(idOrg);
+    }
+
+    @GetMapping("/porUser/total")
+    public Double getTotalContribuicoesByUser(@RequestParam(name = "idUser") Long idUser){
+        return contribuicaoService.getTotalContribuicoesByUser(idUser);
+    }
 }
