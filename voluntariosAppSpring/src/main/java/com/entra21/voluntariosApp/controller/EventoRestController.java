@@ -38,8 +38,8 @@ public class EventoRestController {
     }
 
     @GetMapping("/presentes")
-    public List<PessoaEventoPresencaDTO> buscarPresenca(@RequestParam(name = "idEvento") Long idEvento){
-        return eventoService.buscarPresenca(idEvento);
+    public List<PessoaEventoPresencaDTO> buscarPresentes(@RequestParam(name = "idEvento") Long idEvento){
+        return eventoService.buscarPresentes(idEvento);
     }
 
     @GetMapping("/idTag")

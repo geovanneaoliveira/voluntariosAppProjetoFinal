@@ -19,7 +19,11 @@ public class PatrocinadorService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
-    public List<PatrocinadorDTO> getAll() {
+    /**
+     * Retorna todos os Patrocinadores salvos no repositório.
+     * @return List {@code <PatrocinadorDTO>}
+     */
+    public List<PatrocinadorDTO> getAllPatrocinadores() {
         return patrocinadorRepository.findAll().stream().map(patrocinadorEntity -> {
             PatrocinadorDTO patrocinadorDTO = new PatrocinadorDTO();
             patrocinadorDTO.setNome(patrocinadorEntity.getNome());
@@ -28,6 +32,14 @@ public class PatrocinadorService {
         }).collect(Collectors.toList());
     }
 
+    /**
+     * Adiciona um Patrocinador ao repositório.<br>
+     * Atributos de PatrocinadorDTO:
+     * <li>String nome</li>
+     * <li>Long idRepresentante</li>
+     * @param patrocinadorDTO
+     * @throws ResponseStatusException
+     */
     public void addPatrocinador(PatrocinadorDTO patrocinadorDTO) {
         pessoaRepository.findById(patrocinadorDTO.getIdRepresentante()).ifPresentOrElse(pessoa -> {
             PatrocinadorEntity patrocinadorEntity = new PatrocinadorEntity();

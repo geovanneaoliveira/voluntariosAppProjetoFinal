@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -37,6 +36,14 @@ public class EventoService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
+    /**
+     * Adiciona um Evento ao repositório.<br>
+     * Atributos de EventoDTO:
+     * <li>String nome</li>
+     * <li>LocalDateTime data</li>
+     * <li>Long idOrganizacao</li>
+     * @param eventoDTO
+     */
     public void adicionarEvento(EventoDTO eventoDTO) {
         organizacaoRepository.findById(eventoDTO.getIdOrganizacao()).ifPresentOrElse(org -> {
             EventoEntity eventoEntity = new EventoEntity();
@@ -49,6 +56,11 @@ public class EventoService {
         });
     }
 
+    /**
+     * Retorna os Eventos com nomes similares ao passado por parâmetro.
+     * @param nome
+     * @return List {@code <EventoBuscaDTO>}
+     */
     public List<EventoBuscaDTO> buscarEvento(String nome) {
         List<EventoEntity> eventos = eventoRepository.findAll().stream()
                 .filter(ev -> ev.getNome().toLowerCase().contains(nome.toLowerCase())).collect(Collectors.toList());
@@ -62,7 +74,12 @@ public class EventoService {
 
     }
 
-    public List<PessoaEventoPresencaDTO> buscarPresenca(Long idEvento) {
+    /**
+     * Retorna a lista de pessoas com Presença confirmada em um evento de acordo com o Id dele.
+     * @param idEvento
+     * @return List
+     */
+    public List<PessoaEventoPresencaDTO> buscarPresentes(Long idEvento) {
         List<PessoasEventoEntity> pessoasEvento = pessoasEventoRepository.findAllByidEvento_Id(idEvento).stream().filter(PessoasEventoEntity::getPresenca).collect(Collectors.toList());
         return pessoasEvento.stream().map(pv -> {
             PessoaEventoPresencaDTO dto = new PessoaEventoPresencaDTO();
@@ -73,6 +90,13 @@ public class EventoService {
         }).collect(Collectors.toList());
     }
 
+    /**
+     * Adiciona uma Pessoa à lista de presentes de um Evento de acordo com seus respectivos Ids.<br>
+     * Atributos de PessoasEventoDTO:
+     * <li>Long idPessoa</li>
+     * <li>Long idEvento</li>
+     * @param dto
+     */
     public void adicionarPessoaEvento(PessoasEventoDTO dto) {
         eventoRepository.findById(dto.getIdEvento()).ifPresentOrElse(ev -> {
             pessoaRepository.findById(dto.getIdPessoa()).ifPresentOrElse(pe -> {
@@ -81,15 +105,16 @@ public class EventoService {
                 pessoasEventoEntity.setIdEvento(ev);
                 pessoasEventoEntity.setPresenca(true);
                 pessoasEventoRepository.save(pessoasEventoEntity);
-            }, () -> {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não encontrada!");
-            });
-        }, () -> {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");
-        });
+            }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não encontrada!");});
+        }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");});
     }
 
-    public List<EventoBuscaDTO> findEventoByTags(Long idTag){
+    /**
+     * Retorna todos os Eventos que contiverem a Tag cujo Id for igual ao passado por parâmetro.
+     * @param idTag
+     * @return List {@code <EventoBuscaDTO>}
+     */
+    public List<EventoBuscaDTO> findEventoByTags(Long idTag) {
         return eventoRepository.findAllBytags_Id(idTag).stream().map(ev -> {
             EventoBuscaDTO eBD = new EventoBuscaDTO();
             eBD.setNome(ev.getNome());
@@ -97,5 +122,25 @@ public class EventoService {
             eBD.setNomeOrganizacao(ev.getOrganizacao().getNome());
             return eBD;
         }).collect(Collectors.toList());
+    }
+
+    /**
+     * Atualiza as informações do Evento cujo Id for igual ao passado por parâmetro para as informações
+     * contidas em um EventoDTO:
+     * <li>String nome</li>
+     * <li>LocalDateTime data</li>
+     * <li>Long idOrganizacao</li>
+     * @param id
+     * @param dto
+     */
+    public void atualizarEvento(Long id, EventoDTO dto) {
+        eventoRepository.findById(id).ifPresentOrElse(eE -> {
+            eE.setNome(dto.getNome());
+            eE.setData(dto.getData());
+            eE.setOrganizacao(eE.getOrganizacao());
+            eventoRepository.save(eE);
+        }, () -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");
+        });
     }
 }

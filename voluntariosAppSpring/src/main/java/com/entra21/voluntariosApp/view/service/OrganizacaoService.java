@@ -24,6 +24,17 @@ public class OrganizacaoService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
+
+    /**
+     * Adiciona uma Organização ao repositório.<br>
+     * Atributos de OrganizacaoDTO:
+     * <li>String nome</li>
+     * <li>String descricao</li>
+     * <li>Long idSupervisor</li>
+     * <li>String cnpj</li>
+     * @param organizacaoDTO
+     * @throws ResponseStatusException
+     */
     public void addOrganizacao(OrganizacaoDTO organizacaoDTO) {
         pessoaRepository.findById(organizacaoDTO.getIdSupervisor()).ifPresentOrElse(pessoa -> {
             OrganizacaoEntity organizacaoEntity = new OrganizacaoEntity();
@@ -36,7 +47,12 @@ public class OrganizacaoService {
         }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não encontrada!");});
     }
 
-    public List<OrganizacaoBuscaDTO> getOrgs(String nomeOrg) {
+    /**
+     * Busca todas as Organizações que possuem nomes similares ao passado por parâmetro.
+     * @param nomeOrg
+     * @return List {@code <OrganizacaoBuscaDTO>}
+     */
+    public List<OrganizacaoBuscaDTO> getOrganizacoes(String nomeOrg) {
         List<OrganizacaoEntity> orgs = organizacaoRepository.findAll().stream()
                 .filter(org -> org.getNome().toLowerCase().contains(nomeOrg.toLowerCase())).collect(Collectors.toList());
         return orgs.stream().map(orgE -> {
@@ -49,7 +65,18 @@ public class OrganizacaoService {
         }).collect(Collectors.toList());
     }
 
-    public void atualizarOrganizacao(Long id, OrganizacaoDTO dto) {
+    /**
+     * Atualiza a Organização cujo Id for igual ao passado por parâmetro para as informações
+     * contidas em um OrganizacaoDTO.
+     * <li>String nome</li>
+     * <li>String descricao</li>
+     * <li>Long idSupervisor</li>
+     * <li>String cnpj</li>
+     * @param id
+     * @param dto
+     * @throws ResponseStatusException
+     */
+    public void updateOrganizacao(Long id, OrganizacaoDTO dto) {
         organizacaoRepository.findById(id).ifPresentOrElse(org -> {
             org.setNome(dto.getNome());
             org.setDescricao(dto.getDescricao());
@@ -61,6 +88,11 @@ public class OrganizacaoService {
         });
     }
 
+    /**
+     * Ativa ou desativa uma Organização de acordo com seu Status atual.
+     * @param id
+     * @throws ResponseStatusException
+     * */
     public void status(Long id){
         organizacaoRepository.findById(id).ifPresentOrElse(org -> {
             org.setAtivo(!org.getAtivo());
@@ -70,7 +102,12 @@ public class OrganizacaoService {
         });
     }
 
-    public List<OrganizacaoBuscaDTO> buscarOrgPorSurpervisor (Long idSupervisor){
+    /**
+     * Retorna uma todas as Organizações sob um mesmo supervisor de acordo com o seu Id.
+     * @param idSupervisor
+     * @return List {@code <OrganizacaoBuscaDTO>}
+     */
+    public List<OrganizacaoBuscaDTO> buscarOrgsPorSurpervisor (Long idSupervisor){
         return organizacaoRepository.findAllBysupervisor_Id(idSupervisor).stream().map(orgs -> {
             OrganizacaoBuscaDTO dto = new OrganizacaoBuscaDTO();
             dto.setNomeOrg(orgs.getNome());
