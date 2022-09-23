@@ -49,4 +49,7 @@ public class PatrocinadorService {
         }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não existente!");});
     }
 
+    public void deletePatrocinador(Long idPatrocinador) {
+        patrocinadorRepository.deleteById(idPatrocinador);
+    }
 }

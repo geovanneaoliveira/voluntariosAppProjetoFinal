@@ -1,23 +1,17 @@
 package com.entra21.voluntariosApp.view.service;
 
-import com.entra21.voluntariosApp.model.dto.server.EventoDTOs;
-import com.entra21.voluntariosApp.model.dto.server.PessoaEventoPresencaDTO;
-import com.entra21.voluntariosApp.model.dto.server.PessoasEventoDTO;
-import com.entra21.voluntariosApp.model.dto.user.EventoDTO;
+import com.entra21.voluntariosApp.model.dto.*;
 import com.entra21.voluntariosApp.model.entity.EventoEntity;
+import com.entra21.voluntariosApp.model.entity.PatrocinadorEntity;
+import com.entra21.voluntariosApp.model.entity.PatrocinadoresEventoEntity;
 import com.entra21.voluntariosApp.model.entity.PessoasEventoEntity;
-import com.entra21.voluntariosApp.view.repository.EventoRepository;
-import com.entra21.voluntariosApp.view.repository.OrganizacaoRepository;
-import com.entra21.voluntariosApp.view.repository.PessoaRepository;
-import com.entra21.voluntariosApp.view.repository.PessoasEventoRepository;
+import com.entra21.voluntariosApp.view.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-
 
 import java.util.stream.Collectors;
 
@@ -35,6 +29,12 @@ public class EventoService {
 
     @Autowired
     private PessoaRepository pessoaRepository;
+
+    @Autowired
+    private PatrocinadorEventoRepository patrocinadorEventoRepository;
+
+    @Autowired
+    private  PatrocinadorRepository patrocinadorRepository;
 
     /**
      * Adiciona um Evento ao repositório.<br>
@@ -142,5 +142,54 @@ public class EventoService {
         }, () -> {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");
         });
+    }
+}
+
+    public List<EventoBuscaDTO> findEventoByTags(Long idTag) {
+        return eventoRepository.findAllBytags_Id(idTag).stream().map(ev -> {
+            EventoBuscaDTO eBD = new EventoBuscaDTO();
+            eBD.setNome(ev.getNome());
+            eBD.setData(ev.getData());
+            eBD.setNomeOrganizacao(ev.getOrganizacao().getNome());
+            return eBD;
+        }).collect(Collectors.toList());
+    }
+
+    public void atualizarEvento(Long id, EventoDTO dto) {
+        eventoRepository.findById(id).ifPresentOrElse(eE -> {
+            organizacaoRepository.findById(dto.getIdOrganizacao()).ifPresentOrElse(org -> {
+                eE.setNome(dto.getNome());
+                eE.setData(dto.getData());
+                eE.setOrganizacao(org);
+                eventoRepository.save(eE);
+            }, () -> {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrado!");});
+        }, () -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");});
+    }
+
+    public void addPatrocinadorEvento(Long idEvento, PatrocinadorDTO dto) {
+        eventoRepository.findById(idEvento).ifPresentOrElse(evento -> {
+            patrocinadorRepository.findById(dto.getIdRepresentante()).ifPresentOrElse(pa -> {
+                pessoaRepository.findById(dto.getIdRepresentante()).ifPresentOrElse(pe -> {
+                    PatrocinadoresEventoEntity patrocinadoresEvento = new PatrocinadoresEventoEntity();
+                    patrocinadoresEvento.setPatrocinador(pa);
+                    patrocinadoresEvento.setId(dto.getIdRepresentante());
+                    patrocinadoresEvento.setEvento(evento);
+                    patrocinadorEventoRepository.save(patrocinadoresEvento);
+                },() -> {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não encontrada!");});
+            }, () -> {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrado!");});
+        }, () -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");});
+    }
+
+    public void deletarPatrocinadorEvento(Long idEvento, Long idPatrocinador){
+        eventoRepository.findById(idEvento).ifPresentOrElse(evento -> {
+            patrocinadorEventoRepository.deleteById(idPatrocinador);
+    }, () -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");});
+
     }
 }

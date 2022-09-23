@@ -23,4 +23,10 @@ public class PatrocinadorRestController {
     private void addPatrocinador(@RequestBody PatrocinadorDTO patrocinadorDTO){
         patrocinadorService.addPatrocinador(patrocinadorDTO);
     }
+
+    @DeleteMapping("/excluir")
+    private void deletePatrocinador(@RequestParam(name = "idPatrocinador") Long idPatrocinador){
+        patrocinadorService.deletePatrocinador(idPatrocinador);
+    }
+
 }
