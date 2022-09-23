@@ -3,7 +3,6 @@ package com.entra21.voluntariosApp.model.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -30,7 +29,4 @@ public class OrganizacaoEntity {
     @ManyToOne
     @JoinColumn(name = "id_supervisor",referencedColumnName = "id")
     private PessoaEntity supervisor;
-
-
-
 }

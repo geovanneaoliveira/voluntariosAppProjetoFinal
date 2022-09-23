@@ -16,17 +16,17 @@ public class ContribuicaoEntity {
     private Long id;
 
     @Column(name = "valor")
-    private double valor;
+    private Double valor;
 
     @Column(name = "data")
     private LocalDateTime data;
 
     @ManyToOne
     @JoinColumn(name = "id_pessoa",referencedColumnName = "id")
-    private PessoaEntity idPessoa;
+    private PessoaEntity pessoa;
 
     @ManyToOne
     @JoinColumn(name = "id_organizacao", referencedColumnName = "id")
-    private OrganizacaoEntity idOrganizacao;
+    private OrganizacaoEntity organizacao;
 
 }

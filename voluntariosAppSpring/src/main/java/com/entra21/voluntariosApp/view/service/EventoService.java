@@ -36,11 +36,19 @@ public class EventoService {
     @Autowired
     private  PatrocinadorRepository patrocinadorRepository;
 
-    public void adicionarEvento(EventoDTO eventoDTO) {
-        organizacaoRepository.findById(eventoDTO.getIdOrganizacao()).ifPresentOrElse(org -> {
+    /**
+     * Adiciona um Evento ao repositório.<br>
+     * Atributos de EventoDTO:
+     * <li>String nome</li>
+     * <li>LocalDateTime data</li>
+     * <li>Long idOrganizacao</li>
+     * @param eventoDTOs
+     */
+    public void adicionarEvento(EventoDTOs eventoDTOs) {
+        organizacaoRepository.findById(eventoDTOs.getIdOrganizacao()).ifPresentOrElse(org -> {
             EventoEntity eventoEntity = new EventoEntity();
-            eventoEntity.setNome(eventoDTO.getNome());
-            eventoEntity.setData(eventoDTO.getData());
+            eventoEntity.setNome(eventoDTOs.getNome());
+            eventoEntity.setData(eventoDTOs.getData());
             eventoEntity.setOrganizacao(org);
             eventoRepository.save(eventoEntity);
         }, () -> {
@@ -48,11 +56,16 @@ public class EventoService {
         });
     }
 
-    public List<EventoBuscaDTO> buscarEvento(String nome) {
+    /**
+     * Retorna os Eventos com nomes similares ao passado por parâmetro.
+     * @param nome
+     * @return List {@code <EventoBuscaDTO>}
+     */
+    public List<EventoDTO> buscarEvento(String nome) {
         List<EventoEntity> eventos = eventoRepository.findAll().stream()
                 .filter(ev -> ev.getNome().toLowerCase().contains(nome.toLowerCase())).collect(Collectors.toList());
         return eventos.stream().map(ev -> {
-            EventoBuscaDTO dto = new EventoBuscaDTO();
+            EventoDTO dto = new com.entra21.voluntariosApp.model.dto.user.EventoDTO();
             dto.setNome(ev.getNome());
             dto.setData(ev.getData());
             dto.setNomeOrganizacao(ev.getOrganizacao().getNome());
@@ -61,7 +74,12 @@ public class EventoService {
 
     }
 
-    public List<PessoaEventoPresencaDTO> buscarPresenca(Long idEvento) {
+    /**
+     * Retorna a lista de pessoas com Presença confirmada em um evento de acordo com o Id dele.
+     * @param idEvento
+     * @return List
+     */
+    public List<PessoaEventoPresencaDTO> buscarPresentes(Long idEvento) {
         List<PessoasEventoEntity> pessoasEvento = pessoasEventoRepository.findAllByidEvento_Id(idEvento).stream().filter(PessoasEventoEntity::getPresenca).collect(Collectors.toList());
         return pessoasEvento.stream().map(pv -> {
             PessoaEventoPresencaDTO dto = new PessoaEventoPresencaDTO();
@@ -72,6 +90,13 @@ public class EventoService {
         }).collect(Collectors.toList());
     }
 
+    /**
+     * Adiciona uma Pessoa à lista de presentes de um Evento de acordo com seus respectivos Ids.<br>
+     * Atributos de PessoasEventoDTO:
+     * <li>Long idPessoa</li>
+     * <li>Long idEvento</li>
+     * @param dto
+     */
     public void adicionarPessoaEvento(PessoasEventoDTO dto) {
         eventoRepository.findById(dto.getIdEvento()).ifPresentOrElse(ev -> {
             pessoaRepository.findById(dto.getIdPessoa()).ifPresentOrElse(pe -> {
@@ -80,16 +105,45 @@ public class EventoService {
                 pessoasEventoEntity.setIdEvento(ev);
                 pessoasEventoEntity.setPresenca(true);
                 pessoasEventoRepository.save(pessoasEventoEntity);
-            }, () -> {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não encontrada!");
-            });
+            }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não encontrada!");});
+        }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");});
+    }
+
+    /**
+     * Retorna todos os Eventos que contiverem a Tag cujo Id for igual ao passado por parâmetro.
+     * @param idTag
+     * @return List {@code <EventoBuscaDTO>}
+     */
+    public List<EventoDTO> findEventoByTags(Long idTag) {
+        return eventoRepository.findAllBytags_Id(idTag).stream().map(ev -> {
+            EventoDTO eBD = new com.entra21.voluntariosApp.model.dto.user.EventoDTO();
+            eBD.setNome(ev.getNome());
+            eBD.setData(ev.getData());
+            eBD.setNomeOrganizacao(ev.getOrganizacao().getNome());
+            return eBD;
+        }).collect(Collectors.toList());
+    }
+
+    /**
+     * Atualiza as informações do Evento cujo Id for igual ao passado por parâmetro para as informações
+     * contidas em um EventoDTO:
+     * <li>String nome</li>
+     * <li>LocalDateTime data</li>
+     * <li>Long idOrganizacao</li>
+     * @param id
+     * @param dto
+     */
+    public void atualizarEvento(Long id, EventoDTOs dto) {
+        eventoRepository.findById(id).ifPresentOrElse(eE -> {
+            eE.setNome(dto.getNome());
+            eE.setData(dto.getData());
+            eE.setOrganizacao(eE.getOrganizacao());
+            eventoRepository.save(eE);
         }, () -> {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");
         });
     }
-<<<<<<< Updated upstream
 }
-=======
 
     public List<EventoBuscaDTO> findEventoByTags(Long idTag) {
         return eventoRepository.findAllBytags_Id(idTag).stream().map(ev -> {
@@ -139,24 +193,3 @@ public class EventoService {
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
