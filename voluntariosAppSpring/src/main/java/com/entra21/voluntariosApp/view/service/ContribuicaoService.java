@@ -32,15 +32,29 @@ public class ContribuicaoService {
     @Autowired
     private EventoRepository eventoRepository;
 
-    public void addContribuicao(ContribuicaoDTO input) {
+    /**
+     * Adiciona uma contribuição ao Repositório.<br>
+     * Atributos de ContribuicaoDTO:
+     * <li>LocalDateTime data</li>
+     * <li>Double valor</li>
+     * <li>Long idPessoa</li>
+     * <li>Long idOrganizacao</li>
+     * @param contribuicaoDTO
+     * @throws ResponseStatusException
+     */
+    public void addContribuicao(ContribuicaoDTO contribuicaoDTO) {
         ContribuicaoEntity cE = new ContribuicaoEntity();
-        cE.setData(input.getData());
-        cE.setValor(input.getValor());
-        cE.setOrganizacao(organizacaoRepository.findById(input.getIdOrganizacao()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST)));
-        cE.setPessoa(pessoaRepository.findById(input.getIdPessoa()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST)));
+        cE.setData(contribuicaoDTO.getData());
+        cE.setValor(contribuicaoDTO.getValor());
+        cE.setOrganizacao(organizacaoRepository.findById(contribuicaoDTO.getIdOrganizacao()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrada!")));
+        cE.setPessoa(pessoaRepository.findById(contribuicaoDTO.getIdPessoa()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Contribuinte não encontrado!")));
         contribuicaoRepository.save(cE);
     }
 
+    /**
+     * Retorna todas as contribuições já realizadas.
+     * @return List {@code <GetContribuicoesDTO>}
+     */
     public List<GetContribuicoesDTO> findAllContribuicao() {
         return contribuicaoRepository.findAll().stream().map(cE -> {
             GetContribuicoesDTO cdto = new GetContribuicoesDTO();
@@ -53,6 +67,11 @@ public class ContribuicaoService {
         }).collect(Collectors.toList());
     }
 
+    /**
+     * Retorna todas as contribuições recebidas por uma Organização especificada pelo Id.
+     * @param idOrg
+     * @return List {@code <GetContribuicoesDTO>}
+     */
     public List<GetContribuicoesDTO> findContribuicoesByOrg(Long idOrg) {
         return contribuicaoRepository.findAll().stream()
                 .filter(cE -> Objects.equals(cE.getOrganizacao().getId(), idOrg)).map(cE -> {
@@ -66,6 +85,11 @@ public class ContribuicaoService {
                 }).collect(Collectors.toList());
     }
 
+    /**
+     * Retorna todas as contribuições já realizadas por um Usuário especificado pelo Id.
+     * @param idUser
+     * @return List {@code <GetContribuicoesDTO>}
+     */
     public List<GetContribuicoesDTO> findContribuicoesByUser(Long idUser) {
         return contribuicaoRepository.findAllBypessoa_Id(idUser).stream()
                 .filter(cE -> Objects.equals(cE.getPessoa().getId(), idUser)).map(cE -> {
@@ -79,6 +103,11 @@ public class ContribuicaoService {
                 }).collect(Collectors.toList());
     }
 
+    /**
+     * Retorna a soma de todas as Contribuições já recebidas por uma Organização.
+     * @param idOrg
+     * @return Double
+     */
     public Double getTotalContribuicoesByOrg(Long idOrg) {
         AtomicReference<Double> valorTotal = new AtomicReference<>(0.0);
         findContribuicoesByOrg(idOrg).forEach(cE -> {
@@ -87,6 +116,11 @@ public class ContribuicaoService {
         return valorTotal.get();
     }
 
+    /**
+     * Retorna a soma das Contribuições já realizados por um Usuário;
+     * @param idUser
+     * @return Double
+     */
     public Double getTotalContribuicoesByUser(Long idUser) {
         AtomicReference<Double> valorTotal = new AtomicReference<>(0.0);
         findContribuicoesByUser(idUser).forEach(cE -> {
