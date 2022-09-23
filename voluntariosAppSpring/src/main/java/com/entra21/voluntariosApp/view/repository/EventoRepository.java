@@ -11,6 +11,9 @@ public interface EventoRepository extends JpaRepository<EventoEntity, Long> {
     List<EventoEntity> findAllBytags_Id(Long idTag);
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

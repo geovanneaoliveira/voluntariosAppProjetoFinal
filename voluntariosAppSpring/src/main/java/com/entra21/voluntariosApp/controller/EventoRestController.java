@@ -63,6 +63,9 @@ public class EventoRestController {
         eventoService.deletarPatrocinadorEvento(idEvento, idPatrocinador);
     }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
