@@ -1,6 +1,6 @@
 package com.entra21.voluntariosApp.view.service;
 
-import com.entra21.voluntariosApp.model.dto.PatrocinadorDTO;
+import com.entra21.voluntariosApp.model.dto.server.PatrocinadorDTO;
 import com.entra21.voluntariosApp.model.entity.PatrocinadorEntity;
 import com.entra21.voluntariosApp.view.repository.PatrocinadorRepository;
 import com.entra21.voluntariosApp.view.repository.PessoaRepository;
@@ -48,4 +48,5 @@ public class PatrocinadorService {
             patrocinadorRepository.save(patrocinadorEntity);
         }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não existente!");});
     }
+
 }

@@ -1,7 +1,7 @@
 package com.entra21.voluntariosApp.view.service;
 
-import com.entra21.voluntariosApp.model.dto.GetContribuicoesDTO;
-import com.entra21.voluntariosApp.model.dto.ContribuicaoDTO;
+import com.entra21.voluntariosApp.model.dto.server.ContribuicaoDTOs;
+import com.entra21.voluntariosApp.model.dto.user.ContribuicaoDTO;
 import com.entra21.voluntariosApp.model.entity.ContribuicaoEntity;
 import com.entra21.voluntariosApp.view.repository.ContribuicaoRepository;
 import com.entra21.voluntariosApp.view.repository.EventoRepository;
@@ -39,15 +39,15 @@ public class ContribuicaoService {
      * <li>Double valor</li>
      * <li>Long idPessoa</li>
      * <li>Long idOrganizacao</li>
-     * @param contribuicaoDTO
+     * @param contribuicaoDTOs
      * @throws ResponseStatusException
      */
-    public void addContribuicao(ContribuicaoDTO contribuicaoDTO) {
+    public void addContribuicao(ContribuicaoDTOs contribuicaoDTOs) {
         ContribuicaoEntity cE = new ContribuicaoEntity();
-        cE.setData(contribuicaoDTO.getData());
-        cE.setValor(contribuicaoDTO.getValor());
-        cE.setOrganizacao(organizacaoRepository.findById(contribuicaoDTO.getIdOrganizacao()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrada!")));
-        cE.setPessoa(pessoaRepository.findById(contribuicaoDTO.getIdPessoa()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Contribuinte não encontrado!")));
+        cE.setData(contribuicaoDTOs.getData());
+        cE.setValor(contribuicaoDTOs.getValor());
+        cE.setOrganizacao(organizacaoRepository.findById(contribuicaoDTOs.getIdOrganizacao()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrada!")));
+        cE.setPessoa(pessoaRepository.findById(contribuicaoDTOs.getIdPessoa()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Contribuinte não encontrado!")));
         contribuicaoRepository.save(cE);
     }
 
@@ -55,9 +55,9 @@ public class ContribuicaoService {
      * Retorna todas as contribuições já realizadas.
      * @return List {@code <GetContribuicoesDTO>}
      */
-    public List<GetContribuicoesDTO> findAllContribuicao() {
+    public List<ContribuicaoDTO> findAllContribuicao() {
         return contribuicaoRepository.findAll().stream().map(cE -> {
-            GetContribuicoesDTO cdto = new GetContribuicoesDTO();
+            ContribuicaoDTO cdto = new ContribuicaoDTO();
             cdto.setData(cE.getData());
             cdto.setValor(cE.getValor());
             cdto.setNomeOrg(cE.getOrganizacao().getNome());
@@ -72,10 +72,10 @@ public class ContribuicaoService {
      * @param idOrg
      * @return List {@code <GetContribuicoesDTO>}
      */
-    public List<GetContribuicoesDTO> findContribuicoesByOrg(Long idOrg) {
+    public List<ContribuicaoDTO> findContribuicoesByOrg(Long idOrg) {
         return contribuicaoRepository.findAll().stream()
                 .filter(cE -> Objects.equals(cE.getOrganizacao().getId(), idOrg)).map(cE -> {
-                    GetContribuicoesDTO gcd = new GetContribuicoesDTO();
+                    ContribuicaoDTO gcd = new ContribuicaoDTO();
                     gcd.setData(cE.getData());
                     gcd.setValor(cE.getValor());
                     gcd.setNomeOrg(cE.getOrganizacao().getNome());
@@ -90,10 +90,10 @@ public class ContribuicaoService {
      * @param idUser
      * @return List {@code <GetContribuicoesDTO>}
      */
-    public List<GetContribuicoesDTO> findContribuicoesByUser(Long idUser) {
+    public List<ContribuicaoDTO> findContribuicoesByUser(Long idUser) {
         return contribuicaoRepository.findAllBypessoa_Id(idUser).stream()
                 .filter(cE -> Objects.equals(cE.getPessoa().getId(), idUser)).map(cE -> {
-                    GetContribuicoesDTO contribuicaoUser = new GetContribuicoesDTO();
+                    ContribuicaoDTO contribuicaoUser = new ContribuicaoDTO();
                     contribuicaoUser.setData(cE.getData());
                     contribuicaoUser.setValor(cE.getValor());
                     contribuicaoUser.setNomeUsuario(cE.getPessoa().getNome());

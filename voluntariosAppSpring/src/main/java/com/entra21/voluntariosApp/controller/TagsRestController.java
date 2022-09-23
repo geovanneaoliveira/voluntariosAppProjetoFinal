@@ -1,7 +1,7 @@
 package com.entra21.voluntariosApp.controller;
 
-import com.entra21.voluntariosApp.model.dto.TagsEventoDTO;
-import com.entra21.voluntariosApp.model.dto.TagsPessoaDTO;
+import com.entra21.voluntariosApp.model.dto.server.TagsEventoDTO;
+import com.entra21.voluntariosApp.model.dto.server.TagsPessoaDTO;
 import com.entra21.voluntariosApp.view.service.TagsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

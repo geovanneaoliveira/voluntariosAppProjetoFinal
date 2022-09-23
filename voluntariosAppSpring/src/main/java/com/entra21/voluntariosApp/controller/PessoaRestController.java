@@ -1,14 +1,10 @@
 package com.entra21.voluntariosApp.controller;
 
-import com.entra21.voluntariosApp.model.dto.PessoaDTO;
-import com.entra21.voluntariosApp.model.entity.PessoaEntity;
-import com.entra21.voluntariosApp.view.repository.PessoaRepository;
+import com.entra21.voluntariosApp.model.dto.server.PessoaDTO;
 import com.entra21.voluntariosApp.view.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/pessoa")

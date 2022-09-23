@@ -1,9 +1,9 @@
 package com.entra21.voluntariosApp.view.service;
 
-import com.entra21.voluntariosApp.model.dto.EventoBuscaDTO;
-import com.entra21.voluntariosApp.model.dto.EventoDTO;
-import com.entra21.voluntariosApp.model.dto.PessoaEventoPresencaDTO;
-import com.entra21.voluntariosApp.model.dto.PessoasEventoDTO;
+import com.entra21.voluntariosApp.model.dto.server.EventoDTOs;
+import com.entra21.voluntariosApp.model.dto.server.PessoaEventoPresencaDTO;
+import com.entra21.voluntariosApp.model.dto.server.PessoasEventoDTO;
+import com.entra21.voluntariosApp.model.dto.user.EventoDTO;
 import com.entra21.voluntariosApp.model.entity.EventoEntity;
 import com.entra21.voluntariosApp.model.entity.PessoasEventoEntity;
 import com.entra21.voluntariosApp.view.repository.EventoRepository;
@@ -42,13 +42,13 @@ public class EventoService {
      * <li>String nome</li>
      * <li>LocalDateTime data</li>
      * <li>Long idOrganizacao</li>
-     * @param eventoDTO
+     * @param eventoDTOs
      */
-    public void adicionarEvento(EventoDTO eventoDTO) {
-        organizacaoRepository.findById(eventoDTO.getIdOrganizacao()).ifPresentOrElse(org -> {
+    public void adicionarEvento(EventoDTOs eventoDTOs) {
+        organizacaoRepository.findById(eventoDTOs.getIdOrganizacao()).ifPresentOrElse(org -> {
             EventoEntity eventoEntity = new EventoEntity();
-            eventoEntity.setNome(eventoDTO.getNome());
-            eventoEntity.setData(eventoDTO.getData());
+            eventoEntity.setNome(eventoDTOs.getNome());
+            eventoEntity.setData(eventoDTOs.getData());
             eventoEntity.setOrganizacao(org);
             eventoRepository.save(eventoEntity);
         }, () -> {
@@ -61,11 +61,11 @@ public class EventoService {
      * @param nome
      * @return List {@code <EventoBuscaDTO>}
      */
-    public List<EventoBuscaDTO> buscarEvento(String nome) {
+    public List<EventoDTO> buscarEvento(String nome) {
         List<EventoEntity> eventos = eventoRepository.findAll().stream()
                 .filter(ev -> ev.getNome().toLowerCase().contains(nome.toLowerCase())).collect(Collectors.toList());
         return eventos.stream().map(ev -> {
-            EventoBuscaDTO dto = new EventoBuscaDTO();
+            EventoDTO dto = new com.entra21.voluntariosApp.model.dto.user.EventoDTO();
             dto.setNome(ev.getNome());
             dto.setData(ev.getData());
             dto.setNomeOrganizacao(ev.getOrganizacao().getNome());
@@ -114,9 +114,9 @@ public class EventoService {
      * @param idTag
      * @return List {@code <EventoBuscaDTO>}
      */
-    public List<EventoBuscaDTO> findEventoByTags(Long idTag) {
+    public List<EventoDTO> findEventoByTags(Long idTag) {
         return eventoRepository.findAllBytags_Id(idTag).stream().map(ev -> {
-            EventoBuscaDTO eBD = new EventoBuscaDTO();
+            EventoDTO eBD = new com.entra21.voluntariosApp.model.dto.user.EventoDTO();
             eBD.setNome(ev.getNome());
             eBD.setData(ev.getData());
             eBD.setNomeOrganizacao(ev.getOrganizacao().getNome());
@@ -133,7 +133,7 @@ public class EventoService {
      * @param id
      * @param dto
      */
-    public void atualizarEvento(Long id, EventoDTO dto) {
+    public void atualizarEvento(Long id, EventoDTOs dto) {
         eventoRepository.findById(id).ifPresentOrElse(eE -> {
             eE.setNome(dto.getNome());
             eE.setData(dto.getData());
