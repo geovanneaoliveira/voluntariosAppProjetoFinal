@@ -6,4 +6,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EventoRepository extends JpaRepository<EventoEntity, Long> {
+<<<<<<< Updated upstream
+=======
+    List<EventoEntity> findAllBytags_Id(Long idTag);
+
+>>>>>>> Stashed changes
 }
