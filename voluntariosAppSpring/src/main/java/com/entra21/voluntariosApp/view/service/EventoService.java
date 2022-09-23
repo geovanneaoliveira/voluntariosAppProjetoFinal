@@ -1,8 +1,12 @@
 package com.entra21.voluntariosApp.view.service;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import com.entra21.voluntariosApp.model.dto.EventoDTO;
 import com.entra21.voluntariosApp.model.dto.PessoasEventoDTO;
+=======
+import com.entra21.voluntariosApp.model.dto.*;
+>>>>>>> Stashed changes
 =======
 import com.entra21.voluntariosApp.model.dto.*;
 >>>>>>> Stashed changes
@@ -19,10 +23,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+<<<<<<< Updated upstream
 import java.util.ArrayList;
 import java.util.List;
 
 import java.util.Optional;
+=======
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+
+import java.util.Objects;
+>>>>>>> Stashed changes
 import java.util.stream.Collectors;
 
 @Service
@@ -58,7 +71,6 @@ public class EventoService {
             dto.setIdOrganizacao(ev.getOrganizacao().getId());
             return dto;
         }).collect(Collectors.toList());
-
     }
 
     public List<PessoasEventoDTO> buscarPresenca(Long idEvento){
@@ -110,6 +122,29 @@ public class EventoService {
         }).collect(Collectors.toList());
     }
 
+<<<<<<< Updated upstream
 
 >>>>>>> Stashed changes
 }
+=======
+    public void deletarEvento(Long id){
+        eventoRepository.deleteById(id);
+    }
+
+
+    //busca e retorna todos os patrocinadores de um evento
+    public List<PatrocinadorDTO> findAllByPatrocinadores_Id(Long idEvento) {
+        EventoEntity e = eventoRepository.findById(idEvento).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!"));
+        return e.getPatrocinadores().stream().map(pat -> {
+            PatrocinadorDTO dto = new PatrocinadorDTO();
+            dto.setNome(pat.getNome());
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+
+
+}
+
+
+>>>>>>> Stashed changes

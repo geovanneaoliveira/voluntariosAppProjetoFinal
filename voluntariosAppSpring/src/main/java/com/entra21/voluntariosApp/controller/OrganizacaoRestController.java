@@ -14,6 +14,13 @@ public class OrganizacaoRestController {
     @Autowired
     private OrganizacaoService organizacaoService;
 
+<<<<<<< Updated upstream
+=======
+    @GetMapping("/buscar")
+    public List<OrganizacaoBuscaDTO> getOrg(@RequestBody String nomeOrg){
+        return organizacaoService.getOrgs(nomeOrg);
+    }
+>>>>>>> Stashed changes
     @PostMapping("/criar")
     public void criarOrg(@RequestBody OrganizacaoDTO organizacaoDTO){
         organizacaoService.addOrganizacao(organizacaoDTO);

@@ -40,5 +40,16 @@ public class EventoEntity {
     )
     private List<PatrocinadorEntity> patrocinadores;
 
+<<<<<<< Updated upstream
+=======
+    @ManyToMany
+    @JoinTable(
+            name = "pessoas_evento",
+            joinColumns = @JoinColumn(name = "id_pessoa", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id_evento", referencedColumnName = "id")
+    )
+    private List<PessoasEventoEntity> pessoasEvento;
+
+>>>>>>> Stashed changes
 
 }

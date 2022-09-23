@@ -42,6 +42,52 @@ public class ContribuicaoService {
             cdto.setIdOrganizacao(FC.getId());
             cdto.setIdPessoa(FC.getId());
             return cdto;
+<<<<<<< Updated upstream
         } ).collect(Collectors.toList());
+=======
+        }).collect(Collectors.toList());
+    }
+
+    public List<GetContribuicoesDTO> findContribuicoesByOrg(Long idOrg) {
+        return contribuicaoRepository.findAll().stream().filter(cE ->
+                Objects.equals(cE.getOrganizacao().getId(), idOrg)).map(cE -> {
+                    GetContribuicoesDTO gcd = new GetContribuicoesDTO();
+                    gcd.setData(cE.getData());
+                    gcd.setValor(cE.getValor());
+                    gcd.setNomeOrg(cE.getOrganizacao().getNome());
+                    gcd.setNomeUsuario(cE.getPessoa().getNome());
+                    gcd.setSobrenome(cE.getPessoa().getSobrenome());
+                    return gcd;
+                }).collect(Collectors.toList());
+    }
+
+    public List<GetContribuicoesDTO> findContribuicoesByUser(Long idUser) {
+        return contribuicaoRepository.findAllBypessoa_Id(idUser).stream()
+                .filter(cE -> Objects.equals(cE.getPessoa().getId(), idUser)).map(cE -> {
+                    GetContribuicoesDTO contribuicaoUser = new GetContribuicoesDTO();
+                    contribuicaoUser.setData(cE.getData());
+                    contribuicaoUser.setValor(cE.getValor());
+                    contribuicaoUser.setNomeUsuario(cE.getPessoa().getNome());
+                    contribuicaoUser.setSobrenome(cE.getPessoa().getSobrenome());
+                    contribuicaoUser.setNomeOrg(cE.getOrganizacao().getNome());
+                    return contribuicaoUser;
+                }).collect(Collectors.toList());
+    }
+
+    public Double getTotalContribuicoesByOrg(Long idOrg) {
+        AtomicReference<Double> valorTotal = new AtomicReference<>(0.0);
+        findContribuicoesByOrg(idOrg).forEach(cE -> {
+            valorTotal.updateAndGet(v -> v + cE.getValor());
+        });
+        return valorTotal.get();
+    }
+
+    public Double getTotalContribuicoesByUser(Long idUser) {
+        AtomicReference<Double> valorTotal = new AtomicReference<>(0.0);
+        findContribuicoesByUser(idUser).forEach(cE -> {
+            valorTotal.updateAndGet(v -> v + cE.getValor());
+        });
+        return valorTotal.get();
+>>>>>>> Stashed changes
     }
 }
