@@ -16,7 +16,7 @@ public class OrganizacaoRestController {
 
     @GetMapping("/buscar")
     public List<OrganizacaoBuscaDTO> getOrg(@RequestBody String nomeOrg){
-        return organizacaoService.getOrgs(nomeOrg);
+        return organizacaoService.getOrganizacoes(nomeOrg);
     }
 
     @PostMapping("/criar")
@@ -25,7 +25,7 @@ public class OrganizacaoRestController {
     }
     @PutMapping("/atualizar")
     public  void atualizarOrg(@RequestParam(name = "id")Long id, @RequestBody OrganizacaoDTO dto) {
-        organizacaoService.atualizarOrganizacao(id, dto);
+        organizacaoService.updateOrganizacao(id, dto);
     }
     @PutMapping("/status")
     public void status(@RequestParam(name = "id") Long id) {
@@ -34,6 +34,6 @@ public class OrganizacaoRestController {
 
     @GetMapping("/porSupervisor")
     public List<OrganizacaoBuscaDTO> buscarOrgPorSurpervisor (@RequestParam(name = "idSupervisor")Long idSupervisor){
-       return organizacaoService.buscarOrgPorSurpervisor(idSupervisor);
+       return organizacaoService.buscarOrgsPorSurpervisor(idSupervisor);
     }
 }
