@@ -62,5 +62,8 @@ public class EventoRestController {
     private void deletarPatrocinadorEvento(@RequestParam(name = "idEvento") Long idEvento, @RequestParam(name = "idPatrocinador") Long idPatrocinador){
         eventoService.deletarPatrocinadorEvento(idEvento, idPatrocinador);
     }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }
