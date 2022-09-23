@@ -1,6 +1,6 @@
 package com.entra21.voluntariosApp.controller;
 
-import com.entra21.voluntariosApp.model.dto.server.EventoDTO;
+import com.entra21.voluntariosApp.model.dto.server.EventoDTOs;
 import com.entra21.voluntariosApp.model.dto.server.PessoaEventoPresencaDTO;
 import com.entra21.voluntariosApp.model.dto.server.PessoasEventoDTO;
 import com.entra21.voluntariosApp.view.service.EventoService;
@@ -26,8 +26,8 @@ public class EventoRestController {
     }
 
     @PostMapping("/criar")
-    public void adicionarEvento(@RequestBody EventoDTO eventoDTO) {
-        eventoService.adicionarEvento(eventoDTO);
+    public void adicionarEvento(@RequestBody EventoDTOs eventoDTOs) {
+        eventoService.adicionarEvento(eventoDTOs);
     }
 
     @PostMapping("/presenca")

@@ -10,7 +10,7 @@ import lombok.Data;
  * <li>String cnpj</li>
  */
 @Data
-public class OrganizacaoDTO {
+public class OrganizacaoDTOs {
     private String nome;
     private String descricao;
     private Long idSupervisor;

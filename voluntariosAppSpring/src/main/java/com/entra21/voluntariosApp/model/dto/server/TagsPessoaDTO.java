@@ -1,4 +1,4 @@
-package com.entra21.voluntariosApp.model.dto;
+package com.entra21.voluntariosApp.model.dto.server;
 
 import lombok.Data;
 

@@ -1,5 +1,6 @@
 package com.entra21.voluntariosApp.view.service;
 
+import com.entra21.voluntariosApp.model.dto.server.ContribuicaoDTOs;
 import com.entra21.voluntariosApp.model.dto.user.ContribuicaoDTO;
 import com.entra21.voluntariosApp.model.entity.ContribuicaoEntity;
 import com.entra21.voluntariosApp.view.repository.ContribuicaoRepository;
@@ -38,15 +39,15 @@ public class ContribuicaoService {
      * <li>Double valor</li>
      * <li>Long idPessoa</li>
      * <li>Long idOrganizacao</li>
-     * @param contribuicaoDTO
+     * @param contribuicaoDTOs
      * @throws ResponseStatusException
      */
-    public void addContribuicao(com.entra21.voluntariosApp.model.dto.server.ContribuicaoDTO contribuicaoDTO) {
+    public void addContribuicao(ContribuicaoDTOs contribuicaoDTOs) {
         ContribuicaoEntity cE = new ContribuicaoEntity();
-        cE.setData(contribuicaoDTO.getData());
-        cE.setValor(contribuicaoDTO.getValor());
-        cE.setOrganizacao(organizacaoRepository.findById(contribuicaoDTO.getIdOrganizacao()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrada!")));
-        cE.setPessoa(pessoaRepository.findById(contribuicaoDTO.getIdPessoa()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Contribuinte não encontrado!")));
+        cE.setData(contribuicaoDTOs.getData());
+        cE.setValor(contribuicaoDTOs.getValor());
+        cE.setOrganizacao(organizacaoRepository.findById(contribuicaoDTOs.getIdOrganizacao()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrada!")));
+        cE.setPessoa(pessoaRepository.findById(contribuicaoDTOs.getIdPessoa()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Contribuinte não encontrado!")));
         contribuicaoRepository.save(cE);
     }
 

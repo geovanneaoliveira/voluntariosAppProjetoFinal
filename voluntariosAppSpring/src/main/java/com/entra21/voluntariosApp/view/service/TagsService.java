@@ -1,7 +1,7 @@
 package com.entra21.voluntariosApp.view.service;
 
 import com.entra21.voluntariosApp.model.dto.server.TagsEventoDTO;
-import com.entra21.voluntariosApp.model.dto.TagsPessoaDTO;
+import com.entra21.voluntariosApp.model.dto.server.TagsPessoaDTO;
 import com.entra21.voluntariosApp.model.entity.TagsEntity;
 import com.entra21.voluntariosApp.view.repository.EventoRepository;
 import com.entra21.voluntariosApp.view.repository.PessoaRepository;

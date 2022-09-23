@@ -1,5 +1,6 @@
 package com.entra21.voluntariosApp.view.service;
 
+import com.entra21.voluntariosApp.model.dto.server.OrganizacaoDTOs;
 import com.entra21.voluntariosApp.model.dto.user.OrganizacaoDTO;
 import com.entra21.voluntariosApp.model.entity.OrganizacaoEntity;
 import com.entra21.voluntariosApp.view.repository.OrganizacaoRepository;
@@ -29,16 +30,16 @@ public class OrganizacaoService {
      * <li>String descricao</li>
      * <li>Long idSupervisor</li>
      * <li>String cnpj</li>
-     * @param organizacaoDTO
+     * @param organizacaoDTOs
      * @throws ResponseStatusException
      */
-    public void addOrganizacao(com.entra21.voluntariosApp.model.dto.server.OrganizacaoDTO organizacaoDTO) {
-        pessoaRepository.findById(organizacaoDTO.getIdSupervisor()).ifPresentOrElse(pessoa -> {
+    public void addOrganizacao(OrganizacaoDTOs organizacaoDTOs) {
+        pessoaRepository.findById(organizacaoDTOs.getIdSupervisor()).ifPresentOrElse(pessoa -> {
             OrganizacaoEntity organizacaoEntity = new OrganizacaoEntity();
-            organizacaoEntity.setNome(organizacaoDTO.getNome());
-            organizacaoEntity.setDescricao(organizacaoDTO.getDescricao());
+            organizacaoEntity.setNome(organizacaoDTOs.getNome());
+            organizacaoEntity.setDescricao(organizacaoDTOs.getDescricao());
             organizacaoEntity.setSupervisor(pessoa);
-            organizacaoEntity.setCnpj(organizacaoDTO.getCnpj());
+            organizacaoEntity.setCnpj(organizacaoDTOs.getCnpj());
             organizacaoEntity.setAtivo(true);
             organizacaoRepository.save(organizacaoEntity);
         }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não encontrada!");});
@@ -73,7 +74,7 @@ public class OrganizacaoService {
      * @param dto
      * @throws ResponseStatusException
      */
-    public void updateOrganizacao(Long id, com.entra21.voluntariosApp.model.dto.server.OrganizacaoDTO dto) {
+    public void updateOrganizacao(Long id, OrganizacaoDTOs dto) {
         organizacaoRepository.findById(id).ifPresentOrElse(org -> {
             org.setNome(dto.getNome());
             org.setDescricao(dto.getDescricao());

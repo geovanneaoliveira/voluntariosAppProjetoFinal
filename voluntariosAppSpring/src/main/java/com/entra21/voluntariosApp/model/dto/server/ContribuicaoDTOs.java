@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * <li>Long idOrganizacao</li>
  */
 @Data
-public class ContribuicaoDTO {
+public class ContribuicaoDTOs {
     private LocalDateTime data;
     private Double valor;
     private Long idPessoa;

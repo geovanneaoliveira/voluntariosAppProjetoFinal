@@ -1,5 +1,6 @@
 package com.entra21.voluntariosApp.controller;
 
+import com.entra21.voluntariosApp.model.dto.server.OrganizacaoDTOs;
 import com.entra21.voluntariosApp.model.dto.user.OrganizacaoDTO;
 import com.entra21.voluntariosApp.view.service.OrganizacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,11 @@ public class OrganizacaoRestController {
     }
 
     @PostMapping("/criar")
-    public void criarOrg(@RequestBody com.entra21.voluntariosApp.model.dto.server.OrganizacaoDTO organizacaoDTO){
-        organizacaoService.addOrganizacao(organizacaoDTO);
+    public void criarOrg(@RequestBody OrganizacaoDTOs organizacaoDTOs){
+        organizacaoService.addOrganizacao(organizacaoDTOs);
     }
     @PutMapping("/atualizar")
-    public  void atualizarOrg(@RequestParam(name = "id")Long id, @RequestBody com.entra21.voluntariosApp.model.dto.server.OrganizacaoDTO dto) {
+    public  void atualizarOrg(@RequestParam(name = "id")Long id, @RequestBody OrganizacaoDTOs dto) {
         organizacaoService.updateOrganizacao(id, dto);
     }
     @PutMapping("/status")

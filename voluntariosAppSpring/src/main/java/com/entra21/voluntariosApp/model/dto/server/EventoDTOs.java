@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
  * <li>Long idOrganizacao</li>
  */
 @Data
-public class EventoDTO {
+public class EventoDTOs {
     private String nome;
     private LocalDateTime data;
     private Long idOrganizacao;

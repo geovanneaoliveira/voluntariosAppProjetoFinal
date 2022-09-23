@@ -1,5 +1,6 @@
 package com.entra21.voluntariosApp.controller;
 
+import com.entra21.voluntariosApp.model.dto.server.ContribuicaoDTOs;
 import com.entra21.voluntariosApp.model.dto.user.ContribuicaoDTO;
 import com.entra21.voluntariosApp.view.service.ContribuicaoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class ContribuicaoRestController {
 
 
     @PostMapping("/adicionar")
-    public void addContribuicao(@RequestBody com.entra21.voluntariosApp.model.dto.server.ContribuicaoDTO contribuicaoAdd) {
+    public void addContribuicao(@RequestBody ContribuicaoDTOs contribuicaoAdd) {
         contribuicaoService.addContribuicao(contribuicaoAdd);
     }
 
