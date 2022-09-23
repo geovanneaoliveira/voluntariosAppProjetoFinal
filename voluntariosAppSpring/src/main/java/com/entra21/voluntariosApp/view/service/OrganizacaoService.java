@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,6 +41,8 @@ public class OrganizacaoService {
             organizacaoEntity.setNome(organizacaoDTO.getNome());
             organizacaoEntity.setDescricao(organizacaoDTO.getDescricao());
             organizacaoEntity.setSupervisor(pessoa);
+            organizacaoEntity.setCnpj(organizacaoDTO.getCnpj());
+            organizacaoEntity.setAtivo(true);
             organizacaoRepository.save(organizacaoEntity);
         }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não encontrada!");});
     }
@@ -61,8 +64,6 @@ public class OrganizacaoService {
             return dto;
         }).collect(Collectors.toList());
     }
-<<<<<<< Updated upstream
-=======
 
     /**
      * Atualiza a Organização cujo Id for igual ao passado por parâmetro para as informações
@@ -117,5 +118,4 @@ public class OrganizacaoService {
         }).collect(Collectors.toList());
 
     }
->>>>>>> Stashed changes
 }

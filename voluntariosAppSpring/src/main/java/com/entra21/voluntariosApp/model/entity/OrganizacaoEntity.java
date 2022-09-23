@@ -20,8 +20,16 @@ public class OrganizacaoEntity {
     @Column(name = "descricao")
     private String descricao;
 
+    @Column(name = "cnpj")
+    private String cnpj;
+
+    @Column(name = "ativo")
+    private Boolean ativo;
+
     @ManyToOne
     @JoinColumn(name = "id_supervisor",referencedColumnName = "id")
     private PessoaEntity supervisor;
+
+
 
 }
