@@ -108,8 +108,6 @@ public class EventoService {
             }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não encontrada!");});
         }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");});
     }
-<<<<<<< Updated upstream
-=======
 
     /**
      * Retorna todos os Eventos que contiverem a Tag cujo Id for igual ao passado por parâmetro.
@@ -145,5 +143,4 @@ public class EventoService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");
         });
     }
->>>>>>> Stashed changes
 }

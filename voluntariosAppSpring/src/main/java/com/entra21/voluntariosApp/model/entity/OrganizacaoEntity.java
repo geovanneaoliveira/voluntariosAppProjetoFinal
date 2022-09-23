@@ -29,7 +29,4 @@ public class OrganizacaoEntity {
     @ManyToOne
     @JoinColumn(name = "id_supervisor",referencedColumnName = "id")
     private PessoaEntity supervisor;
-
-
-
 }
