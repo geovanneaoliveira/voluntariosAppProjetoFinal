@@ -16,8 +16,8 @@ public class PatrocinadorRestController {
     private PatrocinadorService patrocinadorService;
 
     @GetMapping("/todos")
-    private List<PatrocinadorDTO> getAll(){
-        return patrocinadorService.getAll();
+    private List<PatrocinadorDTO> getAllPatrocinadores(){
+        return patrocinadorService.getAllPatrocinadores();
     }
 
     @PostMapping("/criar")
