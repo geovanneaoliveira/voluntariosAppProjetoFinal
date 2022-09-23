@@ -1,10 +1,8 @@
 package com.entra21.voluntariosApp.controller;
 
-import com.entra21.voluntariosApp.model.dto.EventoBuscaDTO;
-import com.entra21.voluntariosApp.model.dto.EventoDTO;
-import com.entra21.voluntariosApp.model.dto.PessoaEventoPresencaDTO;
-import com.entra21.voluntariosApp.model.dto.PessoasEventoDTO;
-import com.entra21.voluntariosApp.model.entity.EventoEntity;
+import com.entra21.voluntariosApp.model.dto.server.EventoDTO;
+import com.entra21.voluntariosApp.model.dto.server.PessoaEventoPresencaDTO;
+import com.entra21.voluntariosApp.model.dto.server.PessoasEventoDTO;
 import com.entra21.voluntariosApp.view.service.EventoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +20,7 @@ public class EventoRestController {
     //todo - atualizar infos do evento
 
     @GetMapping("/buscar")
-    public List<EventoBuscaDTO> buscarEvento(@RequestParam(name = "nome") String nome)
+    public List<com.entra21.voluntariosApp.model.dto.user.EventoDTO> buscarEvento(@RequestParam(name = "nome") String nome)
     {
         return eventoService.buscarEvento(nome);
     }
@@ -43,7 +41,7 @@ public class EventoRestController {
     }
 
     @GetMapping("/idTag")
-    public List<EventoBuscaDTO> findEventoByIdTag(@RequestParam(name = "idTag") Long idTag){
+    public List<com.entra21.voluntariosApp.model.dto.user.EventoDTO> findEventoByIdTag(@RequestParam(name = "idTag") Long idTag){
         return eventoService.findEventoByTags(idTag);
     }
 }

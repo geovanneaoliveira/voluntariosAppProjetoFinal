@@ -1,6 +1,6 @@
 package com.entra21.voluntariosApp.view.service;
 
-import com.entra21.voluntariosApp.model.dto.TagsEventoDTO;
+import com.entra21.voluntariosApp.model.dto.server.TagsEventoDTO;
 import com.entra21.voluntariosApp.model.dto.TagsPessoaDTO;
 import com.entra21.voluntariosApp.model.entity.TagsEntity;
 import com.entra21.voluntariosApp.view.repository.EventoRepository;
@@ -14,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class TagsService {

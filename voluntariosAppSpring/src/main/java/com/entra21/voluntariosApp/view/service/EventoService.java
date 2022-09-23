@@ -1,9 +1,8 @@
 package com.entra21.voluntariosApp.view.service;
 
-import com.entra21.voluntariosApp.model.dto.EventoBuscaDTO;
-import com.entra21.voluntariosApp.model.dto.EventoDTO;
-import com.entra21.voluntariosApp.model.dto.PessoaEventoPresencaDTO;
-import com.entra21.voluntariosApp.model.dto.PessoasEventoDTO;
+import com.entra21.voluntariosApp.model.dto.server.EventoDTO;
+import com.entra21.voluntariosApp.model.dto.server.PessoaEventoPresencaDTO;
+import com.entra21.voluntariosApp.model.dto.server.PessoasEventoDTO;
 import com.entra21.voluntariosApp.model.entity.EventoEntity;
 import com.entra21.voluntariosApp.model.entity.PessoasEventoEntity;
 import com.entra21.voluntariosApp.view.repository.EventoRepository;
@@ -61,11 +60,11 @@ public class EventoService {
      * @param nome
      * @return List {@code <EventoBuscaDTO>}
      */
-    public List<EventoBuscaDTO> buscarEvento(String nome) {
+    public List<com.entra21.voluntariosApp.model.dto.user.EventoDTO> buscarEvento(String nome) {
         List<EventoEntity> eventos = eventoRepository.findAll().stream()
                 .filter(ev -> ev.getNome().toLowerCase().contains(nome.toLowerCase())).collect(Collectors.toList());
         return eventos.stream().map(ev -> {
-            EventoBuscaDTO dto = new EventoBuscaDTO();
+            com.entra21.voluntariosApp.model.dto.user.EventoDTO dto = new com.entra21.voluntariosApp.model.dto.user.EventoDTO();
             dto.setNome(ev.getNome());
             dto.setData(ev.getData());
             dto.setNomeOrganizacao(ev.getOrganizacao().getNome());
@@ -114,9 +113,9 @@ public class EventoService {
      * @param idTag
      * @return List {@code <EventoBuscaDTO>}
      */
-    public List<EventoBuscaDTO> findEventoByTags(Long idTag) {
+    public List<com.entra21.voluntariosApp.model.dto.user.EventoDTO> findEventoByTags(Long idTag) {
         return eventoRepository.findAllBytags_Id(idTag).stream().map(ev -> {
-            EventoBuscaDTO eBD = new EventoBuscaDTO();
+            com.entra21.voluntariosApp.model.dto.user.EventoDTO eBD = new com.entra21.voluntariosApp.model.dto.user.EventoDTO();
             eBD.setNome(ev.getNome());
             eBD.setData(ev.getData());
             eBD.setNomeOrganizacao(ev.getOrganizacao().getNome());
