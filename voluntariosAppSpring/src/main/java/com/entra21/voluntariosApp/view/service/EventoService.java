@@ -1,9 +1,11 @@
 package com.entra21.voluntariosApp.view.service;
 
-import com.entra21.voluntariosApp.model.dto.*;
-import com.entra21.voluntariosApp.model.dto.*;
+import com.entra21.voluntariosApp.model.dto.server.EventoDTOs;
+import com.entra21.voluntariosApp.model.dto.server.PatrocinadorDTO;
+import com.entra21.voluntariosApp.model.dto.server.PessoaEventoPresencaDTO;
+import com.entra21.voluntariosApp.model.dto.server.PessoasEventoDTO;
+import com.entra21.voluntariosApp.model.dto.user.EventoDTO;
 import com.entra21.voluntariosApp.model.entity.EventoEntity;
-import com.entra21.voluntariosApp.model.entity.PatrocinadorEntity;
 import com.entra21.voluntariosApp.model.entity.PatrocinadoresEventoEntity;
 import com.entra21.voluntariosApp.model.entity.PessoasEventoEntity;
 import com.entra21.voluntariosApp.view.repository.*;
@@ -11,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -121,6 +126,22 @@ public class EventoService {
         }).collect(Collectors.toList());
     }
 
+    public List<EventoDTOs> getAll(Long idTag) {
+        List<EventoEntity> list= new ArrayList<>();
+        if(idTag != null){
+            list = eventoRepository.findAllBytags_Id(idTag);
+        }else{
+            list=eventoRepository.findAll();
+        }
+        return list.stream().map(i -> {
+            EventoDTOs dto = new EventoDTOs();
+            dto.setNome(i.getNome());
+            dto.setData(i.getData());
+            dto.setIdOrganizacao(i.getOrganizacao().getId());
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
     /**
      * Atualiza as informações do Evento cujo Id for igual ao passado por parâmetro para as informações
      * contidas em um EventoDTO:
@@ -131,56 +152,6 @@ public class EventoService {
      * @param dto
      */
     public void atualizarEvento(Long id, EventoDTOs dto) {
-        eventoRepository.findById(id).ifPresentOrElse(eE -> {
-            eE.setNome(dto.getNome());
-            eE.setData(dto.getData());
-            eE.setOrganizacao(eE.getOrganizacao());
-            eventoRepository.save(eE);
-        }, () -> {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");
-        });
-    }
-}
-
-    public List<EventoDTO> getAll(Long idTag) {
-        List<EventoEntity> list= new ArrayList<>();
-        if(idTag != null){
-            list = eventoRepository.findAllByTags_Id(idTag);
-        }else{
-            list=eventoRepository.findAll();
-        }
-        return list.stream().map(i -> {
-            EventoDTO dto = new EventoDTO();
-            dto.setNome(i.getNome());
-            dto.setData(i.getData());
-            dto.setIdOrganizacao(i.getOrganizacao().getId());
-            return dto;
-        }).collect(Collectors.toList());
-    }
-}
-
-    //busca e retorna todos os patrocinadores de um evento
-    public List<PatrocinadorDTO> findAllByPatrocinadores_Id(Long idEvento) {
-        EventoEntity e = eventoRepository.findById(idEvento).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!"));
-        return e.getPatrocinadores().stream().map(pat -> {
-            PatrocinadorDTO dto = new PatrocinadorDTO();
-            dto.setNome(pat.getNome());
-            return dto;
-        }).collect(Collectors.toList());
-    }
-}
-
-    public List<EventoBuscaDTO> findEventoByTags(Long idTag) {
-        return eventoRepository.findAllBytags_Id(idTag).stream().map(ev -> {
-            EventoBuscaDTO eBD = new EventoBuscaDTO();
-            eBD.setNome(ev.getNome());
-            eBD.setData(ev.getData());
-            eBD.setNomeOrganizacao(ev.getOrganizacao().getNome());
-            return eBD;
-        }).collect(Collectors.toList());
-    }
-
-    public void atualizarEvento(Long id, EventoDTO dto) {
         eventoRepository.findById(id).ifPresentOrElse(eE -> {
             organizacaoRepository.findById(dto.getIdOrganizacao()).ifPresentOrElse(org -> {
                 eE.setNome(dto.getNome());

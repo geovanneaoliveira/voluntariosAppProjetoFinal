@@ -1,6 +1,8 @@
 package com.entra21.voluntariosApp.view.service;
 
 
+import com.entra21.voluntariosApp.model.dto.server.EventoDTOs;
+import com.entra21.voluntariosApp.model.dto.server.PatrocinadorDTO;
 import com.entra21.voluntariosApp.model.entity.PatrocinadorEntity;
 import com.entra21.voluntariosApp.view.repository.EventoRepository;
 import com.entra21.voluntariosApp.view.repository.PatrocinadorRepository;
@@ -25,6 +27,7 @@ public class PatrocinadorService {
 
     /**
      * Retorna todos os Patrocinadores salvos no repositório.
+     *
      * @return List {@code <PatrocinadorDTO>}
      */
     public List<PatrocinadorDTO> getAllPatrocinadores() {
@@ -41,6 +44,7 @@ public class PatrocinadorService {
      * Atributos de PatrocinadorDTO:
      * <li>String nome</li>
      * <li>Long idRepresentante</li>
+     *
      * @param patrocinadorDTO
      * @throws ResponseStatusException
      */
@@ -50,22 +54,23 @@ public class PatrocinadorService {
             patrocinadorEntity.setNome(patrocinadorDTO.getNome());
             patrocinadorEntity.setRepresentante(pessoa);
             patrocinadorRepository.save(patrocinadorEntity);
-        }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não existente!");});
+        }, () -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não existente!");
+        });
     }
 
     //encontrar todos os eventos que o patrocinador patrocina
-    public List<EventoDTO> findAllByEventos_Id(Long idPatrocinador) {
+    public List<EventoDTOs> findAllByEventos_Id(Long idPatrocinador) {
         PatrocinadorEntity p = patrocinadorRepository.findById(idPatrocinador).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não existente!"));
-                    return p.getEvento().stream().map(eE ->{
-                        EventoDTO dto= new EventoDTO();
-                        dto.setNome(eE.getNome());
-                        dto.setData(eE.getData());
-                        dto.setIdOrganizacao(eE.getOrganizacao().getId());
-                        return dto;
-                    }).collect(Collectors.toList());
-                    }
-        }
+        return p.getEvento().stream().map(eE -> {
+            EventoDTOs dto = new EventoDTOs();
+            dto.setNome(eE.getNome());
+            dto.setData(eE.getData());
+            dto.setIdOrganizacao(eE.getOrganizacao().getId());
+            return dto;
+        }).collect(Collectors.toList());
+    }
 
     public void deletePatrocinador(Long idPatrocinador) {
         patrocinadorRepository.deleteById(idPatrocinador);
