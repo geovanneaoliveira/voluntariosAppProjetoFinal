@@ -14,9 +14,6 @@ public class EventoRestController {
     @Autowired
     private EventoService eventoService;
 
-    //todo - deletar evento
-    //todo - atualizar infos do evento
-
     @GetMapping("/buscar")
     public List<com.entra21.voluntariosApp.model.dto.user.EventoDTO> buscarEvento(@RequestParam(name = "nome") String nome)
     {
@@ -60,5 +57,20 @@ public class EventoRestController {
     @DeleteMapping("/excluirPatrocinador")
     private void deletarPatrocinadorEvento(@RequestParam(name = "idEvento") Long idEvento, @RequestParam(name = "idPatrocinador") Long idPatrocinador){
         eventoService.deletarPatrocinadorEvento(idEvento, idPatrocinador);
+    }
+    @GetMapping
+    public List<EventoDTO> getAll(@RequestParam(name = "idTag", required = false) Long id) {
+        return eventoService.getAll(id);
+    }
+    
+    @DeleteMapping("deletar")
+    public void deletarEvento(@RequestParam(name = "id")Long id){
+        eventoService.deletarEvento(id);
+
+    }
+    //busca e retorna todos os patrocinadores de um evento
+    @GetMapping("/patrocinadoresDoEvento")
+    public List<PatrocinadorDTO> findAllBypatrocinadores_IdEvento(@RequestParam(name = "idEvento")Long idEvento){
+      return  eventoService.findAllByPatrocinadores_Id(idEvento);
     }
 }

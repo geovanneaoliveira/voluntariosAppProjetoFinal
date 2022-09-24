@@ -8,7 +8,4 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PatrocinadorRepository extends JpaRepository<PatrocinadorEntity, Long> {
-
-  //  List<EventoEntity> findAllByEventos_Id(Long idEvento);
-}
+public interface PatrocinadorRepository extends JpaRepository<PatrocinadorEntity, Long> {}

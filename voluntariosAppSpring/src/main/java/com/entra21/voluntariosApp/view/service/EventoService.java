@@ -1,6 +1,7 @@
 package com.entra21.voluntariosApp.view.service;
 
 import com.entra21.voluntariosApp.model.dto.*;
+import com.entra21.voluntariosApp.model.dto.*;
 import com.entra21.voluntariosApp.model.entity.EventoEntity;
 import com.entra21.voluntariosApp.model.entity.PatrocinadorEntity;
 import com.entra21.voluntariosApp.model.entity.PatrocinadoresEventoEntity;
@@ -10,9 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
-
 import java.util.stream.Collectors;
 
 @Service
@@ -71,7 +69,6 @@ public class EventoService {
             dto.setNomeOrganizacao(ev.getOrganizacao().getNome());
             return dto;
         }).collect(Collectors.toList());
-
     }
 
     /**
@@ -142,6 +139,34 @@ public class EventoService {
         }, () -> {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");
         });
+    }
+}
+
+    public List<EventoDTO> getAll(Long idTag) {
+        List<EventoEntity> list= new ArrayList<>();
+        if(idTag != null){
+            list = eventoRepository.findAllByTags_Id(idTag);
+        }else{
+            list=eventoRepository.findAll();
+        }
+        return list.stream().map(i -> {
+            EventoDTO dto = new EventoDTO();
+            dto.setNome(i.getNome());
+            dto.setData(i.getData());
+            dto.setIdOrganizacao(i.getOrganizacao().getId());
+            return dto;
+        }).collect(Collectors.toList());
+    }
+}
+
+    //busca e retorna todos os patrocinadores de um evento
+    public List<PatrocinadorDTO> findAllByPatrocinadores_Id(Long idEvento) {
+        EventoEntity e = eventoRepository.findById(idEvento).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!"));
+        return e.getPatrocinadores().stream().map(pat -> {
+            PatrocinadorDTO dto = new PatrocinadorDTO();
+            dto.setNome(pat.getNome());
+            return dto;
+        }).collect(Collectors.toList());
     }
 }
 

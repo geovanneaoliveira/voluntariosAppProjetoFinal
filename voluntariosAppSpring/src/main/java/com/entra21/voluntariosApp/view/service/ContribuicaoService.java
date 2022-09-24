@@ -67,6 +67,13 @@ public class ContribuicaoService {
         }).collect(Collectors.toList());
     }
 
+    public List<GetContribuicoesDTO> findContribuicoesByOrg(Long idOrg) {
+        return contribuicaoRepository.findAll().stream().filter(cE ->
+                Objects.equals(cE.getOrganizacao().getId(), idOrg)).map(cE -> {
+                    GetContribuicoesDTO gcd = new GetContribuicoesDTO();
+        }).collect(Collectors.toList());
+    }
+
     /**
      * Retorna todas as contribuições recebidas por uma Organização especificada pelo Id.
      * @param idOrg

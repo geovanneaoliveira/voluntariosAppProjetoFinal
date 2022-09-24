@@ -1,7 +1,8 @@
 package com.entra21.voluntariosApp.view.service;
 
-import com.entra21.voluntariosApp.model.dto.server.PatrocinadorDTO;
+
 import com.entra21.voluntariosApp.model.entity.PatrocinadorEntity;
+import com.entra21.voluntariosApp.view.repository.EventoRepository;
 import com.entra21.voluntariosApp.view.repository.PatrocinadorRepository;
 import com.entra21.voluntariosApp.view.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,6 +20,8 @@ public class PatrocinadorService {
     private PatrocinadorRepository patrocinadorRepository;
     @Autowired
     private PessoaRepository pessoaRepository;
+    @Autowired
+    private EventoRepository eventoRepository;
 
     /**
      * Retorna todos os Patrocinadores salvos no repositório.
@@ -48,6 +52,20 @@ public class PatrocinadorService {
             patrocinadorRepository.save(patrocinadorEntity);
         }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não existente!");});
     }
+
+    //encontrar todos os eventos que o patrocinador patrocina
+    public List<EventoDTO> findAllByEventos_Id(Long idPatrocinador) {
+        PatrocinadorEntity p = patrocinadorRepository.findById(idPatrocinador).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não existente!"));
+                    return p.getEvento().stream().map(eE ->{
+                        EventoDTO dto= new EventoDTO();
+                        dto.setNome(eE.getNome());
+                        dto.setData(eE.getData());
+                        dto.setIdOrganizacao(eE.getOrganizacao().getId());
+                        return dto;
+                    }).collect(Collectors.toList());
+                    }
+        }
 
     public void deletePatrocinador(Long idPatrocinador) {
         patrocinadorRepository.deleteById(idPatrocinador);
