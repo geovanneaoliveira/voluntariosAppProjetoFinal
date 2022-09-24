@@ -1,12 +1,6 @@
 package com.entra21.voluntariosApp.controller;
 
-<<<<<<< Updated upstream
-import com.entra21.voluntariosApp.model.dto.EventoDTO;
-import com.entra21.voluntariosApp.model.dto.PessoasEventoDTO;
-import com.entra21.voluntariosApp.model.entity.EventoEntity;
-=======
 import com.entra21.voluntariosApp.model.dto.*;
->>>>>>> Stashed changes
 import com.entra21.voluntariosApp.view.service.EventoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,44 +14,55 @@ public class EventoRestController {
     @Autowired
     private EventoService eventoService;
 
-<<<<<<< Updated upstream
-
-    //todo //- buscar um evento
-    //todo - buscar eventos com uma tag()
-    //todo - deletar evento
-    //todo - atualizar infos do evento
-
-=======
->>>>>>> Stashed changes
     @GetMapping("/buscar")
-    public List<EventoDTO> buscarEvento(@RequestBody String nome){
+    public List<com.entra21.voluntariosApp.model.dto.user.EventoDTO> buscarEvento(@RequestParam(name = "nome") String nome)
+    {
         return eventoService.buscarEvento(nome);
     }
 
     @PostMapping("/criar")
-    public void adicionarEvento(@RequestBody EventoDTO eventoDTO) {
-        eventoService.adicionarEvento(eventoDTO);
+    public void adicionarEvento(@RequestBody EventoDTOs eventoDTOs) {
+        eventoService.adicionarEvento(eventoDTOs);
     }
 
-<<<<<<< Updated upstream
     @PostMapping("/presenca")
     public void adicionarPessoaEvento(@RequestBody PessoasEventoDTO pessoasEventoDTO){
         eventoService.adicionarPessoaEvento(pessoasEventoDTO);
-
     }
-=======
->>>>>>> Stashed changes
 
     @GetMapping("/presentes")
-    public List<PessoasEventoDTO> buscarPresenca(@RequestBody Long idEvento){
-        return eventoService.buscarPresenca(idEvento);
+    public List<PessoaEventoPresencaDTO> buscarPresentes(@RequestParam(name = "idEvento") Long idEvento){
+        return eventoService.buscarPresentes(idEvento);
+    }
+
+    @GetMapping("/idTag")
+    public List<com.entra21.voluntariosApp.model.dto.user.EventoDTO> findEventoByIdTag(@RequestParam(name = "idTag") Long idTag){
+        return eventoService.findEventoByTags(idTag);
+    }
+
+    @GetMapping("/idTag")
+    public List<EventoBuscaDTO> findEventoByIdTag(@RequestParam(name = "idTag") Long idTag){
+        return eventoService.findEventoByTags(idTag);
+    }
+
+    @PutMapping("/atualizar")
+    public void atualizarEvento(@RequestParam(name = "id")Long id,@RequestBody EventoDTO dto){
+        eventoService.atualizarEvento(id,dto);
+    }
+    @PostMapping("/addPatrocinador")
+    public void addPatrocinador(@RequestParam(name = "idEvento") Long idEvento, @RequestBody PatrocinadorDTO dto) {
+        eventoService.addPatrocinadorEvento(idEvento,dto);
+    }
+
+    @DeleteMapping("/excluirPatrocinador")
+    private void deletarPatrocinadorEvento(@RequestParam(name = "idEvento") Long idEvento, @RequestParam(name = "idPatrocinador") Long idPatrocinador){
+        eventoService.deletarPatrocinadorEvento(idEvento, idPatrocinador);
     }
     @GetMapping
     public List<EventoDTO> getAll(@RequestParam(name = "idTag", required = false) Long id) {
         return eventoService.getAll(id);
     }
-<<<<<<< Updated upstream
-=======
+    
     @DeleteMapping("deletar")
     public void deletarEvento(@RequestParam(name = "id")Long id){
         eventoService.deletarEvento(id);
@@ -68,7 +73,4 @@ public class EventoRestController {
     public List<PatrocinadorDTO> findAllBypatrocinadores_IdEvento(@RequestParam(name = "idEvento")Long idEvento){
       return  eventoService.findAllByPatrocinadores_Id(idEvento);
     }
-
->>>>>>> Stashed changes
-
 }

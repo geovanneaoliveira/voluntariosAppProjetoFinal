@@ -35,11 +35,19 @@ public class PessoaEntity implements UserDetails {
 
     @ManyToMany
     @JoinTable(
-            name ="tags_interesse_pessoa",
-            joinColumns = @JoinColumn(name = "id_pessoa",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn (name = "id_tag",referencedColumnName = "id")
+            name = "tag_interesse_pessoa",
+            joinColumns = @JoinColumn(name = "id_pessoa", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id_tag", referencedColumnName = "id")
     )
-    private List<PessoaEntity> pessoaEntity;
+    private List<TagsEntity> tags;
+
+    @OneToMany
+    @JoinTable(
+            name = "contribuicao",
+            joinColumns = @JoinColumn(name = "id_organizacao", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id_pessoa", referencedColumnName = "id")
+    )
+    private List<ContribuicaoEntity> contribuicoes;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

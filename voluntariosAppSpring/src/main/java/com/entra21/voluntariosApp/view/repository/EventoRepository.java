@@ -10,11 +10,5 @@ import java.util.List;
 
 @Repository
 public interface EventoRepository extends JpaRepository<EventoEntity, Long> {
-<<<<<<< Updated upstream
-    List<EventoEntity> findAllByTags_Id(Long idTag);
-=======
     List<EventoEntity> findAllBytags_Id(Long idTag);
-
-
->>>>>>> Stashed changes
 }
