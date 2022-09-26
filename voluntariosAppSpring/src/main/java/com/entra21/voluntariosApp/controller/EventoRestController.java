@@ -19,8 +19,7 @@ public class EventoRestController {
     private EventoService eventoService;
 
     @GetMapping("/buscar")
-    public List<com.entra21.voluntariosApp.model.dto.user.EventoDTO> buscarEvento(@RequestParam(name = "nome") String nome)
-    {
+    public List<com.entra21.voluntariosApp.model.dto.user.EventoDTO> buscarEvento(@RequestParam(name = "nome") String nome) {
         return eventoService.buscarEvento(nome);
     }
 
@@ -59,7 +58,8 @@ public class EventoRestController {
         eventoService.deletarPatrocinadorEvento(idEvento, idPatrocinador);
     }
 
-    //busca e retorna todos os patrocinadores de um evento
+    //todo
+//    //busca e retorna todos os patrocinadores de um evento
 //    @GetMapping("/patrocinadoresDoEvento")
 //    public List<PatrocinadorDTO> findAllBypatrocinadores_IdEvento(@RequestParam(name = "idEvento")Long idEvento){
 //      return eventoService.findAllByPatrocinadores_Id(idEvento);

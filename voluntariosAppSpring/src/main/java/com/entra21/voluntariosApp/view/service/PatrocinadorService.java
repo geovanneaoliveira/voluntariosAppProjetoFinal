@@ -62,7 +62,7 @@ public class PatrocinadorService {
         });
     }
 
-    //encontrar todos os eventos que o patrocinador patrocina
+    // encontrar todos os eventos que o patrocinador patrocina
     public List<EventoDTOs> findAllByEventos_Id(Long idPatrocinador) {
         PatrocinadorEntity p = patrocinadorRepository.findById(idPatrocinador).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não existente!"));
