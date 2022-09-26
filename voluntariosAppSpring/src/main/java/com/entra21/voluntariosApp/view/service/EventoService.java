@@ -122,7 +122,7 @@ public class EventoService {
      * Retorna todos os Eventos que contiverem a Tag cujo Id for igual ao passado por parâmetro.
      *
      * @param idTag
-     * @return List {@code <EventoBuscaDTO>}
+     * @return {@code List<EventoBuscaDTO>}
      */
     public List<EventoDTO> findEventoByTags(Long idTag) {
         return eventoRepository.findAllBytags_Id(idTag).stream().map(ev -> {
