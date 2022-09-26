@@ -14,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "pessoa")
 public class PessoaEntity implements UserDetails {
+
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

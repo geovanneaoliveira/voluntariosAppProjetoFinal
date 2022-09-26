@@ -29,32 +29,32 @@ public class EventoRestController {
     }
 
     @PostMapping("/presenca")
-    public void adicionarPessoaEvento(@RequestBody PessoasEventoDTO pessoasEventoDTO){
+    public void adicionarPessoaEvento(@RequestBody PessoasEventoDTO pessoasEventoDTO) {
         eventoService.adicionarPessoaEvento(pessoasEventoDTO);
     }
 
     @GetMapping("/presentes")
-    public List<PessoaEventoPresencaDTO> buscarPresentes(@RequestParam(name = "idEvento") Long idEvento){
+    public List<PessoaEventoPresencaDTO> buscarPresentes(@RequestParam(name = "idEvento") Long idEvento) {
         return eventoService.buscarPresentes(idEvento);
     }
 
     @GetMapping("/idTag")
-    public List<EventoDTO> findEventoByIdTag(@RequestParam(name = "idTag") Long idTag){
-        return eventoService.findEventoByTags(idTag);
+    public List<EventoDTO> buscarEventoPorIdTag(@RequestParam(name = "idTag") Long idTag) {
+        return eventoService.buscarEventoPorTags(idTag);
     }
-
 
     @PutMapping("/atualizar")
-    public void atualizarEvento(@RequestParam(name = "id")Long id,@RequestBody EventoDTOs dto){
+    public void atualizarEvento(@RequestParam(name = "id")Long id,@RequestBody EventoDTOs dto) {
         eventoService.atualizarEvento(id,dto);
     }
+
     @PostMapping("/addPatrocinador")
     public void addPatrocinador(@RequestParam(name = "idEvento") Long idEvento, @RequestBody PatrocinadorDTO dto) {
         eventoService.addPatrocinadorEvento(idEvento,dto);
     }
 
     @DeleteMapping("/excluirPatrocinador")
-    private void deletarPatrocinadorEvento(@RequestParam(name = "idEvento") Long idEvento, @RequestParam(name = "idPatrocinador") Long idPatrocinador){
+    private void deletarPatrocinadorEvento(@RequestParam(name = "idEvento") Long idEvento, @RequestParam(name = "idPatrocinador") Long idPatrocinador) {
         eventoService.deletarPatrocinadorEvento(idEvento, idPatrocinador);
     }
 

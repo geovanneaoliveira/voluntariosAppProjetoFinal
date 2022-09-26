@@ -22,7 +22,6 @@ public class OrganizacaoService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
-
     /**
      * Adiciona uma Organização ao repositório.<br>
      * Atributos de OrganizacaoDTO:
@@ -56,7 +55,7 @@ public class OrganizacaoService {
      * @param nomeOrg
      * @return {@code List<OrganizacaoBuscaDTO>}
      */
-    public List<OrganizacaoDTO> getOrganizacoes(String nomeOrg) {
+    public List<OrganizacaoDTO> retornarOrganizacoes(String nomeOrg) {
         List<OrganizacaoEntity> orgs = organizacaoRepository.findAll().stream().filter(org -> org.getNome().toLowerCase().contains(nomeOrg.toLowerCase())).collect(Collectors.toList());
         return orgs.stream().map(orgE -> {
             OrganizacaoDTO dto = new OrganizacaoDTO();
@@ -82,7 +81,7 @@ public class OrganizacaoService {
      * @param dto
      * @throws ResponseStatusException
      */
-    public void updateOrganizacao(Long id, OrganizacaoDTOs dto) {
+    public void atualizarOrganizacao(Long id, OrganizacaoDTOs dto) {
         organizacaoRepository.findById(id).ifPresentOrElse(org -> {
             org.setNome(dto.getNome());
             org.setDescricao(dto.getDescricao());
