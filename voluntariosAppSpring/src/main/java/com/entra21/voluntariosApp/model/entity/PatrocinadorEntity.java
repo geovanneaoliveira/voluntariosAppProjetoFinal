@@ -22,11 +22,14 @@ public class PatrocinadorEntity {
     @JoinColumn(name = "id_representante", referencedColumnName = "id")
     private PessoaEntity representante;
 
+    @Column(name = "imagePath")
+    private String imagePath;
+
     @ManyToMany
     @JoinTable(
             name = "patrocinadores_evento",
             joinColumns = @JoinColumn(name = "id_patrocinador", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "id_evento", referencedColumnName = "id")
     )
-    private List<EventoEntity> evento;
+    private List<EventoEntity> eventos;
 }

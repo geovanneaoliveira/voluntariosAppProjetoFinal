@@ -11,4 +11,5 @@ import lombok.Data;
 public class PatrocinadorDTO {
     private String nome;
     private Long idRepresentante;
+    private String imagePath;
 }
