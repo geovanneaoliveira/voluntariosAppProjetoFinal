@@ -14,6 +14,7 @@ public class PessoaService implements UserDetailsService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
+
     /**
      * Cria um novo usuário de acordo com as informações passadas por um PessoaDTO<br>
      * Atributos de PessoaDTO:
@@ -67,13 +68,12 @@ public class PessoaService implements UserDetailsService {
      * Ativa ou desativa um usuário de acordo com seu Status atual.
      *
      * @param login
-     */
+     * */
     public void status(String login) {
         PessoaEntity pE = pessoaRepository.findByLogin(login);
         pE.setAtivo(!pE.getAtivo());
         pessoaRepository.save(pE);
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

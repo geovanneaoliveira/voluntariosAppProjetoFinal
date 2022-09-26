@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "tags_evento")
 public class TagsEventoEntity {
+
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

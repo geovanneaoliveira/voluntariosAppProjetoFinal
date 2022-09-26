@@ -55,7 +55,7 @@ public class ContribuicaoService {
      * Retorna todas as contribuições já realizadas.
      * @return List {@code <GetContribuicoesDTO>}
      */
-    public List<ContribuicaoDTO> findAllContribuicao() {
+    public List<ContribuicaoDTO> buscarContribuicoes() {
         return contribuicaoRepository.findAll().stream().map(cE -> {
             ContribuicaoDTO cdto = new ContribuicaoDTO();
             cdto.setData(cE.getData());
@@ -72,7 +72,7 @@ public class ContribuicaoService {
      * @param idOrg
      * @return List {@code <GetContribuicoesDTO>}
      */
-    public List<ContribuicaoDTO> findContribuicoesByOrg(Long idOrg) {
+    public List<ContribuicaoDTO> buscarContribuicoesPorOrg(Long idOrg) {
         return contribuicaoRepository.findAll().stream()
                 .filter(cE -> Objects.equals(cE.getOrganizacao().getId(), idOrg)).map(cE -> {
                     ContribuicaoDTO gcd = new ContribuicaoDTO();
@@ -90,7 +90,7 @@ public class ContribuicaoService {
      * @param idUser
      * @return List {@code <GetContribuicoesDTO>}
      */
-    public List<ContribuicaoDTO> findContribuicoesByUser(Long idUser) {
+    public List<ContribuicaoDTO> buscarContribuicoesPorUser(Long idUser) {
         return contribuicaoRepository.findAllBypessoa_Id(idUser).stream()
                 .filter(cE -> Objects.equals(cE.getPessoa().getId(), idUser)).map(cE -> {
                     ContribuicaoDTO contribuicaoUser = new ContribuicaoDTO();
@@ -108,9 +108,9 @@ public class ContribuicaoService {
      * @param idOrg
      * @return Double
      */
-    public Double getTotalContribuicoesByOrg(Long idOrg) {
+    public Double totalContribuicoesPorOrg(Long idOrg) {
         AtomicReference<Double> valorTotal = new AtomicReference<>(0.0);
-        findContribuicoesByOrg(idOrg).forEach(cE -> {
+        buscarContribuicoesPorOrg(idOrg).forEach(cE -> {
             valorTotal.updateAndGet(v -> v + cE.getValor());
         });
         return valorTotal.get();
@@ -121,9 +121,9 @@ public class ContribuicaoService {
      * @param idUser
      * @return Double
      */
-    public Double getTotalContribuicoesByUser(Long idUser) {
+    public Double totalContribuicoesPorUser(Long idUser) {
         AtomicReference<Double> valorTotal = new AtomicReference<>(0.0);
-        findContribuicoesByUser(idUser).forEach(cE -> {
+        buscarContribuicoesPorUser(idUser).forEach(cE -> {
             valorTotal.updateAndGet(v -> v + cE.getValor());
         });
         return valorTotal.get();

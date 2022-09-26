@@ -124,7 +124,7 @@ public class EventoService {
      * @param idTag
      * @return {@code List<EventoBuscaDTO>}
      */
-    public List<EventoDTO> findEventoByTags(Long idTag) {
+    public List<EventoDTO> buscarEventoPorTags(Long idTag) {
         return eventoRepository.findAllBytags_Id(idTag).stream().map(ev -> {
             EventoDTO eBD = new EventoDTO();
             eBD.setNome(ev.getNome());

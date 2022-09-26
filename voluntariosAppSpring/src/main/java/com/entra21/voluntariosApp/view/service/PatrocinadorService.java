@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class PatrocinadorService {
+
     @Autowired
     private PatrocinadorRepository patrocinadorRepository;
     @Autowired
@@ -30,7 +31,7 @@ public class PatrocinadorService {
      *
      * @return List {@code <PatrocinadorDTO>}
      */
-    public List<PatrocinadorDTO> getAllPatrocinadores() {
+    public List<PatrocinadorDTO> retornarPatrocinadores() {
         return patrocinadorRepository.findAll().stream().map(patrocinadorEntity -> {
             PatrocinadorDTO patrocinadorDTO = new PatrocinadorDTO();
             patrocinadorDTO.setNome(patrocinadorEntity.getNome());
@@ -62,8 +63,7 @@ public class PatrocinadorService {
         });
     }
 
-    // encontrar todos os eventos que o patrocinador patrocina
-    public List<EventoDTOs> findAllByEventos_Id(Long idPatrocinador) {
+    public List<EventoDTOs> buscarEventosPatrocinadosPorId(Long idPatrocinador) {
         PatrocinadorEntity p = patrocinadorRepository.findById(idPatrocinador).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não existente!"));
         return p.getEventos().stream().map(eE -> {
@@ -75,7 +75,7 @@ public class PatrocinadorService {
         }).collect(Collectors.toList());
     }
 
-    public void deletePatrocinador(Long idPatrocinador) {
+    public void excluirPatrocinador(Long idPatrocinador) {
         patrocinadorRepository.deleteById(idPatrocinador);
     }
 }
