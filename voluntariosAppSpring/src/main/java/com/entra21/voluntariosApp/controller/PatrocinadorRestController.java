@@ -17,23 +17,22 @@ public class PatrocinadorRestController {
     private PatrocinadorService patrocinadorService;
 
     @GetMapping("/todos")
-    private List<PatrocinadorDTO> getAllPatrocinadores(){
-        return patrocinadorService.getAllPatrocinadores();
+    private List<PatrocinadorDTO> retornarPatrocinadores() {
+        return patrocinadorService.retornarPatrocinadores();
     }
 
     @PostMapping("/criar")
-    private void addPatrocinador(@RequestBody PatrocinadorDTO patrocinadorDTO){
+    private void addPatrocinador(@RequestBody PatrocinadorDTO patrocinadorDTO) {
         patrocinadorService.addPatrocinador(patrocinadorDTO);
     }
 
-    //buscar e retornar todos os Evento que o patrocinador patrocina
     @GetMapping("/eventosPatrocinados")
-    public List<EventoDTOs> findAllByEvento_Id(@RequestParam(name = "idPatrocinador")Long idPatrocinador) {
-        return patrocinadorService.findAllByEventos_Id(idPatrocinador);
-    }
-    @DeleteMapping("/excluir")
-    private void deletePatrocinador(@RequestParam(name = "idPatrocinador") Long idPatrocinador){
-        patrocinadorService.deletePatrocinador(idPatrocinador);
+    public List<EventoDTOs> buscarEventoPatrocinadoPorId(@RequestParam(name = "idPatrocinador")Long idPatrocinador) {
+        return patrocinadorService.buscarEventosPatrocinadosPorId(idPatrocinador);
     }
 
+    @DeleteMapping("/excluir")
+    private void excluirPatrocinador(@RequestParam(name = "idPatrocinador") Long idPatrocinador){
+        patrocinadorService.excluirPatrocinador(idPatrocinador);
+    }
 }

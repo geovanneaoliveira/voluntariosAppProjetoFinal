@@ -11,29 +11,32 @@ import java.util.List;
 @RestController
 @RequestMapping("/org")
 public class OrganizacaoRestController {
+
     @Autowired
     private OrganizacaoService organizacaoService;
 
     @GetMapping("/buscar")
-    public List<OrganizacaoDTO> getOrg(@RequestBody String nomeOrg){
-        return organizacaoService.getOrganizacoes(nomeOrg);
+    public List<OrganizacaoDTO> retornarOrg(@RequestBody String nomeOrg) {
+        return organizacaoService.retornarOrganizacoes(nomeOrg);
     }
 
     @PostMapping("/criar")
-    public void criarOrg(@RequestBody OrganizacaoDTOs organizacaoDTOs){
+    public void criarOrg(@RequestBody OrganizacaoDTOs organizacaoDTOs) {
         organizacaoService.addOrganizacao(organizacaoDTOs);
     }
+
     @PutMapping("/atualizar")
     public  void atualizarOrg(@RequestParam(name = "id")Long id, @RequestBody OrganizacaoDTOs dto) {
-        organizacaoService.updateOrganizacao(id, dto);
+        organizacaoService.atualizarOrganizacao(id, dto);
     }
+
     @PutMapping("/status")
     public void status(@RequestParam(name = "id") Long id) {
         organizacaoService.status(id);
     }
 
     @GetMapping("/porSupervisor")
-    public List<OrganizacaoDTO> buscarOrgPorSurpervisor (@RequestParam(name = "idSupervisor")Long idSupervisor){
+    public List<OrganizacaoDTO> buscarOrgPorSurpervisor (@RequestParam(name = "idSupervisor")Long idSupervisor) {
        return organizacaoService.buscarOrgsPorSurpervisor(idSupervisor);
     }
 }

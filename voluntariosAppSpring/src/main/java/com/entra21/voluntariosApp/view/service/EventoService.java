@@ -116,7 +116,7 @@ public class EventoService {
      * @param idTag
      * @return List {@code <EventoBuscaDTO>}
      */
-    public List<EventoDTO> findEventoByTags(Long idTag) {
+    public List<EventoDTO> buscarEventoPorTags(Long idTag) {
         return eventoRepository.findAllBytags_Id(idTag).stream().map(ev -> {
             EventoDTO eBD = new com.entra21.voluntariosApp.model.dto.user.EventoDTO();
             eBD.setNome(ev.getNome());
@@ -181,11 +181,10 @@ public class EventoService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");});
     }
 
-    public void deletarPatrocinadorEvento(Long idEvento, Long idPatrocinador){
+    public void deletarPatrocinadorEvento(Long idEvento, Long idPatrocinador) {
         eventoRepository.findById(idEvento).ifPresentOrElse(evento -> {
             patrocinadorEventoRepository.deleteById(idPatrocinador);
     }, () -> {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");});
-
     }
 }
