@@ -37,7 +37,7 @@ public class EventoService {
     private PatrocinadorEventoRepository patrocinadorEventoRepository;
 
     @Autowired
-    private  PatrocinadorRepository patrocinadorRepository;
+    private PatrocinadorRepository patrocinadorRepository;
 
     /**
      * Adiciona um Evento ao repositório.<br>
@@ -45,6 +45,7 @@ public class EventoService {
      * <li>String nome</li>
      * <li>LocalDateTime data</li>
      * <li>Long idOrganizacao</li>
+     *
      * @param eventoDTOs
      */
     public void adicionarEvento(EventoDTOs eventoDTOs) {
@@ -61,12 +62,12 @@ public class EventoService {
 
     /**
      * Retorna os Eventos com nomes similares ao passado por parâmetro.
+     *
      * @param nome
      * @return List {@code <EventoBuscaDTO>}
      */
     public List<EventoDTO> buscarEvento(String nome) {
-        List<EventoEntity> eventos = eventoRepository.findAll().stream()
-                .filter(ev -> ev.getNome().toLowerCase().contains(nome.toLowerCase())).collect(Collectors.toList());
+        List<EventoEntity> eventos = eventoRepository.findAll().stream().filter(ev -> ev.getNome().toLowerCase().contains(nome.toLowerCase())).collect(Collectors.toList());
         return eventos.stream().map(ev -> {
             EventoDTO dto = new com.entra21.voluntariosApp.model.dto.user.EventoDTO();
             dto.setNome(ev.getNome());
@@ -78,6 +79,7 @@ public class EventoService {
 
     /**
      * Retorna a lista de pessoas com Presença confirmada em um evento de acordo com o Id dele.
+     *
      * @param idEvento
      * @return List
      */
@@ -97,6 +99,7 @@ public class EventoService {
      * Atributos de PessoasEventoDTO:
      * <li>Long idPessoa</li>
      * <li>Long idEvento</li>
+     *
      * @param dto
      */
     public void adicionarPessoaEvento(PessoasEventoDTO dto) {
@@ -107,18 +110,23 @@ public class EventoService {
                 pessoasEventoEntity.setIdEvento(ev);
                 pessoasEventoEntity.setPresenca(true);
                 pessoasEventoRepository.save(pessoasEventoEntity);
-            }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não encontrada!");});
-        }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");});
+            }, () -> {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não encontrada!");
+            });
+        }, () -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");
+        });
     }
 
     /**
      * Retorna todos os Eventos que contiverem a Tag cujo Id for igual ao passado por parâmetro.
+     *
      * @param idTag
-     * @return List {@code <EventoBuscaDTO>}
+     * @return {@code List<EventoBuscaDTO>}
      */
     public List<EventoDTO> buscarEventoPorTags(Long idTag) {
         return eventoRepository.findAllBytags_Id(idTag).stream().map(ev -> {
-            EventoDTO eBD = new com.entra21.voluntariosApp.model.dto.user.EventoDTO();
+            EventoDTO eBD = new EventoDTO();
             eBD.setNome(ev.getNome());
             eBD.setData(ev.getData());
             eBD.setNomeOrganizacao(ev.getOrganizacao().getNome());
@@ -127,11 +135,11 @@ public class EventoService {
     }
 
     public List<EventoDTOs> getAll(Long idTag) {
-        List<EventoEntity> list= new ArrayList<>();
-        if(idTag != null){
+        List<EventoEntity> list = new ArrayList<>();
+        if (idTag != null) {
             list = eventoRepository.findAllBytags_Id(idTag);
-        }else{
-            list=eventoRepository.findAll();
+        } else {
+            list = eventoRepository.findAll();
         }
         return list.stream().map(i -> {
             EventoDTOs dto = new EventoDTOs();
@@ -148,6 +156,7 @@ public class EventoService {
      * <li>String nome</li>
      * <li>LocalDateTime data</li>
      * <li>Long idOrganizacao</li>
+     *
      * @param id
      * @param dto
      */
@@ -159,9 +168,11 @@ public class EventoService {
                 eE.setOrganizacao(org);
                 eventoRepository.save(eE);
             }, () -> {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrado!");});
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrado!");
+            });
         }, () -> {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");});
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");
+        });
     }
 
     public void addPatrocinadorEvento(Long idEvento, PatrocinadorDTO dto) {
@@ -173,18 +184,22 @@ public class EventoService {
                     patrocinadoresEvento.setId(dto.getIdRepresentante());
                     patrocinadoresEvento.setEvento(evento);
                     patrocinadorEventoRepository.save(patrocinadoresEvento);
-                },() -> {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não encontrada!");});
+                }, () -> {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não encontrada!");
+                });
             }, () -> {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrado!");});
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrado!");
+            });
         }, () -> {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");});
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");
+        });
     }
 
     public void deletarPatrocinadorEvento(Long idEvento, Long idPatrocinador) {
         eventoRepository.findById(idEvento).ifPresentOrElse(evento -> {
             patrocinadorEventoRepository.deleteById(idPatrocinador);
-    }, () -> {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");});
+        }, () -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");
+        });
     }
 }

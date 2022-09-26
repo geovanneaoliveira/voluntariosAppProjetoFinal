@@ -57,4 +57,11 @@ public class EventoRestController {
     private void deletarPatrocinadorEvento(@RequestParam(name = "idEvento") Long idEvento, @RequestParam(name = "idPatrocinador") Long idPatrocinador) {
         eventoService.deletarPatrocinadorEvento(idEvento, idPatrocinador);
     }
+
+    //todo
+//    //busca e retorna todos os patrocinadores de um evento
+//    @GetMapping("/patrocinadoresDoEvento")
+//    public List<PatrocinadorDTO> findAllBypatrocinadores_IdEvento(@RequestParam(name = "idEvento")Long idEvento){
+//      return eventoService.findAllByPatrocinadores_Id(idEvento);
+//    }
 }
