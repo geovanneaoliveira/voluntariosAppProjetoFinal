@@ -35,6 +35,7 @@ public class PatrocinadorService {
             PatrocinadorDTO patrocinadorDTO = new PatrocinadorDTO();
             patrocinadorDTO.setNome(patrocinadorEntity.getNome());
             patrocinadorDTO.setIdRepresentante(patrocinadorEntity.getRepresentante().getId());
+            patrocinadorDTO.setImagePath(patrocinadorEntity.getImagePath());
             return patrocinadorDTO;
         }).collect(Collectors.toList());
     }
@@ -44,6 +45,7 @@ public class PatrocinadorService {
      * Atributos de PatrocinadorDTO:
      * <li>String nome</li>
      * <li>Long idRepresentante</li>
+     * <li>String imagePath</li>
      *
      * @param patrocinadorDTO
      * @throws ResponseStatusException
@@ -52,6 +54,7 @@ public class PatrocinadorService {
         pessoaRepository.findById(patrocinadorDTO.getIdRepresentante()).ifPresentOrElse(pessoa -> {
             PatrocinadorEntity patrocinadorEntity = new PatrocinadorEntity();
             patrocinadorEntity.setNome(patrocinadorDTO.getNome());
+            patrocinadorEntity.setImagePath(patrocinadorDTO.getImagePath());
             patrocinadorEntity.setRepresentante(pessoa);
             patrocinadorRepository.save(patrocinadorEntity);
         }, () -> {
@@ -63,7 +66,7 @@ public class PatrocinadorService {
     public List<EventoDTOs> findAllByEventos_Id(Long idPatrocinador) {
         PatrocinadorEntity p = patrocinadorRepository.findById(idPatrocinador).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não existente!"));
-        return p.getEvento().stream().map(eE -> {
+        return p.getEventos().stream().map(eE -> {
             EventoDTOs dto = new EventoDTOs();
             dto.setNome(eE.getNome());
             dto.setData(eE.getData());

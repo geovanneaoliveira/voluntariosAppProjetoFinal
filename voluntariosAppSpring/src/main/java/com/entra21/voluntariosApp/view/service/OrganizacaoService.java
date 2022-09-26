@@ -30,6 +30,8 @@ public class OrganizacaoService {
      * <li>String descricao</li>
      * <li>Long idSupervisor</li>
      * <li>String cnpj</li>
+     * <li>String imagePath</li>
+     *
      * @param organizacaoDTOs
      * @throws ResponseStatusException
      */
@@ -38,27 +40,31 @@ public class OrganizacaoService {
             OrganizacaoEntity organizacaoEntity = new OrganizacaoEntity();
             organizacaoEntity.setNome(organizacaoDTOs.getNome());
             organizacaoEntity.setDescricao(organizacaoDTOs.getDescricao());
+            organizacaoEntity.setImagePath(organizacaoDTOs.getImagePath());
             organizacaoEntity.setSupervisor(pessoa);
             organizacaoEntity.setCnpj(organizacaoDTOs.getCnpj());
             organizacaoEntity.setAtivo(true);
             organizacaoRepository.save(organizacaoEntity);
-        }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não encontrada!");});
+        }, () -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não encontrada!");
+        });
     }
 
     /**
      * Busca todas as Organizações que possuem nomes similares ao passado por parâmetro.
+     *
      * @param nomeOrg
-     * @return List {@code <OrganizacaoBuscaDTO>}
+     * @return {@code List<OrganizacaoBuscaDTO>}
      */
     public List<OrganizacaoDTO> getOrganizacoes(String nomeOrg) {
-        List<OrganizacaoEntity> orgs = organizacaoRepository.findAll().stream()
-                .filter(org -> org.getNome().toLowerCase().contains(nomeOrg.toLowerCase())).collect(Collectors.toList());
+        List<OrganizacaoEntity> orgs = organizacaoRepository.findAll().stream().filter(org -> org.getNome().toLowerCase().contains(nomeOrg.toLowerCase())).collect(Collectors.toList());
         return orgs.stream().map(orgE -> {
             OrganizacaoDTO dto = new OrganizacaoDTO();
             dto.setNomeOrg(orgE.getNome());
             dto.setDescricao(orgE.getDescricao());
             dto.setNomeSupervisor(orgE.getSupervisor().getNome());
             dto.setSobrenomeSupervisor(orgE.getSupervisor().getSobrenome());
+            dto.setImagePath(orgE.getImagePath());
             return dto;
         }).collect(Collectors.toList());
     }
@@ -70,6 +76,8 @@ public class OrganizacaoService {
      * <li>String descricao</li>
      * <li>Long idSupervisor</li>
      * <li>String cnpj</li>
+     * <li>String imagePath</li>
+     *
      * @param id
      * @param dto
      * @throws ResponseStatusException
@@ -78,8 +86,9 @@ public class OrganizacaoService {
         organizacaoRepository.findById(id).ifPresentOrElse(org -> {
             org.setNome(dto.getNome());
             org.setDescricao(dto.getDescricao());
-            org.setSupervisor(org.getSupervisor());
+            org.setSupervisor(org.getSupervisor());//todo
             org.setCnpj(dto.getCnpj());
+            org.setImagePath(dto.getImagePath());
             organizacaoRepository.save(org);
         }, () -> {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrada!");
@@ -88,32 +97,34 @@ public class OrganizacaoService {
 
     /**
      * Ativa ou desativa uma Organização de acordo com seu Status atual.
+     *
      * @param id
      * @throws ResponseStatusException
-     * */
-    public void status(Long id){
+     */
+    public void status(Long id) {
         organizacaoRepository.findById(id).ifPresentOrElse(org -> {
             org.setAtivo(!org.getAtivo());
             organizacaoRepository.save(org);
-        } , () -> {
+        }, () -> {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrada!");
         });
     }
 
     /**
      * Retorna uma todas as Organizações sob um mesmo supervisor de acordo com o seu Id.
+     *
      * @param idSupervisor
      * @return List {@code <OrganizacaoBuscaDTO>}
      */
-    public List<OrganizacaoDTO> buscarOrgsPorSurpervisor (Long idSupervisor){
-        return organizacaoRepository.findAllBysupervisor_Id(idSupervisor).stream().map(orgs -> {
+    public List<OrganizacaoDTO> buscarOrgsPorSurpervisor(Long idSupervisor) {
+        return organizacaoRepository.findAllBysupervisor_Id(idSupervisor).stream().map(orgE -> {
             OrganizacaoDTO dto = new OrganizacaoDTO();
-            dto.setNomeOrg(orgs.getNome());
-            dto.setDescricao(orgs.getDescricao());
-            dto.setNomeSupervisor(orgs.getSupervisor().getNome());
-            dto.setSobrenomeSupervisor(orgs.getSupervisor().getSobrenome());
+            dto.setNomeOrg(orgE.getNome());
+            dto.setDescricao(orgE.getDescricao());
+            dto.setNomeSupervisor(orgE.getSupervisor().getNome());
+            dto.setSobrenomeSupervisor(orgE.getSupervisor().getSobrenome());
+            dto.setImagePath(orgE.getImagePath());
             return dto;
         }).collect(Collectors.toList());
-
     }
 }

@@ -8,6 +8,7 @@ import lombok.Data;
  * <li>String descricao</li>
  * <li>String nomeSupervisor</li>
  * <li>String sobrenomeSupervisor</li>
+ * <li>String imagePath</li>
  */
 @Data
 public class OrganizacaoDTO {
@@ -15,4 +16,5 @@ public class OrganizacaoDTO {
     private String descricao;
     private String nomeSupervisor;
     private String sobrenomeSupervisor;
+    private String imagePath;
 }
