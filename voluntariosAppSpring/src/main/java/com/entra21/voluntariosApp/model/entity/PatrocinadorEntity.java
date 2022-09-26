@@ -22,7 +22,7 @@ public class PatrocinadorEntity {
     @JoinColumn(name = "id_representante", referencedColumnName = "id")
     private PessoaEntity representante;
 
-    @Column(name = "imagePath")
+    @Column(name = "image_path")
     private String imagePath;
 
     @ManyToMany
