@@ -48,6 +48,7 @@ public class EventoService {
      * <li>Long idOrganizacao</li>
      *
      * @param eventoDTOs
+     * @throws ResponseStatusException
      */
     public void adicionarEvento(EventoDTOs eventoDTOs) {
         organizacaoRepository.findById(eventoDTOs.getIdOrganizacao()).ifPresentOrElse(org -> {
@@ -63,12 +64,12 @@ public class EventoService {
 
     /**
      * Retorna os Eventos com nomes similares ao passado por parâmetro.
-     *
-     * @param nome
-     * @return List {@code <EventoBuscaDTO>}
+     * @param nomeEvento
+     * @return {@code List<EventoBuscaDTO>}
      */
-    public List<EventoDTO> buscarEvento(String nome) {
-        List<EventoEntity> eventos = eventoRepository.findAll().stream().filter(ev -> ev.getNome().toLowerCase().contains(nome.toLowerCase())).collect(Collectors.toList());
+    public List<EventoDTO> buscarEvento(String nomeEvento) {
+        List<EventoEntity> eventos = eventoRepository.findAll().stream()
+                .filter(ev -> ev.getNome().toLowerCase().contains(nomeEvento.toLowerCase())).collect(Collectors.toList());
         return eventos.stream().map(ev -> {
             EventoDTO dto = new com.entra21.voluntariosApp.model.dto.user.EventoDTO();
             dto.setNome(ev.getNome());
@@ -97,9 +98,6 @@ public class EventoService {
 
     /**
      * Adiciona uma Pessoa à lista de presentes de um Evento de acordo com seus respectivos Ids.<br>
-     * Atributos de PessoasEventoDTO:
-     * <li>Long idPessoa</li>
-     * <li>Long idEvento</li>
      *
      * @param idEvento
      * @param idPessoa
@@ -136,6 +134,12 @@ public class EventoService {
         }).collect(Collectors.toList());
     }
 
+    /**
+     * Retorna uma lista com todos os eventos que possuem tags cujo Id é o mesmo do que o passado por parâmetro
+     *
+     * @param idTag
+     * @return {@code List<EventoDTOs>}
+     */
     public List<EventoDTOs> getAll(Long idTag) {
         List<EventoEntity> list = new ArrayList<>();
         if (idTag != null) {
@@ -158,12 +162,12 @@ public class EventoService {
      * <li>String nome</li>
      * <li>LocalDateTime data</li>
      * <li>Long idOrganizacao</li>
-     *
-     * @param id
+     * @param idEvento
      * @param dto
+     * @throws ResponseStatusException
      */
-    public void atualizarEvento(Long id, EventoDTOs dto) {
-        eventoRepository.findById(id).ifPresentOrElse(eE -> {
+    public void atualizarEvento(Long idEvento, EventoDTOs dto) {
+        eventoRepository.findById(idEvento).ifPresentOrElse(eE -> {
             organizacaoRepository.findById(dto.getIdOrganizacao()).ifPresentOrElse(org -> {
                 eE.setNome(dto.getNome());
                 eE.setData(dto.getData());
@@ -200,7 +204,7 @@ public class EventoService {
     }
 
     /**
-     * Remove um patrocinador da lista de patrocinadores do evento.
+     * Remove um patrocinador da lista de patrocinadores de um evento, de acordo com o seu Id
      *
      * @param idEvento
      * @param idPatrocinador

@@ -36,6 +36,7 @@ public class PessoaService implements UserDetailsService {
         pE.setCaminhoImagem(pessoaDTO.getCaminhoImagem());
         pE.setLogin(pessoaDTO.getLogin());
         pE.setSenha(pessoaDTO.getSenha());
+        pE.setAtivo(true);
         pessoaRepository.save(pE);
     }
 
@@ -68,6 +69,7 @@ public class PessoaService implements UserDetailsService {
      * Ativa ou desativa um usuário de acordo com seu Status atual.
      *
      * @param login
+     */
      * */
     public void status(String login) {
         PessoaEntity pE = pessoaRepository.findByLogin(login);
@@ -75,6 +77,13 @@ public class PessoaService implements UserDetailsService {
         pessoaRepository.save(pE);
     }
 
+    /**
+     * Retorna um usuário de acordo com o login dele
+     *
+     * @param username
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         PessoaEntity pessoa = pessoaRepository.findByLogin(username);

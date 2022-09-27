@@ -85,7 +85,7 @@ public class OrganizacaoService {
         organizacaoRepository.findById(id).ifPresentOrElse(org -> {
             org.setNome(dto.getNome());
             org.setDescricao(dto.getDescricao());
-            org.setSupervisor(org.getSupervisor());//todo
+            org.setSupervisor(org.getSupervisor());
             org.setCnpj(dto.getCnpj());
             org.setCaminhoImagem(dto.getCaminhoImagem());
             organizacaoRepository.save(org);

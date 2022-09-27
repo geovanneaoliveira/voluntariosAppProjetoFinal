@@ -15,21 +15,40 @@ public class PatrocinadorRestController {
     @Autowired
     private PatrocinadorService patrocinadorService;
 
+    /**
+     * Chama um método que retorna todos os patrocinadores do banco de dados
+     *
+     * @return {@code List<PatrocinadorDTO>}
+     */
     @GetMapping("/todos")
     private List<PatrocinadorDTOs> retornarPatrocinadores() {
         return patrocinadorService.retornarPatrocinadores();
     }
 
+    /**
+     * Chama um método que adiciona um novo patrocinador ao banco de dados
+     *
+     * @param patrocinadorDTO
+     */
     @PostMapping("/criar")
-    private void addPatrocinador(@RequestBody PatrocinadorDTOs patrocinadorDTOs) {
-        patrocinadorService.addPatrocinador(patrocinadorDTOs);
+    private void addPatrocinador(@RequestBody PatrocinadorDTO patrocinadorDTO) {
+        patrocinadorService.addPatrocinador(patrocinadorDTO);
     }
 
+    /**
+     * Chama um método que retorna todos os eventos que o patrocinador patrocina.
+     * @param idPatrocinador
+     * @return {@code List<EventoDTOs>}
+     */
     @GetMapping("/eventosPatrocinados")
     public List<EventoDTOs> buscarEventoPatrocinadoPorId(@RequestParam(name = "idPatrocinador")Long idPatrocinador) {
         return patrocinadorService.buscarEventosPatrocinadosPorId(idPatrocinador);
     }
 
+    /**
+     * Chama um método que deleta um patrocinador de acordo com o Id informado no parâmetro
+     * @param idPatrocinador
+     */
     @DeleteMapping("/excluir")
     private void excluirPatrocinador(@RequestParam(name = "idPatrocinador") Long idPatrocinador){
         patrocinadorService.excluirPatrocinador(idPatrocinador);
