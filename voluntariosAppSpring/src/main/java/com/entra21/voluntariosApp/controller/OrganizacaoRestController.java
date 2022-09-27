@@ -15,7 +15,7 @@ public class OrganizacaoRestController {
     private OrganizacaoService organizacaoService;
 
     @GetMapping("/buscar")
-    public List<OrganizacaoDTO> getOrg(@RequestBody String nomeOrg){
+    public List<OrganizacaoDTO> getOrg(@RequestParam(name = "nomeOrg") String nomeOrg){
         return organizacaoService.getOrganizacoes(nomeOrg);
     }
 
@@ -24,11 +24,11 @@ public class OrganizacaoRestController {
         organizacaoService.addOrganizacao(organizacaoDTOs);
     }
     @PutMapping("/atualizar")
-    public  void atualizarOrg(@RequestParam(name = "id")Long id, @RequestBody OrganizacaoDTOs dto) {
+    public  void atualizarOrg(@RequestParam(name = "idOrg")Long id, @RequestBody OrganizacaoDTOs dto) {
         organizacaoService.updateOrganizacao(id, dto);
     }
     @PutMapping("/status")
-    public void status(@RequestParam(name = "id") Long id) {
+    public void status(@RequestParam(name = "idOrg") Long id) {
         organizacaoService.status(id);
     }
 

@@ -23,7 +23,7 @@ public class OrganizacaoEntity {
     @Column(name = "cnpj")
     private String cnpj;
 
-    @Column(name = "imagePath")
+    @Column(name = "image_path")
     private String imagePath;
 
     @Column(name = "ativo")

@@ -19,7 +19,7 @@ public class EventoRestController {
     private EventoService eventoService;
 
     @GetMapping("/buscar")
-    public List<com.entra21.voluntariosApp.model.dto.user.EventoDTO> buscarEvento(@RequestParam(name = "nome") String nome)
+    public List<com.entra21.voluntariosApp.model.dto.user.EventoDTO> buscarEvento(@RequestParam(name = "nomeEvento") String nome)
     {
         return eventoService.buscarEvento(nome);
     }
@@ -46,8 +46,8 @@ public class EventoRestController {
 
 
     @PutMapping("/atualizar")
-    public void atualizarEvento(@RequestParam(name = "id")Long id,@RequestBody EventoDTOs dto){
-        eventoService.atualizarEvento(id,dto);
+    public void atualizarEvento(@RequestParam(name = "idEvento")Long idEvento,@RequestBody EventoDTOs dto){
+        eventoService.atualizarEvento(idEvento,dto);
     }
     @PostMapping("/addPatrocinador")
     public void addPatrocinador(@RequestParam(name = "idEvento") Long idEvento, @RequestBody PatrocinadorDTO dto) {
