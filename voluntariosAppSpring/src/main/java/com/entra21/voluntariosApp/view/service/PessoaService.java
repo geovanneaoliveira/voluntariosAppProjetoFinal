@@ -36,6 +36,7 @@ public class PessoaService implements UserDetailsService {
         pE.setCaminhoImagem(pessoaDTO.getCaminhoImagem());
         pE.setLogin(pessoaDTO.getLogin());
         pE.setSenha(pessoaDTO.getSenha());
+        pE.setAtivo(true);
         pessoaRepository.save(pE);
     }
 

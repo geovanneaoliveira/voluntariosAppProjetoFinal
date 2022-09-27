@@ -21,7 +21,6 @@ public class OrganizacaoRestController {
      * @param nomeOrg
      * @return {code List<OrganizacaoDTO>}
      */
-    @GetMapping("/buscar")
     public List<OrganizacaoDTO> retornarOrg(@RequestBody String nomeOrg) {
         return organizacaoService.retornarOrganizacoes(nomeOrg);
     }
@@ -43,7 +42,7 @@ public class OrganizacaoRestController {
      * @param dto
      */
     @PutMapping("/atualizar")
-    public  void atualizarOrg(@RequestParam(name = "id")Long id, @RequestBody OrganizacaoDTOs dto) {
+    public  void atualizarOrg(@RequestParam(name = "id")Long idOrg, @RequestBody OrganizacaoDTOs dto) {
         organizacaoService.atualizarOrganizacao(id, dto);
     }
 
@@ -53,7 +52,7 @@ public class OrganizacaoRestController {
      * @param id
      */
     @PutMapping("/status")
-    public void status(@RequestParam(name = "id") Long id) {
+    public void status(@RequestParam(name = "idOrg") Long id) {
         organizacaoService.status(id);
     }
 

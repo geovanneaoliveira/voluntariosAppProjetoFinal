@@ -64,12 +64,12 @@ public class EventoService {
 
     /**
      * Retorna os Eventos com nomes similares ao passado por parâmetro.
-     *
-     * @param nome
-     * @return List {@code <EventoBuscaDTO>}
+     * @param nomeEvento
+     * @return {@code List<EventoBuscaDTO>}
      */
-    public List<EventoDTO> buscarEvento(String nome) {
-        List<EventoEntity> eventos = eventoRepository.findAll().stream().filter(ev -> ev.getNome().toLowerCase().contains(nome.toLowerCase())).collect(Collectors.toList());
+    public List<EventoDTO> buscarEvento(String nomeEvento) {
+        List<EventoEntity> eventos = eventoRepository.findAll().stream()
+                .filter(ev -> ev.getNome().toLowerCase().contains(nomeEvento.toLowerCase())).collect(Collectors.toList());
         return eventos.stream().map(ev -> {
             EventoDTO dto = new com.entra21.voluntariosApp.model.dto.user.EventoDTO();
             dto.setNome(ev.getNome());
@@ -162,13 +162,12 @@ public class EventoService {
      * <li>String nome</li>
      * <li>LocalDateTime data</li>
      * <li>Long idOrganizacao</li>
-     *
-     * @param id
+     * @param idEvento
      * @param dto
      * @throws ResponseStatusException
      */
-    public void atualizarEvento(Long id, EventoDTOs dto) {
-        eventoRepository.findById(id).ifPresentOrElse(eE -> {
+    public void atualizarEvento(Long idEvento, EventoDTOs dto) {
+        eventoRepository.findById(idEvento).ifPresentOrElse(eE -> {
             organizacaoRepository.findById(dto.getIdOrganizacao()).ifPresentOrElse(org -> {
                 eE.setNome(dto.getNome());
                 eE.setData(dto.getData());

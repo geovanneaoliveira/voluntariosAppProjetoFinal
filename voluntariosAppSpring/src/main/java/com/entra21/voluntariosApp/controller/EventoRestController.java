@@ -80,8 +80,8 @@ public class EventoRestController {
      * @param dto
      */
     @PutMapping("/atualizar")
-    public void atualizarEvento(@RequestParam(name = "id")Long id,@RequestBody EventoDTOs dto) {
-        eventoService.atualizarEvento(id,dto);
+    public void atualizarEvento(@RequestParam(name = "idEvento")Long idEvento,@RequestBody EventoDTOs dto){
+        eventoService.atualizarEvento(idEvento,dto);
     }
 
     /**
