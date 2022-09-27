@@ -48,6 +48,7 @@ public class EventoService {
      * <li>Long idOrganizacao</li>
      *
      * @param eventoDTOs
+     * @throws ResponseStatusException
      */
     public void adicionarEvento(EventoDTOs eventoDTOs) {
         organizacaoRepository.findById(eventoDTOs.getIdOrganizacao()).ifPresentOrElse(org -> {
@@ -97,9 +98,6 @@ public class EventoService {
 
     /**
      * Adiciona uma Pessoa à lista de presentes de um Evento de acordo com seus respectivos Ids.<br>
-     * Atributos de PessoasEventoDTO:
-     * <li>Long idPessoa</li>
-     * <li>Long idEvento</li>
      *
      * @param idEvento
      * @param idPessoa
@@ -136,6 +134,12 @@ public class EventoService {
         }).collect(Collectors.toList());
     }
 
+    /**
+     * Retorna uma lista com todos os eventos que possuem tags cujo Id é o mesmo do que o passado por parâmetro
+     *
+     * @param idTag
+     * @return {@code List<EventoDTOs>}
+     */
     public List<EventoDTOs> getAll(Long idTag) {
         List<EventoEntity> list = new ArrayList<>();
         if (idTag != null) {
@@ -161,6 +165,7 @@ public class EventoService {
      *
      * @param id
      * @param dto
+     * @throws ResponseStatusException
      */
     public void atualizarEvento(Long id, EventoDTOs dto) {
         eventoRepository.findById(id).ifPresentOrElse(eE -> {
@@ -200,7 +205,7 @@ public class EventoService {
     }
 
     /**
-     * Remove um patrocinador da lista de patrocinadores do evento.
+     * Remove um patrocinador da lista de patrocinadores de um evento, de acordo com o seu Id
      *
      * @param idEvento
      * @param idPatrocinador

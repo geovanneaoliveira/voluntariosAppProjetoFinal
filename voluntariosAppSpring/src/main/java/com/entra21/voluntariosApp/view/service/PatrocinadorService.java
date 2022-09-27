@@ -62,9 +62,15 @@ public class PatrocinadorService {
         });
     }
 
+    /**
+     * Busca todos os eventos que o patrocinador patrocina, de acordo com o Id do patrocinador informado por parâmtro
+     * @param idPatrocinador
+     * @return {@code List<EventosDTOs>}
+     * @throws ResponseStatusException
+     */
     public List<EventoDTOs> buscarEventosPatrocinadosPorId(Long idPatrocinador) {
         PatrocinadorEntity p = patrocinadorRepository.findById(idPatrocinador).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não existente!"));
+                new ResponseStatusException(HttpStatus.BAD_REQUEST, "Patrocinador não existente!"));
         return p.getEventos().stream().map(eE -> {
             EventoDTOs dto = new EventoDTOs();
             dto.setNome(eE.getNome());
@@ -74,6 +80,10 @@ public class PatrocinadorService {
         }).collect(Collectors.toList());
     }
 
+    /**
+     * Deleta um patrocinador de acordo com o Id passado por parâmetro
+     * @param idPatrocinador
+     */
     public void excluirPatrocinador(Long idPatrocinador) {
         patrocinadorRepository.deleteById(idPatrocinador);
     }
