@@ -8,8 +8,8 @@ import lombok.Data;
  * <li>Long idRepresentante</li>
  */
 @Data
-public class PatrocinadorDTO {
+public class PatrocinadorDTOs {
     private String nome;
     private Long idRepresentante;
-    private String imagePath;
+    private String caminhoImagem;
 }

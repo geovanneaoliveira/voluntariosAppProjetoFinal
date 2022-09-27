@@ -9,4 +9,5 @@ import java.util.List;
 
 @Repository
 public interface PatrocinadorRepository extends JpaRepository<PatrocinadorEntity, Long> {
+    List<PatrocinadorEntity> findAllByEventos_Id(Long idEvento);
 }

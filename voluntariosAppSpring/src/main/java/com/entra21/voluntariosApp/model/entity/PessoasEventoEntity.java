@@ -25,5 +25,5 @@ public class PessoasEventoEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_evento", referencedColumnName = "id")
-    private EventoEntity idEvento;
+    private EventoEntity evento;
 }
