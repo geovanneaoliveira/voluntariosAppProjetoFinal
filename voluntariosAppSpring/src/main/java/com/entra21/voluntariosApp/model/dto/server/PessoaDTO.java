@@ -20,5 +20,6 @@ public class PessoaDTO {
     private String cpf;
     private String login;
     private String senha;
+    private String caminhoImagem;
     private Boolean ativo;
 }

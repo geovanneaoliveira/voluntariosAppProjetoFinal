@@ -2,7 +2,7 @@ package com.entra21.voluntariosApp.view.service;
 
 
 import com.entra21.voluntariosApp.model.dto.server.EventoDTOs;
-import com.entra21.voluntariosApp.model.dto.server.PatrocinadorDTO;
+import com.entra21.voluntariosApp.model.dto.server.PatrocinadorDTOs;
 import com.entra21.voluntariosApp.model.entity.PatrocinadorEntity;
 import com.entra21.voluntariosApp.view.repository.EventoRepository;
 import com.entra21.voluntariosApp.view.repository.PatrocinadorRepository;
@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 public class PatrocinadorService {
+
     @Autowired
     private PatrocinadorRepository patrocinadorRepository;
     @Autowired
@@ -30,13 +30,13 @@ public class PatrocinadorService {
      *
      * @return List {@code <PatrocinadorDTO>}
      */
-    public List<PatrocinadorDTO> getAllPatrocinadores() {
+    public List<PatrocinadorDTOs> retornarPatrocinadores() {
         return patrocinadorRepository.findAll().stream().map(patrocinadorEntity -> {
-            PatrocinadorDTO patrocinadorDTO = new PatrocinadorDTO();
-            patrocinadorDTO.setNome(patrocinadorEntity.getNome());
-            patrocinadorDTO.setIdRepresentante(patrocinadorEntity.getRepresentante().getId());
-            patrocinadorDTO.setImagePath(patrocinadorEntity.getImagePath());
-            return patrocinadorDTO;
+            PatrocinadorDTOs patrocinadorDTOs = new PatrocinadorDTOs();
+            patrocinadorDTOs.setNome(patrocinadorEntity.getNome());
+            patrocinadorDTOs.setIdRepresentante(patrocinadorEntity.getRepresentante().getId());
+            patrocinadorDTOs.setCaminhoImagem(patrocinadorEntity.getCaminhoImagem());
+            return patrocinadorDTOs;
         }).collect(Collectors.toList());
     }
 
@@ -47,14 +47,14 @@ public class PatrocinadorService {
      * <li>Long idRepresentante</li>
      * <li>String imagePath</li>
      *
-     * @param patrocinadorDTO
+     * @param patrocinadorDTOs
      * @throws ResponseStatusException
      */
-    public void addPatrocinador(PatrocinadorDTO patrocinadorDTO) {
-        pessoaRepository.findById(patrocinadorDTO.getIdRepresentante()).ifPresentOrElse(pessoa -> {
+    public void addPatrocinador(PatrocinadorDTOs patrocinadorDTOs) {
+        pessoaRepository.findById(patrocinadorDTOs.getIdRepresentante()).ifPresentOrElse(pessoa -> {
             PatrocinadorEntity patrocinadorEntity = new PatrocinadorEntity();
-            patrocinadorEntity.setNome(patrocinadorDTO.getNome());
-            patrocinadorEntity.setImagePath(patrocinadorDTO.getImagePath());
+            patrocinadorEntity.setNome(patrocinadorDTOs.getNome());
+            patrocinadorEntity.setCaminhoImagem(patrocinadorDTOs.getCaminhoImagem());
             patrocinadorEntity.setRepresentante(pessoa);
             patrocinadorRepository.save(patrocinadorEntity);
         }, () -> {
@@ -62,10 +62,15 @@ public class PatrocinadorService {
         });
     }
 
-    //encontrar todos os eventos que o patrocinador patrocina
-    public List<EventoDTOs> findAllByEventos_Id(Long idPatrocinador) {
+    /**
+     * Busca todos os eventos que o patrocinador patrocina, de acordo com o Id do patrocinador informado por parâmtro
+     * @param idPatrocinador
+     * @return {@code List<EventosDTOs>}
+     * @throws ResponseStatusException
+     */
+    public List<EventoDTOs> buscarEventosPatrocinadosPorId(Long idPatrocinador) {
         PatrocinadorEntity p = patrocinadorRepository.findById(idPatrocinador).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não existente!"));
+                new ResponseStatusException(HttpStatus.BAD_REQUEST, "Patrocinador não existente!"));
         return p.getEventos().stream().map(eE -> {
             EventoDTOs dto = new EventoDTOs();
             dto.setNome(eE.getNome());
@@ -75,7 +80,11 @@ public class PatrocinadorService {
         }).collect(Collectors.toList());
     }
 
-    public void deletePatrocinador(Long idPatrocinador) {
+    /**
+     * Deleta um patrocinador de acordo com o Id passado por parâmetro
+     * @param idPatrocinador
+     */
+    public void excluirPatrocinador(Long idPatrocinador) {
         patrocinadorRepository.deleteById(idPatrocinador);
     }
 }

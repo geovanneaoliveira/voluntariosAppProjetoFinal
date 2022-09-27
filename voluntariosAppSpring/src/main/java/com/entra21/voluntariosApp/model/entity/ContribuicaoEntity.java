@@ -28,5 +28,4 @@ public class ContribuicaoEntity {
     @ManyToOne
     @JoinColumn(name = "id_organizacao", referencedColumnName = "id")
     private OrganizacaoEntity organizacao;
-
 }

@@ -14,39 +14,42 @@ import java.util.List;
 @Entity
 @Table(name = "pessoa")
 public class PessoaEntity implements UserDetails {
+
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "nome")
     private String nome;
+
     @Column(name = "sobrenome")
     private String sobrenome;
+
     @Column(name = "telefone")
     private String telefone;
+
     @Column(name = "cpf")
     private String cpf;
+
+    @Column(name = "caminho_imagem")
+    private String caminhoImagem;
+
     @Column(name = "login")
     private String login;
+
     @Column(name = "senha")
     private String senha;
+
     @Column(name = "ativo", nullable = false)
     private Boolean ativo;
 
     @ManyToMany
-    @JoinTable(
-            name = "tag_interesse_pessoa",
-            joinColumns = @JoinColumn(name = "id_pessoa", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "id_tag", referencedColumnName = "id")
-    )
+    @JoinTable(name = "tag_interesse_pessoa", joinColumns = @JoinColumn(name = "id_pessoa", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "id_tag", referencedColumnName = "id"))
     private List<TagsEntity> tags;
 
     @OneToMany
-    @JoinTable(
-            name = "contribuicao",
-            joinColumns = @JoinColumn(name = "id_organizacao", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "id_pessoa", referencedColumnName = "id")
-    )
+    @JoinTable(name = "contribuicao", joinColumns = @JoinColumn(name = "id_organizacao", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "id_pessoa", referencedColumnName = "id"))
     private List<ContribuicaoEntity> contribuicoes;
 
     @Override
