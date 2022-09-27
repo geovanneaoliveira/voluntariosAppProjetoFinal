@@ -39,7 +39,7 @@ public class OrganizacaoService {
             OrganizacaoEntity organizacaoEntity = new OrganizacaoEntity();
             organizacaoEntity.setNome(organizacaoDTOs.getNome());
             organizacaoEntity.setDescricao(organizacaoDTOs.getDescricao());
-            organizacaoEntity.setImagePath(organizacaoDTOs.getImagePath());
+            organizacaoEntity.setCaminhoImagem(organizacaoDTOs.getCaminhoImagem());
             organizacaoEntity.setSupervisor(pessoa);
             organizacaoEntity.setCnpj(organizacaoDTOs.getCnpj());
             organizacaoEntity.setAtivo(true);
@@ -63,7 +63,7 @@ public class OrganizacaoService {
             dto.setDescricao(orgE.getDescricao());
             dto.setNomeSupervisor(orgE.getSupervisor().getNome());
             dto.setSobrenomeSupervisor(orgE.getSupervisor().getSobrenome());
-            dto.setImagePath(orgE.getImagePath());
+            dto.setCaminhoImagem(orgE.getCaminhoImagem());
             return dto;
         }).collect(Collectors.toList());
     }
@@ -87,7 +87,7 @@ public class OrganizacaoService {
             org.setDescricao(dto.getDescricao());
             org.setSupervisor(org.getSupervisor());//todo
             org.setCnpj(dto.getCnpj());
-            org.setImagePath(dto.getImagePath());
+            org.setCaminhoImagem(dto.getCaminhoImagem());
             organizacaoRepository.save(org);
         }, () -> {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrada!");
@@ -122,7 +122,7 @@ public class OrganizacaoService {
             dto.setDescricao(orgE.getDescricao());
             dto.setNomeSupervisor(orgE.getSupervisor().getNome());
             dto.setSobrenomeSupervisor(orgE.getSupervisor().getSobrenome());
-            dto.setImagePath(orgE.getImagePath());
+            dto.setCaminhoImagem(orgE.getCaminhoImagem());
             return dto;
         }).collect(Collectors.toList());
     }

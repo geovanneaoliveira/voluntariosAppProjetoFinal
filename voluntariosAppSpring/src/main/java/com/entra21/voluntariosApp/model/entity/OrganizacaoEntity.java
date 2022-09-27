@@ -24,8 +24,8 @@ public class OrganizacaoEntity {
     @Column(name = "cnpj")
     private String cnpj;
 
-    @Column(name = "image_path")
-    private String imagePath;
+    @Column(name = "caminho_imagem")
+    private String caminhoImagem;
 
     @Column(name = "ativo")
     private Boolean ativo;

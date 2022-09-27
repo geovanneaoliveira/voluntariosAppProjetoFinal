@@ -22,8 +22,8 @@ public class PatrocinadorEntity {
     @JoinColumn(name = "id_representante", referencedColumnName = "id")
     private PessoaEntity representante;
 
-    @Column(name = "image_path")
-    private String imagePath;
+    @Column(name = "caminho_imagem")
+    private String caminhoImagem;
 
     @ManyToMany
     @JoinTable(

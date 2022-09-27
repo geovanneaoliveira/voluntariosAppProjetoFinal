@@ -16,5 +16,5 @@ public class OrganizacaoDTOs {
     private String descricao;
     private Long idSupervisor;
     private String cnpj;
-    private String imagePath;
+    private String caminhoImagem;
 }

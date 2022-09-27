@@ -1,10 +1,11 @@
 package com.entra21.voluntariosApp.controller;
 
 import com.entra21.voluntariosApp.model.dto.server.EventoDTOs;
-import com.entra21.voluntariosApp.model.dto.server.PatrocinadorDTO;
+import com.entra21.voluntariosApp.model.dto.server.PatrocinadorDTOs;
 import com.entra21.voluntariosApp.model.dto.server.PessoaEventoPresencaDTO;
 import com.entra21.voluntariosApp.model.dto.server.PessoasEventoDTO;
 import com.entra21.voluntariosApp.model.dto.user.EventoDTO;
+import com.entra21.voluntariosApp.model.dto.user.PatrocinadorDTO;
 import com.entra21.voluntariosApp.view.service.EventoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +30,9 @@ public class EventoRestController {
     }
 
     @PostMapping("/presenca")
-    public void adicionarPessoaEvento(@RequestBody PessoasEventoDTO pessoasEventoDTO) {
-        eventoService.adicionarPessoaEvento(pessoasEventoDTO);
+    public void adicionarPessoaEvento(@RequestParam(name = "idPessoa") Long idPessoa,
+                                      @RequestParam(name = "idEvento") Long idEvento) {
+        eventoService.adicionarPessoaEvento(idPessoa,idEvento);
     }
 
     @GetMapping("/presentes")
@@ -48,20 +50,20 @@ public class EventoRestController {
         eventoService.atualizarEvento(id,dto);
     }
 
-    @PostMapping("/addPatrocinador")
-    public void addPatrocinador(@RequestParam(name = "idEvento") Long idEvento, @RequestBody PatrocinadorDTO dto) {
-        eventoService.addPatrocinadorEvento(idEvento,dto);
+    @PostMapping("/addPatrocinadorIds")
+    public void addPatrocinador(@RequestParam(name = "idEvento") Long idEvento,
+                                @RequestParam(name = "idPatrocinador") Long idPatrocinador) {
+        eventoService.addPatrocinadorEventoIds(idEvento,idPatrocinador);
     }
 
     @DeleteMapping("/excluirPatrocinador")
-    private void deletarPatrocinadorEvento(@RequestParam(name = "idEvento") Long idEvento, @RequestParam(name = "idPatrocinador") Long idPatrocinador) {
+    private void deletarPatrocinadorEvento(@RequestParam(name = "idEvento") Long idEvento,
+                                           @RequestParam(name = "idPatrocinador") Long idPatrocinador) {
         eventoService.deletarPatrocinadorEvento(idEvento, idPatrocinador);
     }
 
-    //todo
-//    //busca e retorna todos os patrocinadores de um evento
-//    @GetMapping("/patrocinadoresDoEvento")
-//    public List<PatrocinadorDTO> findAllBypatrocinadores_IdEvento(@RequestParam(name = "idEvento")Long idEvento){
-//      return eventoService.findAllByPatrocinadores_Id(idEvento);
-//    }
+    @GetMapping("/patrocinadoresdoEvento")
+    public List<PatrocinadorDTO> buscarPatrocinadoresPorIdEvento(@RequestParam(name = "idEvento")Long idEvento){
+      return eventoService.buscarPatrocinadoresPorIdEvento(idEvento);
+    }
 }
