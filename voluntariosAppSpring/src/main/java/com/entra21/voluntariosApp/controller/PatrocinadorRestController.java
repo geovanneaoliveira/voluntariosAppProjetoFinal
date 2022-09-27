@@ -1,8 +1,7 @@
 package com.entra21.voluntariosApp.controller;
 
 import com.entra21.voluntariosApp.model.dto.server.EventoDTOs;
-import com.entra21.voluntariosApp.model.dto.server.PatrocinadorDTO;
-import com.entra21.voluntariosApp.model.dto.user.EventoDTO;
+import com.entra21.voluntariosApp.model.dto.server.PatrocinadorDTOs;
 import com.entra21.voluntariosApp.view.service.PatrocinadorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +21,8 @@ public class PatrocinadorRestController {
      * @return {@code List<PatrocinadorDTO>}
      */
     @GetMapping("/todos")
-    private List<PatrocinadorDTO> getAllPatrocinadores() {
-        return patrocinadorService.getAllPatrocinadores();
+    private List<PatrocinadorDTOs> retornarPatrocinadores() {
+        return patrocinadorService.retornarPatrocinadores();
     }
 
     /**
@@ -37,14 +36,13 @@ public class PatrocinadorRestController {
     }
 
     /**
-     * Chama um método que retorna todos os eventos que o patrocinador patrocina
+     * Chama um método que retorna todos os eventos que o patrocinador patrocina.
      * @param idPatrocinador
      * @return {@code List<EventoDTOs>}
      */
-
     @GetMapping("/eventosPatrocinados")
-    public List<EventoDTOs> findAllByEvento_Id(@RequestParam(name = "idPatrocinador") Long idPatrocinador) {
-        return patrocinadorService.findAllByEventos_Id(idPatrocinador);
+    public List<EventoDTOs> buscarEventoPatrocinadoPorId(@RequestParam(name = "idPatrocinador")Long idPatrocinador) {
+        return patrocinadorService.buscarEventosPatrocinadosPorId(idPatrocinador);
     }
 
     /**
@@ -52,8 +50,7 @@ public class PatrocinadorRestController {
      * @param idPatrocinador
      */
     @DeleteMapping("/excluir")
-    private void deletePatrocinador(@RequestParam(name = "idPatrocinador") Long idPatrocinador) {
-        patrocinadorService.deletePatrocinador(idPatrocinador);
+    private void excluirPatrocinador(@RequestParam(name = "idPatrocinador") Long idPatrocinador){
+        patrocinadorService.excluirPatrocinador(idPatrocinador);
     }
-
 }

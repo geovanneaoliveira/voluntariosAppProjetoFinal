@@ -22,7 +22,6 @@ public class OrganizacaoService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
-
     /**
      * Adiciona uma Organização ao repositório.<br>
      * Atributos de OrganizacaoDTO:
@@ -40,7 +39,7 @@ public class OrganizacaoService {
             OrganizacaoEntity organizacaoEntity = new OrganizacaoEntity();
             organizacaoEntity.setNome(organizacaoDTOs.getNome());
             organizacaoEntity.setDescricao(organizacaoDTOs.getDescricao());
-            organizacaoEntity.setImagePath(organizacaoDTOs.getImagePath());
+            organizacaoEntity.setCaminhoImagem(organizacaoDTOs.getCaminhoImagem());
             organizacaoEntity.setSupervisor(pessoa);
             organizacaoEntity.setCnpj(organizacaoDTOs.getCnpj());
             organizacaoEntity.setAtivo(true);
@@ -56,7 +55,7 @@ public class OrganizacaoService {
      * @param nomeOrg
      * @return {@code List<OrganizacaoBuscaDTO>}
      */
-    public List<OrganizacaoDTO> getOrganizacoes(String nomeOrg) {
+    public List<OrganizacaoDTO> retornarOrganizacoes(String nomeOrg) {
         List<OrganizacaoEntity> orgs = organizacaoRepository.findAll().stream().filter(org -> org.getNome().toLowerCase().contains(nomeOrg.toLowerCase())).collect(Collectors.toList());
         return orgs.stream().map(orgE -> {
             OrganizacaoDTO dto = new OrganizacaoDTO();
@@ -64,7 +63,7 @@ public class OrganizacaoService {
             dto.setDescricao(orgE.getDescricao());
             dto.setNomeSupervisor(orgE.getSupervisor().getNome());
             dto.setSobrenomeSupervisor(orgE.getSupervisor().getSobrenome());
-            dto.setImagePath(orgE.getImagePath());
+            dto.setCaminhoImagem(orgE.getCaminhoImagem());
             return dto;
         }).collect(Collectors.toList());
     }
@@ -82,13 +81,13 @@ public class OrganizacaoService {
      * @param dto
      * @throws ResponseStatusException
      */
-    public void updateOrganizacao(Long id, OrganizacaoDTOs dto) {
+    public void atualizarOrganizacao(Long id, OrganizacaoDTOs dto) {
         organizacaoRepository.findById(id).ifPresentOrElse(org -> {
             org.setNome(dto.getNome());
             org.setDescricao(dto.getDescricao());
             org.setSupervisor(org.getSupervisor());
             org.setCnpj(dto.getCnpj());
-            org.setImagePath(dto.getImagePath());
+            org.setCaminhoImagem(dto.getCaminhoImagem());
             organizacaoRepository.save(org);
         }, () -> {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrada!");
@@ -123,7 +122,7 @@ public class OrganizacaoService {
             dto.setDescricao(orgE.getDescricao());
             dto.setNomeSupervisor(orgE.getSupervisor().getNome());
             dto.setSobrenomeSupervisor(orgE.getSupervisor().getSobrenome());
-            dto.setImagePath(orgE.getImagePath());
+            dto.setCaminhoImagem(orgE.getCaminhoImagem());
             return dto;
         }).collect(Collectors.toList());
     }

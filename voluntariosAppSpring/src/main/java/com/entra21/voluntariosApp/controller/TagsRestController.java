@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/tags")
 public class TagsRestController {
+
     @Autowired
     private TagsService tagsService;
 
@@ -17,7 +18,7 @@ public class TagsRestController {
      * @param nome
      */
     @PostMapping("/criar")
-    public void criarTag(@RequestBody String nome){
+    public void criarTag(@RequestBody String nome) {
         tagsService.addTag(nome);
     }
 
@@ -25,8 +26,10 @@ public class TagsRestController {
      * Chama um método que deleta uma tag de acordo com o Id informado por parâmetro
      * @param idTag
      */
-    @DeleteMapping("/deletar")
-    public void deleteTag(@RequestParam(name = "idTag") Long idTag){tagsService.deleteTag(idTag);}
+    @DeleteMapping("/excluir")
+    public void excluirTag(@RequestParam(name = "idTag") Long idTag) {
+        tagsService.excluirTag(idTag);
+    }
 
     /**
      * Chama um método que atualiza o nome de uma tag
@@ -34,19 +37,25 @@ public class TagsRestController {
      * @param novoNome
      */
     @PutMapping("/atualizar/{idTag}")
-    public void atualizarTag(@PathVariable(name = "idTag") Long idTag, @RequestParam(name = "novoNome") String novoNome){tagsService.atualizarTag(idTag,novoNome);}
+    public void atualizarTag(@PathVariable(name = "idTag") Long idTag, @RequestParam(name = "novoNome") String novoNome) {
+        tagsService.atualizarTag(idTag,novoNome);
+    }
 
     /**
      * Adiciona as tags á um evento
      * @param tagsEventoDTO
      */
     @PostMapping("/tagsEvento")
-    public void setTagsEvento(@RequestBody TagsEventoDTO tagsEventoDTO){tagsService.setTagsEvento(tagsEventoDTO);}
+    public void addTagsEvento(@RequestBody TagsEventoDTO tagsEventoDTO) {
+        tagsService.addTagsEvento(tagsEventoDTO);
+    }
 
     /**
      * Adiciona as tags á uma pessoa
      * @param tagsPessoaDTO
      */
     @PostMapping("/tagsPessoa")
-    public void setTagsPessoa(@RequestBody TagsPessoaDTO tagsPessoaDTO){tagsService.setTagsPessoa(tagsPessoaDTO);}
+    public void addTagsPessoa(@RequestBody TagsPessoaDTO tagsPessoaDTO) {
+        tagsService.addTagsPessoa(tagsPessoaDTO);
+    }
 }

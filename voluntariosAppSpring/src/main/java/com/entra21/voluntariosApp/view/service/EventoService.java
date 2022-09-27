@@ -1,10 +1,11 @@
 package com.entra21.voluntariosApp.view.service;
 
 import com.entra21.voluntariosApp.model.dto.server.EventoDTOs;
-import com.entra21.voluntariosApp.model.dto.server.PatrocinadorDTO;
+import com.entra21.voluntariosApp.model.dto.server.PatrocinadorDTOs;
 import com.entra21.voluntariosApp.model.dto.server.PessoaEventoPresencaDTO;
 import com.entra21.voluntariosApp.model.dto.server.PessoasEventoDTO;
 import com.entra21.voluntariosApp.model.dto.user.EventoDTO;
+import com.entra21.voluntariosApp.model.dto.user.PatrocinadorDTO;
 import com.entra21.voluntariosApp.model.entity.EventoEntity;
 import com.entra21.voluntariosApp.model.entity.PatrocinadoresEventoEntity;
 import com.entra21.voluntariosApp.model.entity.PessoasEventoEntity;
@@ -68,8 +69,7 @@ public class EventoService {
      * @return List {@code <EventoBuscaDTO>}
      */
     public List<EventoDTO> buscarEvento(String nome) {
-        List<EventoEntity> eventos = eventoRepository.findAll().stream()
-                .filter(ev -> ev.getNome().toLowerCase().contains(nome.toLowerCase())).collect(Collectors.toList());
+        List<EventoEntity> eventos = eventoRepository.findAll().stream().filter(ev -> ev.getNome().toLowerCase().contains(nome.toLowerCase())).collect(Collectors.toList());
         return eventos.stream().map(ev -> {
             EventoDTO dto = new com.entra21.voluntariosApp.model.dto.user.EventoDTO();
             dto.setNome(ev.getNome());
@@ -86,7 +86,7 @@ public class EventoService {
      * @return List
      */
     public List<PessoaEventoPresencaDTO> buscarPresentes(Long idEvento) {
-        List<PessoasEventoEntity> pessoasEvento = pessoasEventoRepository.findAllByidEvento_Id(idEvento).stream().filter(PessoasEventoEntity::getPresenca).collect(Collectors.toList());
+        List<PessoasEventoEntity> pessoasEvento = pessoasEventoRepository.findAllByEvento_Id(idEvento).stream().filter(PessoasEventoEntity::getPresenca).collect(Collectors.toList());
         return pessoasEvento.stream().map(pv -> {
             PessoaEventoPresencaDTO dto = new PessoaEventoPresencaDTO();
             dto.setIdPessoa(pv.getPessoa().getId());
@@ -98,19 +98,16 @@ public class EventoService {
 
     /**
      * Adiciona uma Pessoa à lista de presentes de um Evento de acordo com seus respectivos Ids.<br>
-     * Atributos de PessoasEventoDTO:
-     * <li>Long idPessoa</li>
-     * <li>Long idEvento</li>
      *
-     * @param dto
-     * @throws ResponseStatusException
+     * @param idEvento
+     * @param idPessoa
      */
-    public void adicionarPessoaEvento(PessoasEventoDTO dto) {
-        eventoRepository.findById(dto.getIdEvento()).ifPresentOrElse(ev -> {
-            pessoaRepository.findById(dto.getIdPessoa()).ifPresentOrElse(pe -> {
+    public void adicionarPessoaEvento(Long idPessoa, Long idEvento) {
+        eventoRepository.findById(idEvento).ifPresentOrElse(ev -> {
+            pessoaRepository.findById(idPessoa).ifPresentOrElse(pe -> {
                 PessoasEventoEntity pessoasEventoEntity = new PessoasEventoEntity();
                 pessoasEventoEntity.setPessoa(pe);
-                pessoasEventoEntity.setIdEvento(ev);
+                pessoasEventoEntity.setEvento(ev);
                 pessoasEventoEntity.setPresenca(true);
                 pessoasEventoRepository.save(pessoasEventoEntity);
             }, () -> {
@@ -125,11 +122,11 @@ public class EventoService {
      * Retorna todos os Eventos que contiverem a Tag cujo Id for igual ao passado por parâmetro.
      *
      * @param idTag
-     * @return List {@code <EventoBuscaDTO>}
+     * @return {@code List<EventoBuscaDTO>}
      */
-    public List<EventoDTO> findEventoByTags(Long idTag) {
+    public List<EventoDTO> buscarEventoPorTags(Long idTag) {
         return eventoRepository.findAllBytags_Id(idTag).stream().map(ev -> {
-            EventoDTO eBD = new com.entra21.voluntariosApp.model.dto.user.EventoDTO();
+            EventoDTO eBD = new EventoDTO();
             eBD.setNome(ev.getNome());
             eBD.setData(ev.getData());
             eBD.setNomeOrganizacao(ev.getOrganizacao().getNome());
@@ -186,28 +183,19 @@ public class EventoService {
     }
 
     /**
-     * Adiciona um patrocinador ao repositório <br>
-     * Atributos PatrocinadorDto:
-     * <li>String nome</li>
-     * <li>Long IdRepresentante</li>
-     * <li>String imagePath</li>
+     * Adiciona um patrocinador à lista de patrocinadores do evento.
      *
      * @param idEvento
-     * @param dto
+     * @param idPatrocinador
      * @throws ResponseStatusException
      */
-    public void addPatrocinadorEvento(Long idEvento, PatrocinadorDTO dto) {
+    public void addPatrocinadorEventoIds(Long idEvento, Long idPatrocinador) {
         eventoRepository.findById(idEvento).ifPresentOrElse(evento -> {
-            patrocinadorRepository.findById(dto.getIdRepresentante()).ifPresentOrElse(pa -> {
-                pessoaRepository.findById(dto.getIdRepresentante()).ifPresentOrElse(pe -> {
-                    PatrocinadoresEventoEntity patrocinadoresEvento = new PatrocinadoresEventoEntity();
-                    patrocinadoresEvento.setPatrocinador(pa);
-                    patrocinadoresEvento.setId(dto.getIdRepresentante());
-                    patrocinadoresEvento.setEvento(evento);
-                    patrocinadorEventoRepository.save(patrocinadoresEvento);
-                }, () -> {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não encontrada!");
-                });
+            patrocinadorRepository.findById(idPatrocinador).ifPresentOrElse(pa -> {
+                PatrocinadoresEventoEntity patrocinadoresEvento = new PatrocinadoresEventoEntity();
+                patrocinadoresEvento.setPatrocinador(pa);
+                patrocinadoresEvento.setEvento(evento);
+                patrocinadorEventoRepository.save(patrocinadoresEvento);
             }, () -> {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrado!");
             });
@@ -229,6 +217,22 @@ public class EventoService {
         }, () -> {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");
         });
+    }
 
+    /**
+     * Retorna todos os patrocinadores de um evento.
+     *
+     * @param idEvento
+     * @return {@code List<PatrocinadorDTO>}
+     */
+    public List<PatrocinadorDTO> buscarPatrocinadoresPorIdEvento(Long idEvento) {
+        return patrocinadorRepository.findAllByEventos_Id(idEvento).stream().map(pE -> {
+            PatrocinadorDTO patrocinadorDTO = new PatrocinadorDTO();
+            patrocinadorDTO.setNome(pE.getNome());
+            patrocinadorDTO.setCaminhoImagem(pE.getCaminhoImagem());
+            patrocinadorDTO.setNomeRepresentante(pE.getRepresentante().getNome());
+            patrocinadorDTO.setSobrenomeRepresentante(pE.getRepresentante().getSobrenome());
+            return patrocinadorDTO;
+        }).collect(Collectors.toList());
     }
 }

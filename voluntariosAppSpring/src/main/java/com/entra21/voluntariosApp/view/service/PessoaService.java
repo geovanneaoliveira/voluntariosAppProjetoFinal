@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PessoaService implements UserDetailsService {
-
     @Autowired
     private PessoaRepository pessoaRepository;
 
@@ -34,6 +33,7 @@ public class PessoaService implements UserDetailsService {
         pE.setSobrenome(pessoaDTO.getSobrenome());
         pE.setCpf(pessoaDTO.getCpf());
         pE.setTelefone(pessoaDTO.getTelefone());
+        pE.setCaminhoImagem(pessoaDTO.getCaminhoImagem());
         pE.setLogin(pessoaDTO.getLogin());
         pE.setSenha(pessoaDTO.getSenha());
         pessoaRepository.save(pE);
@@ -58,6 +58,7 @@ public class PessoaService implements UserDetailsService {
         pE.setSobrenome(dto.getSobrenome());
         pE.setCpf(dto.getCpf());
         pE.setTelefone(dto.getTelefone());
+        pE.setCaminhoImagem(dto.getCaminhoImagem());
         pE.setLogin(dto.getLogin());
         pE.setSenha(dto.getSenha());
         pessoaRepository.save(pE);
@@ -68,6 +69,7 @@ public class PessoaService implements UserDetailsService {
      *
      * @param login
      */
+     * */
     public void status(String login) {
         PessoaEntity pE = pessoaRepository.findByLogin(login);
         pE.setAtivo(!pE.getAtivo());

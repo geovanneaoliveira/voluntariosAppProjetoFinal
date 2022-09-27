@@ -17,6 +17,7 @@ import java.util.Objects;
 
 @Service
 public class TagsService {
+
     @Autowired
     private TagsRepository tagsRepository;
 
@@ -48,7 +49,7 @@ public class TagsService {
      * @param tagsEventoDTO
      * @throws ResponseStatusException
      * */
-    public void setTagsEvento(TagsEventoDTO tagsEventoDTO) {
+    public void addTagsEvento(TagsEventoDTO tagsEventoDTO) {
         eventoRepository.findById(tagsEventoDTO.getIdEvento()).ifPresentOrElse(ev -> {
             List<TagsEntity> tagsEntities = new ArrayList<>(tagsRepository.findAllById(tagsEventoDTO.getIdTagsEvento()));
             ev.setTags(tagsEntities);
@@ -63,7 +64,7 @@ public class TagsService {
      * @param tagsPessoaDTO
      * @throws ResponseStatusException
      * */
-    public void setTagsPessoa(TagsPessoaDTO tagsPessoaDTO) {
+    public void addTagsPessoa(TagsPessoaDTO tagsPessoaDTO) {
         pessoaRepository.findById(tagsPessoaDTO.getIdPessoa()).ifPresentOrElse(user -> {
             List<TagsEntity> tagsEntities = new ArrayList<>(tagsRepository.findAllById(tagsPessoaDTO.getIdTagsPessoa()));
             user.setTags(tagsEntities);
@@ -74,7 +75,7 @@ public class TagsService {
     /**Remove uma Tag do repositório através do seu Id.
      * @param idTag
      * */
-    public void deleteTag(Long idTag) {
+    public void excluirTag(Long idTag) {
         eventoRepository.findAll().forEach(ev -> ev.getTags().removeIf(tag -> Objects.equals(tag.getId(), idTag)));
         pessoaRepository.findAll().forEach(pe -> pe.getTags().removeIf(tag -> Objects.equals(tag.getId(), idTag)));
         tagsRepository.deleteById(idTag);

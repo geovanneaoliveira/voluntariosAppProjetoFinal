@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Table(name = "organizacao")
 
 public class OrganizacaoEntity {
+
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +24,8 @@ public class OrganizacaoEntity {
     @Column(name = "cnpj")
     private String cnpj;
 
-    @Column(name = "imagePath")
-    private String imagePath;
+    @Column(name = "caminho_imagem")
+    private String caminhoImagem;
 
     @Column(name = "ativo")
     private Boolean ativo;

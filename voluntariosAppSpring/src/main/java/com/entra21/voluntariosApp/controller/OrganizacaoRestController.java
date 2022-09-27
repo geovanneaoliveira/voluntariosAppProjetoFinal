@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/org")
 public class OrganizacaoRestController {
+
     @Autowired
     private OrganizacaoService organizacaoService;
 
@@ -21,8 +22,8 @@ public class OrganizacaoRestController {
      * @return {code List<OrganizacaoDTO>}
      */
     @GetMapping("/buscar")
-    public List<OrganizacaoDTO> getOrg(@RequestBody String nomeOrg) {
-        return organizacaoService.getOrganizacoes(nomeOrg);
+    public List<OrganizacaoDTO> retornarOrg(@RequestBody String nomeOrg) {
+        return organizacaoService.retornarOrganizacoes(nomeOrg);
     }
 
     /**
@@ -34,19 +35,19 @@ public class OrganizacaoRestController {
     public void criarOrg(@RequestBody OrganizacaoDTOs organizacaoDTOs) {
         organizacaoService.addOrganizacao(organizacaoDTOs);
     }
-
-    /**
+   
+   /**
      * Chama um método que atualiza os dados de uma organização
      *
      * @param id
      * @param dto
      */
     @PutMapping("/atualizar")
-    public void atualizarOrg(@RequestParam(name = "id") Long id, @RequestBody OrganizacaoDTOs dto) {
-        organizacaoService.updateOrganizacao(id, dto);
+    public  void atualizarOrg(@RequestParam(name = "id")Long id, @RequestBody OrganizacaoDTOs dto) {
+        organizacaoService.atualizarOrganizacao(id, dto);
     }
 
-    /**
+     /**
      * Chama um método que atualiza o status de login da organização
      *
      * @param id
@@ -63,6 +64,6 @@ public class OrganizacaoRestController {
      */
     @GetMapping("/porSupervisor")
     public List<OrganizacaoDTO> buscarOrgPorSurpervisor(@RequestParam(name = "idSupervisor") Long idSupervisor) {
-        return organizacaoService.buscarOrgsPorSurpervisor(idSupervisor);
+       return organizacaoService.buscarOrgsPorSurpervisor(idSupervisor);
     }
 }

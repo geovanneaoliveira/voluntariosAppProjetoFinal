@@ -29,8 +29,8 @@ public class ContribuicaoRestController {
      * @return
      */
     @GetMapping("/todos")
-    public List<ContribuicaoDTO> getContribuicoes() {
-        return contribuicaoService.findAllContribuicao();
+    public List<ContribuicaoDTO> retornarContribuicoes() {
+        return contribuicaoService.buscarContribuicoes();
     }
 
     /**
@@ -39,8 +39,8 @@ public class ContribuicaoRestController {
      * @return
      */
     @GetMapping("/porOrg")
-    public List<ContribuicaoDTO> getContribuicoesOrg(@RequestParam(name = "idOrg") Long idOrg){
-        return contribuicaoService.findContribuicoesByOrg(idOrg);
+    public List<ContribuicaoDTO> retornarContribuicoesOrg(@RequestParam(name = "idOrg") Long idOrg) {
+        return contribuicaoService.buscarContribuicoesPorOrg(idOrg);
     }
 
     /**
@@ -49,8 +49,8 @@ public class ContribuicaoRestController {
      * @return
      */
     @GetMapping("/porUser")
-    public List<ContribuicaoDTO> getContribuicoesUser(@RequestParam(name = "idUser")Long idUser){
-        return contribuicaoService.findContribuicoesByUser(idUser);
+    public List<ContribuicaoDTO> retornarContribuicoesUser(@RequestParam(name = "idUser")Long idUser) {
+        return contribuicaoService.buscarContribuicoesPorUser(idUser);
     }
 
     /**
@@ -59,8 +59,8 @@ public class ContribuicaoRestController {
      * @return
      */
     @GetMapping("/porOrg/total")
-    public Double getTotalContribuicoesByOrg(@RequestParam(name = "idOrg") Long idOrg){
-        return contribuicaoService.getTotalContribuicoesByOrg(idOrg);
+    public Double retornarTotalContribuicoesPorOrg(@RequestParam(name = "idOrg") Long idOrg) {
+        return contribuicaoService.totalContribuicoesPorOrg(idOrg);
     }
 
     /**
@@ -69,7 +69,7 @@ public class ContribuicaoRestController {
      * @return
      */
     @GetMapping("/porUser/total")
-    public Double getTotalContribuicoesByUser(@RequestParam(name = "idUser") Long idUser){
-        return contribuicaoService.getTotalContribuicoesByUser(idUser);
+    public Double retornarTotalContribuicoesPorUser(@RequestParam(name = "idUser") Long idUser) {
+        return contribuicaoService.totalContribuicoesPorUser(idUser);
     }
 }

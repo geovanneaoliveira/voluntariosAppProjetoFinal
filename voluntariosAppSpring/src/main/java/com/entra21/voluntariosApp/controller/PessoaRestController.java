@@ -33,7 +33,7 @@ public class PessoaRestController {
      * @param dto
      */
     @PutMapping("/atualizar")
-    public void atualizar(@RequestParam(name = "antigoLogin") String antigoLogin, @RequestBody PessoaDTO dto){
+    public void atualizar(@RequestParam(name = "antigoLogin") String antigoLogin, @RequestBody PessoaDTO dto) {
         pessoaService.atualizar(antigoLogin, dto);
     }
 
