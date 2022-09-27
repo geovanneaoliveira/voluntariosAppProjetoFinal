@@ -16,7 +16,8 @@ public class PessoaService implements UserDetailsService {
     private PessoaRepository pessoaRepository;
 
 
-    /**Cria um novo usuário de acordo com as informações passadas por um PessoaDTO<br>
+    /**
+     * Cria um novo usuário de acordo com as informações passadas por um PessoaDTO<br>
      * Atributos de PessoaDTO:
      * <li>String nome</li>
      * <li>String sobrenome</li>
@@ -24,6 +25,7 @@ public class PessoaService implements UserDetailsService {
      * <li>String telefone</li>
      * <li>String login</li>
      * <li>String senha</li>
+     *
      * @param pessoaDTO
      */
     public void cadastrar(PessoaDTO pessoaDTO) {
@@ -37,7 +39,8 @@ public class PessoaService implements UserDetailsService {
         pessoaRepository.save(pE);
     }
 
-    /**Atualiza o Usuário cujo login for igual ao passado por parâmetro com as
+    /**
+     * Atualiza o Usuário cujo login for igual ao passado por parâmetro com as
      * informações recebidas por um PessoaDTO:
      * <li>String nome</li>
      * <li>String sobrenome</li>
@@ -45,6 +48,7 @@ public class PessoaService implements UserDetailsService {
      * <li>String telefone</li>
      * <li>String login</li>
      * <li>String senha</li>
+     *
      * @param antigoLogin
      * @param dto
      */
@@ -59,16 +63,24 @@ public class PessoaService implements UserDetailsService {
         pessoaRepository.save(pE);
     }
 
-    /**Ativa ou desativa um usuário de acordo com seu Status atual.
+    /**
+     * Ativa ou desativa um usuário de acordo com seu Status atual.
+     *
      * @param login
-     * */
-    public void status(String login){
+     */
+    public void status(String login) {
         PessoaEntity pE = pessoaRepository.findByLogin(login);
         pE.setAtivo(!pE.getAtivo());
         pessoaRepository.save(pE);
     }
 
-
+    /**
+     * Retorna um usuário de acordo com o login dele
+     *
+     * @param username
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         PessoaEntity pessoa = pessoaRepository.findByLogin(username);
