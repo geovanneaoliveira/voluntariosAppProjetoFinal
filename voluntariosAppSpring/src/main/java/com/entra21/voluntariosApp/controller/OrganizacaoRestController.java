@@ -38,12 +38,12 @@ public class OrganizacaoRestController {
    /**
      * Chama um método que atualiza os dados de uma organização
      *
-     * @param id
+     * @param idOrg
      * @param dto
      */
     @PutMapping("/atualizar")
     public  void atualizarOrg(@RequestParam(name = "id")Long idOrg, @RequestBody OrganizacaoDTOs dto) {
-        organizacaoService.atualizarOrganizacao(id, dto);
+        organizacaoService.atualizarOrganizacao(idOrg, dto);
     }
 
      /**
