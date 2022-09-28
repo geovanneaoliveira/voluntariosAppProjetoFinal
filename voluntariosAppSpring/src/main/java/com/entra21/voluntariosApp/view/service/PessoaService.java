@@ -70,7 +70,6 @@ public class PessoaService implements UserDetailsService {
      *
      * @param login
      */
-     * */
     public void status(String login) {
         PessoaEntity pE = pessoaRepository.findByLogin(login);
         pE.setAtivo(!pE.getAtivo());
