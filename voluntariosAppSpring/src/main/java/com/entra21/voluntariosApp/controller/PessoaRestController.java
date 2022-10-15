@@ -45,4 +45,9 @@ public class PessoaRestController {
     public void status(@RequestParam(name = "login") String login) {
         pessoaService.status(login);
     }
+
+    @GetMapping("/login")
+    public Boolean login(){
+        return true;
+    }
 }
