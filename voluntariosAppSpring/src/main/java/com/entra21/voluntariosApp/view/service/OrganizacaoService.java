@@ -2,6 +2,7 @@ package com.entra21.voluntariosApp.view.service;
 
 import com.entra21.voluntariosApp.model.dto.server.OrganizacaoDTOs;
 import com.entra21.voluntariosApp.model.dto.user.OrganizacaoDTO;
+import com.entra21.voluntariosApp.model.dto.user.OrganizacaoInfosDTO;
 import com.entra21.voluntariosApp.model.entity.OrganizacaoEntity;
 import com.entra21.voluntariosApp.view.repository.OrganizacaoRepository;
 import com.entra21.voluntariosApp.view.repository.PessoaRepository;
@@ -123,6 +124,19 @@ public class OrganizacaoService {
             dto.setNomeSupervisor(orgE.getSupervisor().getNome());
             dto.setSobrenomeSupervisor(orgE.getSupervisor().getSobrenome());
             dto.setCaminhoImagem(orgE.getCaminhoImagem());
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+    public List<OrganizacaoInfosDTO> todasOrgs() {
+        return organizacaoRepository.findAll().stream().map(orgE -> {
+            OrganizacaoInfosDTO dto = new OrganizacaoInfosDTO();
+            dto.setNomeOrg(orgE.getNome());
+            dto.setDescricao(orgE.getDescricao());
+            dto.setNomeSupervisor(orgE.getSupervisor().getNome());
+            dto.setSobrenomeSupervisor(orgE.getSupervisor().getSobrenome());
+            dto.setCaminhoImagem(orgE.getCaminhoImagem());
+            dto.setId(orgE.getId());
             return dto;
         }).collect(Collectors.toList());
     }

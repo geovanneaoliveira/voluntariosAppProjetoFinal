@@ -1,10 +1,12 @@
 package com.entra21.voluntariosApp.view.service;
 
 import com.entra21.voluntariosApp.model.dto.server.PessoaDTO;
+import com.entra21.voluntariosApp.model.dto.user.LoginDTO;
 import com.entra21.voluntariosApp.model.entity.PessoaEntity;
 import com.entra21.voluntariosApp.view.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -79,10 +81,10 @@ public class PessoaService implements UserDetailsService {
     }
 
     /**
-     * Retorna um usuário de acordo com o login dele
+     * Retorna os detalhes de um usuário de acordo com o login dele
      *
      * @param username
-     * @return
+     * @return UserDetails
      * @throws UsernameNotFoundException
      */
     @Override
@@ -92,5 +94,14 @@ public class PessoaService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
         return pessoa;
+    }
+
+    public LoginDTO login() {
+        PessoaEntity pE = (PessoaEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LoginDTO dto = new LoginDTO();
+        dto.setLogin(pE.getLogin());
+        dto.setSenha(pE.getPassword());
+        dto.setId(pE.getId());
+        return dto;
     }
 }

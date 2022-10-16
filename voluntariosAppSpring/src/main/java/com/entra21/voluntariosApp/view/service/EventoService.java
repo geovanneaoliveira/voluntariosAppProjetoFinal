@@ -5,10 +5,9 @@ import com.entra21.voluntariosApp.model.dto.server.PatrocinadorDTOs;
 import com.entra21.voluntariosApp.model.dto.server.PessoaEventoPresencaDTO;
 import com.entra21.voluntariosApp.model.dto.server.PessoasEventoDTO;
 import com.entra21.voluntariosApp.model.dto.user.EventoDTO;
+import com.entra21.voluntariosApp.model.dto.user.EventoInfosDTO;
 import com.entra21.voluntariosApp.model.dto.user.PatrocinadorDTO;
-import com.entra21.voluntariosApp.model.entity.EventoEntity;
-import com.entra21.voluntariosApp.model.entity.PatrocinadoresEventoEntity;
-import com.entra21.voluntariosApp.model.entity.PessoasEventoEntity;
+import com.entra21.voluntariosApp.model.entity.*;
 import com.entra21.voluntariosApp.view.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -232,6 +231,19 @@ public class EventoService {
             patrocinadorDTO.setNomeRepresentante(pE.getRepresentante().getNome());
             patrocinadorDTO.setSobrenomeRepresentante(pE.getRepresentante().getSobrenome());
             return patrocinadorDTO;
+        }).collect(Collectors.toList());
+    }
+
+    public List<EventoInfosDTO> todosEventos() {
+        return eventoRepository.findAll().stream().map(eE -> {
+            EventoInfosDTO dto = new EventoInfosDTO();
+            dto.setNome(eE.getNome());
+            dto.setData(eE.getData());
+            dto.setNomeOrganizacao(eE.getOrganizacao().getNome());
+            dto.setPessoasEvento(eE.getPessoasEvento().stream().map(pEE -> pEE.getPessoa().getNome()).collect(Collectors.toList()));
+            dto.setTagsEvento(eE.getTags().stream().map(TagsEntity::getNome).collect(Collectors.toList()));
+            dto.setPatrocinadores(eE.getPatrocinadores().stream().map(PatrocinadorEntity::getNome).collect(Collectors.toList()));
+            return dto;
         }).collect(Collectors.toList());
     }
 }

@@ -1,9 +1,13 @@
 package com.entra21.voluntariosApp.controller;
 
 import com.entra21.voluntariosApp.model.dto.server.PessoaDTO;
+import com.entra21.voluntariosApp.model.dto.user.LoginDTO;
+import com.entra21.voluntariosApp.model.entity.PessoaEntity;
 import com.entra21.voluntariosApp.view.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,8 +26,9 @@ public class PessoaRestController {
      * Chama um método que cadastra uma nova pessoa no banco de dados
      * @param cadastro
      */
-    @PostMapping("/cadastro")
+    @PostMapping(value = "/cadastro", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void cadastrar(@RequestBody PessoaDTO cadastro) {
+        System.out.println("chegou");
         pessoaService.cadastrar(cadastro);
     }
 
@@ -46,8 +51,9 @@ public class PessoaRestController {
         pessoaService.status(login);
     }
 
-    @GetMapping("/login")
-    public Boolean login(){
-        return true;
+    @PostMapping(value = "/login")
+    public LoginDTO login(){
+        return pessoaService.login();
     }
+
 }
