@@ -100,8 +100,8 @@ public class PessoaService implements UserDetailsService {
         PessoaEntity pE = pessoaRepository.findByLogin(loginSemIdDTO.getUsername());
         if(pE.getPassword().equals(loginSemIdDTO.getPassword())){
             LoginDTO loginDTO = new LoginDTO();
-            loginDTO.setLogin(pE.getUsername());
-            loginDTO.setSenha(pE.getPassword());
+            loginDTO.setUsername(pE.getUsername());
+            loginDTO.setPassword(pE.getPassword());
             loginDTO.setId(pE.getId());
             return loginDTO;
         }
