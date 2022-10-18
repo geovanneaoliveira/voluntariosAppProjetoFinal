@@ -2,6 +2,10 @@ package com.entra21.voluntariosApp.view.service;
 
 import com.entra21.voluntariosApp.model.dto.server.PessoaDTO;
 import com.entra21.voluntariosApp.model.dto.user.LoginDTO;
+<<<<<<< HEAD
+=======
+import com.entra21.voluntariosApp.model.dto.user.LoginSemIdDTO;
+>>>>>>> 0d6e9a3340aaf836c0ec1f7d7453763599b3c8b8
 import com.entra21.voluntariosApp.model.entity.PessoaEntity;
 import com.entra21.voluntariosApp.view.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +21,6 @@ import org.springframework.web.server.ResponseStatusException;
 public class PessoaService implements UserDetailsService {
     @Autowired
     private PessoaRepository pessoaRepository;
-
 
     /**
      * Cria um novo usuário de acordo com as informações passadas por um PessoaDTO<br>
@@ -96,12 +99,15 @@ public class PessoaService implements UserDetailsService {
         return pessoa;
     }
 
-    public LoginDTO login() {
-        PessoaEntity pE = (PessoaEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LoginDTO dto = new LoginDTO();
-        dto.setLogin(pE.getLogin());
-        dto.setSenha(pE.getPassword());
-        dto.setId(pE.getId());
-        return dto;
+    public LoginDTO login(LoginSemIdDTO loginSemIdDTO) {
+        PessoaEntity pE = pessoaRepository.findByLogin(loginSemIdDTO.getUsername());
+        if(pE.getPassword().equals(loginSemIdDTO.getPassword())){
+            LoginDTO loginDTO = new LoginDTO();
+            loginDTO.setLogin(pE.getUsername());
+            loginDTO.setSenha(pE.getPassword());
+            loginDTO.setId(pE.getId());
+            return loginDTO;
+        }
+        return null;
     }
 }

@@ -2,7 +2,11 @@ package com.entra21.voluntariosApp.controller;
 
 import com.entra21.voluntariosApp.model.dto.server.PessoaDTO;
 import com.entra21.voluntariosApp.model.dto.user.LoginDTO;
+<<<<<<< HEAD
 import com.entra21.voluntariosApp.model.entity.PessoaEntity;
+=======
+import com.entra21.voluntariosApp.model.dto.user.LoginSemIdDTO;
+>>>>>>> 0d6e9a3340aaf836c0ec1f7d7453763599b3c8b8
 import com.entra21.voluntariosApp.view.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,8 +22,8 @@ public class PessoaRestController {
     private PessoaService pessoaService;
 
     @GetMapping
-    public String teste() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+    public Object teste() {
+        return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     /**
@@ -51,9 +55,9 @@ public class PessoaRestController {
         pessoaService.status(login);
     }
 
-    @PostMapping(value = "/login")
-    public LoginDTO login(){
-        return pessoaService.login();
+    @PostMapping("/login")
+    public LoginDTO login(@RequestBody LoginSemIdDTO login){
+        return pessoaService.login(login);
     }
 
 }

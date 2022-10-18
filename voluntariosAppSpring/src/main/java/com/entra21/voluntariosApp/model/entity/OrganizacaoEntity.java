@@ -1,5 +1,6 @@
 package com.entra21.voluntariosApp.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -32,5 +33,6 @@ public class OrganizacaoEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_supervisor",referencedColumnName = "id")
+    @JsonIgnore
     private PessoaEntity supervisor;
 }
