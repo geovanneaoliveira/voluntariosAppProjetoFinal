@@ -23,6 +23,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().httpBasic().and().authorizeRequests((req) -> req
                 .antMatchers("/pessoa/cadastro").permitAll()
+                .antMatchers("/pessoa/login").permitAll()
                 .anyRequest().authenticated());
         return http.build();
     }

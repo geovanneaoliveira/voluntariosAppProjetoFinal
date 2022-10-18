@@ -1,10 +1,13 @@
 package com.entra21.voluntariosApp.view.service;
 
 import com.entra21.voluntariosApp.model.dto.server.PessoaDTO;
+import com.entra21.voluntariosApp.model.dto.user.LoginDTO;
+import com.entra21.voluntariosApp.model.dto.user.LoginSemIdDTO;
 import com.entra21.voluntariosApp.model.entity.PessoaEntity;
 import com.entra21.voluntariosApp.view.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,7 +18,6 @@ import org.springframework.web.server.ResponseStatusException;
 public class PessoaService implements UserDetailsService {
     @Autowired
     private PessoaRepository pessoaRepository;
-
 
     /**
      * Cria um novo usuário de acordo com as informações passadas por um PessoaDTO<br>
@@ -92,5 +94,17 @@ public class PessoaService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
         return pessoa;
+    }
+
+    public LoginDTO login(LoginSemIdDTO loginSemIdDTO) {
+        PessoaEntity pE = pessoaRepository.findByLogin(loginSemIdDTO.getUsername());
+        if(pE.getPassword().equals(loginSemIdDTO.getPassword())){
+            LoginDTO loginDTO = new LoginDTO();
+            loginDTO.setLogin(pE.getUsername());
+            loginDTO.setSenha(pE.getPassword());
+            loginDTO.setId(pE.getId());
+            return loginDTO;
+        }
+        return null;
     }
 }

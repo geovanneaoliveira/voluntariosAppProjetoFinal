@@ -1,6 +1,8 @@
 package com.entra21.voluntariosApp.controller;
 
 import com.entra21.voluntariosApp.model.dto.server.PessoaDTO;
+import com.entra21.voluntariosApp.model.dto.user.LoginDTO;
+import com.entra21.voluntariosApp.model.dto.user.LoginSemIdDTO;
 import com.entra21.voluntariosApp.view.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,8 +16,8 @@ public class PessoaRestController {
     private PessoaService pessoaService;
 
     @GetMapping
-    public String teste() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+    public Object teste() {
+        return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     /**
@@ -46,8 +48,8 @@ public class PessoaRestController {
         pessoaService.status(login);
     }
 
-    @GetMapping("/login")
-    public Boolean login(){
-        return true;
+    @PostMapping("/login")
+    public LoginDTO login(@RequestBody LoginSemIdDTO login){
+        return pessoaService.login(login);
     }
 }
