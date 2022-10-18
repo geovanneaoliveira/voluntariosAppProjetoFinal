@@ -5,6 +5,7 @@ import com.entra21.voluntariosApp.model.dto.server.PatrocinadorDTOs;
 import com.entra21.voluntariosApp.model.dto.server.PessoaEventoPresencaDTO;
 import com.entra21.voluntariosApp.model.dto.server.PessoasEventoDTO;
 import com.entra21.voluntariosApp.model.dto.user.EventoDTO;
+import com.entra21.voluntariosApp.model.dto.user.EventoInfosDTO;
 import com.entra21.voluntariosApp.model.dto.user.PatrocinadorDTO;
 import com.entra21.voluntariosApp.view.service.EventoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,11 @@ public class EventoRestController {
     @GetMapping("/buscar")
     public List<EventoDTO> buscarEvento(@RequestParam(name = "nome") String nome) {
         return eventoService.buscarEvento(nome);
+    }
+
+    @GetMapping
+    public List<EventoInfosDTO> todosEventos() {
+        return eventoService.todosEventos();
     }
 
     /**

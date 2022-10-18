@@ -1,10 +1,14 @@
 package com.entra21.voluntariosApp.controller;
 
+import com.entra21.voluntariosApp.model.dto.server.TagDTO;
 import com.entra21.voluntariosApp.model.dto.server.TagsEventoDTO;
 import com.entra21.voluntariosApp.model.dto.server.TagsPessoaDTO;
 import com.entra21.voluntariosApp.view.service.TagsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/tags")
@@ -12,6 +16,9 @@ public class TagsRestController {
 
     @Autowired
     private TagsService tagsService;
+
+    @GetMapping
+    public List<TagDTO> tags(){return tagsService.todasTags();}
 
     /**
      * Chama um método que cria uma nova tag

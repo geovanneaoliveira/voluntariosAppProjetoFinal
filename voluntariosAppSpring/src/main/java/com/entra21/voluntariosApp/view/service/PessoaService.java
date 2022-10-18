@@ -2,7 +2,10 @@ package com.entra21.voluntariosApp.view.service;
 
 import com.entra21.voluntariosApp.model.dto.server.PessoaDTO;
 import com.entra21.voluntariosApp.model.dto.user.LoginDTO;
+<<<<<<< HEAD
+=======
 import com.entra21.voluntariosApp.model.dto.user.LoginSemIdDTO;
+>>>>>>> 0d6e9a3340aaf836c0ec1f7d7453763599b3c8b8
 import com.entra21.voluntariosApp.model.entity.PessoaEntity;
 import com.entra21.voluntariosApp.view.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,10 +84,10 @@ public class PessoaService implements UserDetailsService {
     }
 
     /**
-     * Retorna um usuário de acordo com o login dele
+     * Retorna os detalhes de um usuário de acordo com o login dele
      *
      * @param username
-     * @return
+     * @return UserDetails
      * @throws UsernameNotFoundException
      */
     @Override

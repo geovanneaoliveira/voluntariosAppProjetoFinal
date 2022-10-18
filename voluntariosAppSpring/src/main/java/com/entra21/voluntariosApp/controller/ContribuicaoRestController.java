@@ -2,11 +2,13 @@ package com.entra21.voluntariosApp.controller;
 
 import com.entra21.voluntariosApp.model.dto.server.ContribuicaoDTOs;
 import com.entra21.voluntariosApp.model.dto.user.ContribuicaoDTO;
+import com.entra21.voluntariosApp.model.dto.user.ContribuicaoInfosDTO;
 import com.entra21.voluntariosApp.view.service.ContribuicaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/contribuicao")
@@ -26,10 +28,11 @@ public class ContribuicaoRestController {
 
     /**
      * Busca todas as contribuições salvas no banco de dados
+     *
      * @return
      */
-    @GetMapping("/todos")
-    public List<ContribuicaoDTO> retornarContribuicoes() {
+    @GetMapping
+    public Set<ContribuicaoInfosDTO> retornarContribuicoes() {
         return contribuicaoService.buscarContribuicoes();
     }
 
@@ -39,7 +42,7 @@ public class ContribuicaoRestController {
      * @return
      */
     @GetMapping("/porOrg")
-    public List<ContribuicaoDTO> retornarContribuicoesOrg(@RequestParam(name = "idOrg") Long idOrg) {
+    public Set<ContribuicaoDTO> retornarContribuicoesOrg(@RequestParam(name = "idOrg") Long idOrg) {
         return contribuicaoService.buscarContribuicoesPorOrg(idOrg);
     }
 
@@ -49,7 +52,7 @@ public class ContribuicaoRestController {
      * @return
      */
     @GetMapping("/porUser")
-    public List<ContribuicaoDTO> retornarContribuicoesUser(@RequestParam(name = "idUser")Long idUser) {
+    public Set<ContribuicaoDTO> retornarContribuicoesUser(@RequestParam(name = "idUser")Long idUser) {
         return contribuicaoService.buscarContribuicoesPorUser(idUser);
     }
 
