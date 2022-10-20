@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.annotation.MultipartConfig;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/pessoa")
@@ -27,8 +31,8 @@ public class PessoaRestController {
      * @param cadastro
      */
     @PostMapping(value = "/cadastro", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void cadastrar(@RequestBody PessoaDTO cadastro) {
-        System.out.println("chegou");
+    public void cadastrar(@RequestBody PessoaDTO cadastro) throws IOException {
+        System.out.println(cadastro);
         pessoaService.cadastrar(cadastro);
     }
 
@@ -38,7 +42,7 @@ public class PessoaRestController {
      * @param dto
      */
     @PutMapping("/atualizar")
-    public void atualizar(@RequestParam(name = "antigoLogin") String antigoLogin, @RequestBody PessoaDTO dto) {
+    public void atualizar(@RequestParam(name = "antigoLogin") String antigoLogin, @RequestBody PessoaDTO dto) throws IOException {
         pessoaService.atualizar(antigoLogin, dto);
     }
 

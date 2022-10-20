@@ -12,7 +12,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.io.IOException;
 
 @Service
 public class PessoaService implements UserDetailsService {
@@ -31,16 +34,16 @@ public class PessoaService implements UserDetailsService {
      *
      * @param pessoaDTO
      */
-    public void cadastrar(PessoaDTO pessoaDTO) {
+    public void cadastrar(PessoaDTO pessoaDTO) throws IOException {
         PessoaEntity pE = new PessoaEntity();
         pE.setNome(pessoaDTO.getNome());
         pE.setSobrenome(pessoaDTO.getSobrenome());
         pE.setCpf(pessoaDTO.getCpf());
         pE.setTelefone(pessoaDTO.getTelefone());
-        pE.setCaminhoImagem(pessoaDTO.getCaminhoImagem());
         pE.setLogin(pessoaDTO.getLogin());
         pE.setSenha(pessoaDTO.getSenha());
         pE.setAtivo(true);
+        pE.setFotoPerfil(pessoaDTO.getFotoPerfil());
         pessoaRepository.save(pE);
     }
 
@@ -57,13 +60,13 @@ public class PessoaService implements UserDetailsService {
      * @param antigoLogin
      * @param dto
      */
-    public void atualizar(String antigoLogin, PessoaDTO dto) {
+    public void atualizar(String antigoLogin, PessoaDTO dto) throws IOException {
         PessoaEntity pE = pessoaRepository.findByLogin(antigoLogin);
         pE.setNome(dto.getNome());
         pE.setSobrenome(dto.getSobrenome());
         pE.setCpf(dto.getCpf());
         pE.setTelefone(dto.getTelefone());
-        pE.setCaminhoImagem(dto.getCaminhoImagem());
+        pE.setFotoPerfil(dto.getFotoPerfil());
         pE.setLogin(dto.getLogin());
         pE.setSenha(dto.getSenha());
         pessoaRepository.save(pE);
