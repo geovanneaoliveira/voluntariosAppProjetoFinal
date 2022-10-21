@@ -34,9 +34,6 @@ public class PessoaEntity implements UserDetails {
     @Column(name = "cpf")
     private String cpf;
 
-    @Column(name = "caminho_imagem")
-    private String caminhoImagem;
-
     @Column(name = "login")
     private String login;
 

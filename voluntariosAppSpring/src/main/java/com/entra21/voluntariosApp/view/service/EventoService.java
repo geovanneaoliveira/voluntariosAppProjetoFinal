@@ -246,4 +246,14 @@ public class EventoService {
             return dto;
         }).collect(Collectors.toList());
     }
+
+    public List<EventoInfosDTO> eventosUsuarioPresente(Long idUsuario) {
+        return pessoasEventoRepository.findAllByPessoa_Id(idUsuario).stream().map(pessoasEventoEntity -> {
+            EventoInfosDTO dto = new EventoInfosDTO();
+            dto.setNome(pessoasEventoEntity.getEvento().getNome());
+            dto.setData(pessoasEventoEntity.getEvento().getData());
+            dto.setNomeOrganizacao(pessoasEventoEntity.getEvento().getOrganizacao().getNome());
+            return dto;
+        }).collect(Collectors.toList());
+    }
 }

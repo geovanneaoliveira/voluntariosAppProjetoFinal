@@ -34,7 +34,7 @@ public class PessoaService implements UserDetailsService {
      *
      * @param pessoaDTO
      */
-    public void cadastrar(PessoaDTO pessoaDTO) throws IOException {
+    public void cadastrar(PessoaDTO pessoaDTO) {
         PessoaEntity pE = new PessoaEntity();
         pE.setNome(pessoaDTO.getNome());
         pE.setSobrenome(pessoaDTO.getSobrenome());
@@ -106,6 +106,7 @@ public class PessoaService implements UserDetailsService {
             loginDTO.setLogin(pE.getUsername());
             loginDTO.setSenha(pE.getPassword());
             loginDTO.setId(pE.getId());
+            loginDTO.setFotoPerfil(pE.getFotoPerfil());
             return loginDTO;
         }
         return null;
