@@ -17,4 +17,5 @@ public class OrganizacaoDTO {
     private String nomeSupervisor;
     private String sobrenomeSupervisor;
     private String orgFoto;
+    private Long id;
 }

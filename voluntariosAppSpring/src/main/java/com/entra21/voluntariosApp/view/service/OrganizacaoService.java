@@ -124,6 +124,7 @@ public class OrganizacaoService {
             dto.setNomeSupervisor(orgE.getSupervisor().getNome());
             dto.setSobrenomeSupervisor(orgE.getSupervisor().getSobrenome());
             dto.setOrgFoto(orgE.getOrgFoto());
+            dto.setId(orgE.getId());
             return dto;
         }).collect(Collectors.toList());
     }
