@@ -1,5 +1,6 @@
 package com.entra21.voluntariosApp.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -24,13 +25,14 @@ public class OrganizacaoEntity {
     @Column(name = "cnpj")
     private String cnpj;
 
-    @Column(name = "caminho_imagem")
-    private String caminhoImagem;
+    @Column(name = "foto_org")
+    private String orgFoto;
 
     @Column(name = "ativo")
     private Boolean ativo;
 
     @ManyToOne
     @JoinColumn(name = "id_supervisor",referencedColumnName = "id")
+    @JsonIgnore
     private PessoaEntity supervisor;
 }

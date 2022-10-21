@@ -5,6 +5,7 @@ import com.entra21.voluntariosApp.model.dto.server.PatrocinadorDTOs;
 import com.entra21.voluntariosApp.model.dto.server.PessoaEventoPresencaDTO;
 import com.entra21.voluntariosApp.model.dto.server.PessoasEventoDTO;
 import com.entra21.voluntariosApp.model.dto.user.EventoDTO;
+import com.entra21.voluntariosApp.model.dto.user.EventoInfosDTO;
 import com.entra21.voluntariosApp.model.dto.user.PatrocinadorDTO;
 import com.entra21.voluntariosApp.view.service.EventoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,11 @@ public class EventoRestController {
         return eventoService.buscarEvento(nome);
     }
 
+    @GetMapping
+    public List<EventoInfosDTO> todosEventos() {
+        return eventoService.todosEventos();
+    }
+
     /**
      * Chama um método que Adiciona um novo evento ao banco de daodos
      *
@@ -43,7 +49,8 @@ public class EventoRestController {
     /**
      * Chama um método que Adiciona uma pessoa à lista de presentes de um evento
      *
-     * @param pessoasEventoDTO
+     * @param idEvento
+     * @param idPessoa
      */
     @PostMapping("/presenca")
     public void adicionarPessoaEvento(@RequestParam(name = "idPessoa") Long idPessoa,
@@ -76,7 +83,7 @@ public class EventoRestController {
      /**
      * Chama um método que Atualiza os dados de um evento
      *
-     * @param id
+     * @param idEvento
      * @param dto
      */
     @PutMapping("/atualizar")
@@ -88,7 +95,7 @@ public class EventoRestController {
      * Chama um método que adiciona um patrocinador à um evento
      *
      * @param idEvento
-     * @param dto
+     * @param idPatrocinador
      */
     @PostMapping("/addPatrocinadorIds")
     public void addPatrocinador(@RequestParam(name = "idEvento") Long idEvento,
@@ -111,5 +118,10 @@ public class EventoRestController {
     @GetMapping("/patrocinadoresdoEvento")
     public List<PatrocinadorDTO> buscarPatrocinadoresPorIdEvento(@RequestParam(name = "idEvento")Long idEvento){
       return eventoService.buscarPatrocinadoresPorIdEvento(idEvento);
+    }
+
+    @GetMapping("/porusuario")
+    public List<EventoInfosDTO> eventosUsuarioPresente(@RequestParam(name = "idUsuario")Long idUsuario){
+        return eventoService.eventosUsuarioPresente(idUsuario);
     }
 }

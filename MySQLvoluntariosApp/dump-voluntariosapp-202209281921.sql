@@ -86,7 +86,7 @@ CREATE TABLE `organizacao` (
   `nome` varchar(250) NOT NULL,
   `id_supervisor` bigint NOT NULL,
   `descricao` varchar(500) DEFAULT NULL,
-  `photoPath` varchar(100) DEFAULT NULL,
+  `caminho_imagem` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `ativo` bit(1) NOT NULL DEFAULT b'1',
   `cnpj` varchar(14) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -116,10 +116,11 @@ CREATE TABLE `patrocinador` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `nome` varchar(100) NOT NULL,
   `id_representante` bigint NOT NULL,
+  `caminho_imagem` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_representante` (`id_representante`),
   CONSTRAINT `patrocinador_ibfk_1` FOREIGN KEY (`id_representante`) REFERENCES `pessoa` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,6 +129,7 @@ CREATE TABLE `patrocinador` (
 
 LOCK TABLES `patrocinador` WRITE;
 /*!40000 ALTER TABLE `patrocinador` DISABLE KEYS */;
+INSERT INTO `patrocinador` VALUES (1,'Blusoft',1,'C:/Users/geovanneo/Documents/imgsVoluntarios/blusoft'),(2,'VortexNet',1,NULL);
 /*!40000 ALTER TABLE `patrocinador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,7 +149,7 @@ CREATE TABLE `patrocinadores_evento` (
   KEY `id_evento` (`id_evento`),
   CONSTRAINT `patrocinadores_evento_ibfk_1` FOREIGN KEY (`id_patrocinador`) REFERENCES `patrocinador` (`id`),
   CONSTRAINT `patrocinadores_evento_ibfk_2` FOREIGN KEY (`id_evento`) REFERENCES `evento` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,6 +158,7 @@ CREATE TABLE `patrocinadores_evento` (
 
 LOCK TABLES `patrocinadores_evento` WRITE;
 /*!40000 ALTER TABLE `patrocinadores_evento` DISABLE KEYS */;
+INSERT INTO `patrocinadores_evento` VALUES (1,1,1),(2,2,1);
 /*!40000 ALTER TABLE `patrocinadores_evento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -175,6 +178,7 @@ CREATE TABLE `pessoa` (
   `login` varchar(100) NOT NULL,
   `senha` varchar(50) NOT NULL,
   `ativo` bit(1) NOT NULL DEFAULT b'1',
+  `caminho_imagem` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `login` (`login`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -186,7 +190,7 @@ CREATE TABLE `pessoa` (
 
 LOCK TABLES `pessoa` WRITE;
 /*!40000 ALTER TABLE `pessoa` DISABLE KEYS */;
-INSERT INTO `pessoa` VALUES (1,'geovanne','almeida','40028922','12312312312','admin','admin',_binary '');
+INSERT INTO `pessoa` VALUES (1,'geovanne','almeida','40028922','12312312312','admin','admin',_binary '',NULL);
 /*!40000 ALTER TABLE `pessoa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -314,4 +318,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-09-23 18:55:27
+-- Dump completed on 2022-09-28 19:21:32

@@ -2,6 +2,7 @@ package com.entra21.voluntariosApp.view.service;
 
 import com.entra21.voluntariosApp.model.dto.server.ContribuicaoDTOs;
 import com.entra21.voluntariosApp.model.dto.user.ContribuicaoDTO;
+import com.entra21.voluntariosApp.model.dto.user.ContribuicaoInfosDTO;
 import com.entra21.voluntariosApp.model.entity.ContribuicaoEntity;
 import com.entra21.voluntariosApp.view.repository.ContribuicaoRepository;
 import com.entra21.voluntariosApp.view.repository.EventoRepository;
@@ -14,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -55,16 +57,17 @@ public class ContribuicaoService {
      * Retorna todas as contribuições já realizadas.
      * @return List {@code <GetContribuicoesDTO>}
      */
-    public List<ContribuicaoDTO> buscarContribuicoes() {
+    public Set<ContribuicaoInfosDTO> buscarContribuicoes() {
         return contribuicaoRepository.findAll().stream().map(cE -> {
-            ContribuicaoDTO cdto = new ContribuicaoDTO();
+            ContribuicaoInfosDTO cdto = new ContribuicaoInfosDTO();
             cdto.setData(cE.getData());
             cdto.setValor(cE.getValor());
             cdto.setNomeOrg(cE.getOrganizacao().getNome());
             cdto.setNomeUsuario(cE.getPessoa().getNome());
             cdto.setSobrenome(cE.getPessoa().getSobrenome());
+            cdto.setId(cE.getId());
             return cdto;
-        }).collect(Collectors.toList());
+        }).collect(Collectors.toSet());
     }
 
     /**
@@ -72,7 +75,7 @@ public class ContribuicaoService {
      * @param idOrg
      * @return List {@code <GetContribuicoesDTO>}
      */
-    public List<ContribuicaoDTO> buscarContribuicoesPorOrg(Long idOrg) {
+    public Set<ContribuicaoDTO> buscarContribuicoesPorOrg(Long idOrg) {
         return contribuicaoRepository.findAll().stream()
                 .filter(cE -> Objects.equals(cE.getOrganizacao().getId(), idOrg)).map(cE -> {
                     ContribuicaoDTO gcd = new ContribuicaoDTO();
@@ -82,7 +85,7 @@ public class ContribuicaoService {
                     gcd.setNomeUsuario(cE.getPessoa().getNome());
                     gcd.setSobrenome(cE.getPessoa().getSobrenome());
                     return gcd;
-                }).collect(Collectors.toList());
+                }).collect(Collectors.toSet());
     }
 
     /**
@@ -90,7 +93,7 @@ public class ContribuicaoService {
      * @param idUser
      * @return List {@code <GetContribuicoesDTO>}
      */
-    public List<ContribuicaoDTO> buscarContribuicoesPorUser(Long idUser) {
+    public Set<ContribuicaoDTO> buscarContribuicoesPorUser(Long idUser) {
         return contribuicaoRepository.findAllBypessoa_Id(idUser).stream()
                 .filter(cE -> Objects.equals(cE.getPessoa().getId(), idUser)).map(cE -> {
                     ContribuicaoDTO contribuicaoUser = new ContribuicaoDTO();
@@ -100,7 +103,7 @@ public class ContribuicaoService {
                     contribuicaoUser.setSobrenome(cE.getPessoa().getSobrenome());
                     contribuicaoUser.setNomeOrg(cE.getOrganizacao().getNome());
                     return contribuicaoUser;
-                }).collect(Collectors.toList());
+                }).collect(Collectors.toSet());
     }
 
     /**

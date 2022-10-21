@@ -28,11 +28,11 @@ public class PatrocinadorRestController {
     /**
      * Chama um método que adiciona um novo patrocinador ao banco de dados
      *
-     * @param patrocinadorDTO
+     * @param patrocinadorDTOs
      */
     @PostMapping("/criar")
-    private void addPatrocinador(@RequestBody PatrocinadorDTO patrocinadorDTO) {
-        patrocinadorService.addPatrocinador(patrocinadorDTO);
+    private void addPatrocinador(@RequestBody PatrocinadorDTOs patrocinadorDTOs) {
+        patrocinadorService.addPatrocinador(patrocinadorDTOs);
     }
 
     /**

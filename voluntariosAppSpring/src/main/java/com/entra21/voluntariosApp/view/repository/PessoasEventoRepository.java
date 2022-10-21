@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface PessoasEventoRepository extends JpaRepository<PessoasEventoEntity,Long> {
     List<PessoasEventoEntity> findAllByEvento_Id(Long idEvento);
+    List<PessoasEventoEntity> findAllByPessoa_Id(Long idPessoa);
 }

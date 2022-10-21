@@ -1,7 +1,7 @@
 package com.entra21.voluntariosApp.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -23,6 +23,7 @@ public class ContribuicaoEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_pessoa",referencedColumnName = "id")
+    @JsonIgnore
     private PessoaEntity pessoa;
 
     @ManyToOne
