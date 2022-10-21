@@ -60,7 +60,7 @@ public class PessoaService implements UserDetailsService {
      * @param antigoLogin
      * @param dto
      */
-    public void atualizar(String antigoLogin, PessoaDTO dto) throws IOException {
+    public void atualizar(String antigoLogin, PessoaDTO dto) {
         PessoaEntity pE = pessoaRepository.findByLogin(antigoLogin);
         pE.setNome(dto.getNome());
         pE.setSobrenome(dto.getSobrenome());
