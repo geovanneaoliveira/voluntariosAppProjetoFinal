@@ -107,6 +107,7 @@ public class PessoaService implements UserDetailsService {
             loginDTO.setSenha(pE.getPassword());
             loginDTO.setId(pE.getId());
             loginDTO.setFotoPerfil(pE.getFotoPerfil());
+            loginDTO.setNome(pE.getNome());
             return loginDTO;
         }
         return null;

@@ -27,7 +27,6 @@ public class PessoaRestController {
      */
     @PostMapping(value = "/cadastro", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void cadastrar(@RequestBody PessoaDTO cadastro) {
-        System.out.println(cadastro);
         pessoaService.cadastrar(cadastro);
     }
 
