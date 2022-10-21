@@ -1,5 +1,6 @@
 package com.entra21.voluntariosApp.view.service;
 
+
 import com.entra21.voluntariosApp.model.dto.server.PessoaDTO;
 import com.entra21.voluntariosApp.model.entity.PessoaEntity;
 import com.entra21.voluntariosApp.view.repository.PessoaRepository;
@@ -70,7 +71,7 @@ public class PessoaService implements UserDetailsService {
      *
      * @param login
      */
-     * */
+
     public void status(String login) {
         PessoaEntity pE = pessoaRepository.findByLogin(login);
         pE.setAtivo(!pE.getAtivo());
