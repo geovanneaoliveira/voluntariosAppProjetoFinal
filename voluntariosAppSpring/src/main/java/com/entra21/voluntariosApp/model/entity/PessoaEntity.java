@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity
@@ -35,9 +34,6 @@ public class PessoaEntity implements UserDetails {
     @Column(name = "cpf")
     private String cpf;
 
-    @Column(name = "caminho_imagem")
-    private String caminhoImagem;
-
     @Column(name = "login")
     private String login;
 
@@ -46,6 +42,10 @@ public class PessoaEntity implements UserDetails {
 
     @Column(name = "ativo", nullable = false)
     private Boolean ativo;
+
+    @Lob
+    @Column(name = "foto_perfil")
+    private String fotoPerfil;
 
     @ManyToMany
     @JoinTable(name = "tag_interesse_pessoa", joinColumns = @JoinColumn(name = "id_pessoa", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "id_tag", referencedColumnName = "id"))

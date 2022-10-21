@@ -51,8 +51,8 @@ public class ContribuicaoRestController {
      * @param idUser
      * @return
      */
-    @GetMapping("/porUser")
-    public Set<ContribuicaoDTO> retornarContribuicoesUser(@RequestParam(name = "idUser")Long idUser) {
+    @GetMapping("/porusuario")
+    public Set<ContribuicaoDTO> retornarContribuicoesUser(@RequestParam(name = "idUsuario")Long idUser) {
         return contribuicaoService.buscarContribuicoesPorUser(idUser);
     }
 

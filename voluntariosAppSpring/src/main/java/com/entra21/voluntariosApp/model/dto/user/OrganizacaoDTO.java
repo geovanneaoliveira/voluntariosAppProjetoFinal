@@ -16,5 +16,5 @@ public class OrganizacaoDTO {
     private String descricao;
     private String nomeSupervisor;
     private String sobrenomeSupervisor;
-    private String caminhoImagem;
+    private String orgFoto;
 }

@@ -119,4 +119,9 @@ public class EventoRestController {
     public List<PatrocinadorDTO> buscarPatrocinadoresPorIdEvento(@RequestParam(name = "idEvento")Long idEvento){
       return eventoService.buscarPatrocinadoresPorIdEvento(idEvento);
     }
+
+    @GetMapping("/porusuario")
+    public List<EventoInfosDTO> eventosUsuarioPresente(@RequestParam(name = "idUsuario")Long idUsuario){
+        return eventoService.eventosUsuarioPresente(idUsuario);
+    }
 }

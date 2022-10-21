@@ -40,7 +40,7 @@ public class OrganizacaoService {
             OrganizacaoEntity organizacaoEntity = new OrganizacaoEntity();
             organizacaoEntity.setNome(organizacaoDTOs.getNome());
             organizacaoEntity.setDescricao(organizacaoDTOs.getDescricao());
-            organizacaoEntity.setCaminhoImagem(organizacaoDTOs.getCaminhoImagem());
+            organizacaoEntity.setOrgFoto(organizacaoDTOs.getOrgFoto());
             organizacaoEntity.setSupervisor(pessoa);
             organizacaoEntity.setCnpj(organizacaoDTOs.getCnpj());
             organizacaoEntity.setAtivo(true);
@@ -64,7 +64,7 @@ public class OrganizacaoService {
             dto.setDescricao(orgE.getDescricao());
             dto.setNomeSupervisor(orgE.getSupervisor().getNome());
             dto.setSobrenomeSupervisor(orgE.getSupervisor().getSobrenome());
-            dto.setCaminhoImagem(orgE.getCaminhoImagem());
+            dto.setOrgFoto(orgE.getOrgFoto());
             return dto;
         }).collect(Collectors.toList());
     }
@@ -88,7 +88,7 @@ public class OrganizacaoService {
             org.setDescricao(dto.getDescricao());
             org.setSupervisor(org.getSupervisor());
             org.setCnpj(dto.getCnpj());
-            org.setCaminhoImagem(dto.getCaminhoImagem());
+            org.setOrgFoto(dto.getOrgFoto());
             organizacaoRepository.save(org);
         }, () -> {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrada!");
@@ -123,7 +123,7 @@ public class OrganizacaoService {
             dto.setDescricao(orgE.getDescricao());
             dto.setNomeSupervisor(orgE.getSupervisor().getNome());
             dto.setSobrenomeSupervisor(orgE.getSupervisor().getSobrenome());
-            dto.setCaminhoImagem(orgE.getCaminhoImagem());
+            dto.setOrgFoto(orgE.getOrgFoto());
             return dto;
         }).collect(Collectors.toList());
     }
@@ -135,7 +135,7 @@ public class OrganizacaoService {
             dto.setDescricao(orgE.getDescricao());
             dto.setNomeSupervisor(orgE.getSupervisor().getNome());
             dto.setSobrenomeSupervisor(orgE.getSupervisor().getSobrenome());
-            dto.setCaminhoImagem(orgE.getCaminhoImagem());
+            dto.setCaminhoImagem(orgE.getOrgFoto());
             dto.setId(orgE.getId());
             return dto;
         }).collect(Collectors.toList());
