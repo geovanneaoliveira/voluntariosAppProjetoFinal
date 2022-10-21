@@ -63,9 +63,10 @@ public class OrganizacaoRestController {
      * @return {@code List<OrganizacaoDTO>}
      */
     @GetMapping("/porSupervisor")
-    public List<OrganizacaoDTO> buscarOrgPorSurpervisor(@RequestParam(name = "idSupervisor") Long idSupervisor) {
+    public List<OrganizacaoDTO> buscarOrgsPorSurpervisor(@RequestParam(name = "idSupervisor") Long idSupervisor) {
        return organizacaoService.buscarOrgsPorSurpervisor(idSupervisor);
     }
+    
 
     @GetMapping
     public List<OrganizacaoInfosDTO> todasOrgs(){return organizacaoService.todasOrgs();}
