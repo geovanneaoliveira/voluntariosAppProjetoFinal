@@ -256,4 +256,16 @@ public class EventoService {
             return dto;
         }).collect(Collectors.toList());
     }
+
+    public List<EventoInfosDTO> buscarEventoPorIdOrg(Long idOrg) {
+        return eventoRepository.findAllByorganizacao_Id(idOrg).stream().map(eE -> {
+            EventoInfosDTO dto = new EventoInfosDTO();
+            dto.setData(eE.getData());
+            dto.setPessoasEvento(eE.getPessoasEvento().stream().map(pEE -> pEE.getPessoa().getNome().concat(" "+pEE.getPessoa().getSobrenome())).collect(Collectors.toList()));
+            dto.setTagsEvento(eE.getTags().stream().map(TagsEntity::getNome).collect(Collectors.toList()));
+            dto.setNome(eE.getNome());
+            dto.setPatrocinadores(eE.getPatrocinadores().stream().map(PatrocinadorEntity::getNome).collect(Collectors.toList()));
+            return dto;
+        }).collect(Collectors.toList());
+    }
 }
