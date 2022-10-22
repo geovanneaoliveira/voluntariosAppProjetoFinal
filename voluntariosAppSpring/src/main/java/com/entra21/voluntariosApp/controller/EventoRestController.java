@@ -5,6 +5,7 @@ import com.entra21.voluntariosApp.model.dto.server.PatrocinadorDTOs;
 import com.entra21.voluntariosApp.model.dto.server.PessoaEventoPresencaDTO;
 import com.entra21.voluntariosApp.model.dto.server.PessoasEventoDTO;
 import com.entra21.voluntariosApp.model.dto.user.EventoDTO;
+import com.entra21.voluntariosApp.model.dto.user.EventoInfosDTO;
 import com.entra21.voluntariosApp.model.dto.user.PatrocinadorDTO;
 import com.entra21.voluntariosApp.view.service.EventoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,11 @@ public class EventoRestController {
     @GetMapping("/buscar")
     public List<EventoDTO> buscarEvento(@RequestParam(name = "nome") String nome) {
         return eventoService.buscarEvento(nome);
+    }
+
+    @GetMapping
+    public List<EventoInfosDTO> todosEventos() {
+        return eventoService.todosEventos();
     }
 
     /**
@@ -112,5 +118,15 @@ public class EventoRestController {
     @GetMapping("/patrocinadoresdoEvento")
     public List<PatrocinadorDTO> buscarPatrocinadoresPorIdEvento(@RequestParam(name = "idEvento")Long idEvento){
       return eventoService.buscarPatrocinadoresPorIdEvento(idEvento);
+    }
+
+    @GetMapping("/porusuario")
+    public List<EventoInfosDTO> eventosUsuarioPresente(@RequestParam(name = "idUsuario")Long idUsuario){
+        return eventoService.eventosUsuarioPresente(idUsuario);
+    }
+
+    @GetMapping("/poridorg")
+    public List<EventoInfosDTO> buscarEventoPorIdOrg(@RequestParam(name = "idOrg") Long idOrg) {
+        return eventoService.buscarEventoPorIdOrg(idOrg);
     }
 }

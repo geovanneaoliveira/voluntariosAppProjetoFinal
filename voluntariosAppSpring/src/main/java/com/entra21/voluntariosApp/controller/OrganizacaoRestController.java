@@ -2,6 +2,7 @@ package com.entra21.voluntariosApp.controller;
 
 import com.entra21.voluntariosApp.model.dto.server.OrganizacaoDTOs;
 import com.entra21.voluntariosApp.model.dto.user.OrganizacaoDTO;
+import com.entra21.voluntariosApp.model.dto.user.OrganizacaoInfosDTO;
 import com.entra21.voluntariosApp.view.service.OrganizacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ public class OrganizacaoRestController {
      * @param nomeOrg
      * @return {code List<OrganizacaoDTO>}
      */
+    @GetMapping("/pornome")
     public List<OrganizacaoDTO> retornarOrg(@RequestBody String nomeOrg) {
         return organizacaoService.retornarOrganizacoes(nomeOrg);
     }
@@ -62,7 +64,15 @@ public class OrganizacaoRestController {
      * @return {@code List<OrganizacaoDTO>}
      */
     @GetMapping("/porSupervisor")
-    public List<OrganizacaoDTO> buscarOrgPorSurpervisor(@RequestParam(name = "idSupervisor") Long idSupervisor) {
+    public List<OrganizacaoDTO> buscarOrgsPorSurpervisor(@RequestParam(name = "idSupervisor") Long idSupervisor) {
        return organizacaoService.buscarOrgsPorSurpervisor(idSupervisor);
     }
+
+    @GetMapping("/porid")
+    public OrganizacaoDTO buscarOrgsPorId(@RequestParam(name = "idOrg") Long idOrg) {
+        return organizacaoService.buscarOrgsPorId(idOrg);
+    }
+
+    @GetMapping
+    public List<OrganizacaoInfosDTO> todasOrgs(){return organizacaoService.todasOrgs();}
 }

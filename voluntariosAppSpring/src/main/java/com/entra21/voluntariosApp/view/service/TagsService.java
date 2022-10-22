@@ -1,5 +1,6 @@
 package com.entra21.voluntariosApp.view.service;
 
+import com.entra21.voluntariosApp.model.dto.server.TagDTO;
 import com.entra21.voluntariosApp.model.dto.server.TagsEventoDTO;
 import com.entra21.voluntariosApp.model.dto.server.TagsPessoaDTO;
 import com.entra21.voluntariosApp.model.entity.TagsEntity;
@@ -14,6 +15,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class TagsService {
@@ -91,5 +94,15 @@ public class TagsService {
             tag.setNome(novoNome);
             tagsRepository.save(tag);
         }, () -> {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tag não encontrada!");});
+    }
+
+    public List<TagDTO> todasTags() {
+        return tagsRepository.findAll().stream().map(tE -> {
+                    TagDTO dto = new TagDTO();
+                    dto.setNome(tE.getNome());
+                    dto.setId(tE.getId());
+                    return dto;
+                }
+        ).collect(Collectors.toList());
     }
 }

@@ -1,6 +1,10 @@
 package com.entra21.voluntariosApp.model.dto.server;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.persistence.Lob;
+import java.sql.Blob;
 
 /**DTO dedicado para enviar informações de uma U para o servidor.<br>
  * Atributos:
@@ -20,6 +24,6 @@ public class PessoaDTO {
     private String cpf;
     private String login;
     private String senha;
-    private String caminhoImagem;
     private Boolean ativo;
+    private String fotoPerfil;
 }

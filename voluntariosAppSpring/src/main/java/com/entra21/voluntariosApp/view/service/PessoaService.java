@@ -12,7 +12,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.io.IOException;
 
 @Service
 public class PessoaService implements UserDetailsService {
@@ -37,10 +40,10 @@ public class PessoaService implements UserDetailsService {
         pE.setSobrenome(pessoaDTO.getSobrenome());
         pE.setCpf(pessoaDTO.getCpf());
         pE.setTelefone(pessoaDTO.getTelefone());
-        pE.setCaminhoImagem(pessoaDTO.getCaminhoImagem());
         pE.setLogin(pessoaDTO.getLogin());
         pE.setSenha(pessoaDTO.getSenha());
         pE.setAtivo(true);
+        pE.setFotoPerfil(pessoaDTO.getFotoPerfil());
         pessoaRepository.save(pE);
     }
 
@@ -63,7 +66,7 @@ public class PessoaService implements UserDetailsService {
         pE.setSobrenome(dto.getSobrenome());
         pE.setCpf(dto.getCpf());
         pE.setTelefone(dto.getTelefone());
-        pE.setCaminhoImagem(dto.getCaminhoImagem());
+        pE.setFotoPerfil(dto.getFotoPerfil());
         pE.setLogin(dto.getLogin());
         pE.setSenha(dto.getSenha());
         pessoaRepository.save(pE);
@@ -81,10 +84,10 @@ public class PessoaService implements UserDetailsService {
     }
 
     /**
-     * Retorna um usuário de acordo com o login dele
+     * Retorna os detalhes de um usuário de acordo com o login dele
      *
      * @param username
-     * @return
+     * @return UserDetails
      * @throws UsernameNotFoundException
      */
     @Override
@@ -103,6 +106,8 @@ public class PessoaService implements UserDetailsService {
             loginDTO.setUsername(pE.getUsername());
             loginDTO.setPassword(pE.getPassword());
             loginDTO.setId(pE.getId());
+            loginDTO.setFotoPerfil(pE.getFotoPerfil());
+            loginDTO.setNome(pE.getNome());
             return loginDTO;
         }
         return null;

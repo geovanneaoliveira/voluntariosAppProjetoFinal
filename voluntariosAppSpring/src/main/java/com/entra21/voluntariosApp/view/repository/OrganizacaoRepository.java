@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface OrganizacaoRepository extends JpaRepository<OrganizacaoEntity,Long> {
     List<OrganizacaoEntity> findAllBysupervisor_Id(Long id);
+    List<OrganizacaoEntity> findByid(Long id);
 }

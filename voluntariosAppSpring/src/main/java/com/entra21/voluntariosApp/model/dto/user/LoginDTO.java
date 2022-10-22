@@ -1,6 +1,5 @@
 package com.entra21.voluntariosApp.model.dto.user;
 
-
 import lombok.Data;
 
 /**DTO dedicado para login na aplicação.
@@ -10,4 +9,6 @@ public class LoginDTO {
     private Long id;
     private String username;
     private String password;
+    private String nome;
+    private String fotoPerfil;
 }

@@ -2,6 +2,8 @@ package com.entra21.voluntariosApp.model.dto.user;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**DTO dedicado para enviar informações de uma Organização para o usuário.<br>
  * Atributos:
  * <li>String nomeOrg</li>
@@ -16,5 +18,8 @@ public class OrganizacaoDTO {
     private String descricao;
     private String nomeSupervisor;
     private String sobrenomeSupervisor;
-    private String caminhoImagem;
+    private String orgFoto;
+    private Long id;
+    private String cnpj;
+    private List<EventoInfosDTO> eventos;
 }

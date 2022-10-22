@@ -5,6 +5,7 @@ import com.entra21.voluntariosApp.model.dto.user.LoginDTO;
 import com.entra21.voluntariosApp.model.dto.user.LoginSemIdDTO;
 import com.entra21.voluntariosApp.view.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class PessoaRestController {
      * Chama um método que cadastra uma nova pessoa no banco de dados
      * @param cadastro
      */
-    @PostMapping("/cadastro")
+    @PostMapping(value = "/cadastro", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void cadastrar(@RequestBody PessoaDTO cadastro) {
         pessoaService.cadastrar(cadastro);
     }
@@ -52,4 +53,5 @@ public class PessoaRestController {
     public LoginDTO login(@RequestBody LoginSemIdDTO login){
         return pessoaService.login(login);
     }
+
 }
