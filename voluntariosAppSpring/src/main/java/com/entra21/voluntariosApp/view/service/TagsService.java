@@ -105,4 +105,8 @@ public class TagsService {
                 }
         ).collect(Collectors.toList());
     }
+
+    public List<TagsEntity> tagsPorIds(List<Long> idTags) {
+        return tagsRepository.findAllById(idTags);
+    }
 }

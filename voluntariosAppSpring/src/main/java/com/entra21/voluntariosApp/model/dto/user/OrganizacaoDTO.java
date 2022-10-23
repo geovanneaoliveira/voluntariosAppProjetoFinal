@@ -21,5 +21,6 @@ public class OrganizacaoDTO {
     private String orgFoto;
     private Long id;
     private String cnpj;
+    private Double valorTotal;
     private List<EventoInfosDTO> eventos;
 }

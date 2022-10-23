@@ -26,6 +26,9 @@ public class OrganizacaoService {
     @Autowired
     private EventoService eventoService;
 
+    @Autowired
+    private ContribuicaoService contribuicaoService;
+
     /**
      * Adiciona uma Organização ao repositório.<br>
      * Atributos de OrganizacaoDTO:
@@ -155,6 +158,7 @@ public class OrganizacaoService {
             dto.setSobrenomeSupervisor(oE.getSupervisor().getSobrenome());
             dto.setCnpj(oE.getCnpj());
             dto.setId(oE.getId());
+            dto.setValorTotal(contribuicaoService.totalContribuicoesPorOrg(oE.getId()));
             dto.setEventos(eventoService.buscarEventoPorIdOrg(idOrg));
         }, () -> {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrada!");
