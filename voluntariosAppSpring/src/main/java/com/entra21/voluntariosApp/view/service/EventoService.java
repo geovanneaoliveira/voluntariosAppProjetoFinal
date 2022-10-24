@@ -244,7 +244,7 @@ public class EventoService {
         return eventoRepository.findAll().stream().map(eE -> {
             EventoInfosDTO dto = new EventoInfosDTO();
             dto.setNome(eE.getNome());
-            dto.setData(eE.getData().format(DateTimeFormatter.BASIC_ISO_DATE));
+            dto.setData(eE.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
             dto.setNomeOrganizacao(eE.getOrganizacao().getNome());
 //            dto.setPessoasEvento(eE.getPessoasEvento());
             dto.setTagsEvento(eE.getTags().stream().map(TagsEntity::getNome).collect(Collectors.toList()));
