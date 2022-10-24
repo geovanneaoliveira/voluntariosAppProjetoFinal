@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface EventoRepository extends JpaRepository<EventoEntity, Long> {
     List<EventoEntity> findAllBytags_Id(Long idTag);
+    List<EventoEntity> findAllByorganizacao_Id(Long idOrg);
 }

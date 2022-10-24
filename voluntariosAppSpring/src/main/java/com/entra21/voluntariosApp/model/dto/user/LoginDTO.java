@@ -1,6 +1,9 @@
 package com.entra21.voluntariosApp.model.dto.user;
 
+import com.entra21.voluntariosApp.model.entity.TagsEntity;
 import lombok.Data;
+
+import java.util.List;
 
 /**DTO dedicado para login na aplicação.
  * */

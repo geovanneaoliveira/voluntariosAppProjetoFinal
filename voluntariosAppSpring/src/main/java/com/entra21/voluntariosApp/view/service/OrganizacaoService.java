@@ -23,6 +23,12 @@ public class OrganizacaoService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
+    @Autowired
+    private EventoService eventoService;
+
+    @Autowired
+    private ContribuicaoService contribuicaoService;
+
     /**
      * Adiciona uma Organização ao repositório.<br>
      * Atributos de OrganizacaoDTO:
@@ -140,5 +146,23 @@ public class OrganizacaoService {
             dto.setId(orgE.getId());
             return dto;
         }).collect(Collectors.toList());
+    }
+
+    public OrganizacaoDTO buscarOrgsPorId(Long idOrg) {
+        OrganizacaoDTO dto = new OrganizacaoDTO();
+        organizacaoRepository.findById(idOrg).ifPresentOrElse(oE -> {
+            dto.setOrgFoto(oE.getOrgFoto());
+            dto.setNomeOrg(oE.getNome());
+            dto.setDescricao(oE.getDescricao());
+            dto.setNomeSupervisor(oE.getSupervisor().getNome());
+            dto.setSobrenomeSupervisor(oE.getSupervisor().getSobrenome());
+            dto.setCnpj(oE.getCnpj());
+            dto.setId(oE.getId());
+            dto.setValorTotal(contribuicaoService.totalContribuicoesPorOrg(oE.getId()));
+            dto.setEventos(eventoService.buscarEventoPorIdOrg(idOrg));
+        }, () -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrada!");
+        });
+        return dto;
     }
 }

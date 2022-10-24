@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -79,7 +80,7 @@ public class ContribuicaoService {
         return contribuicaoRepository.findAll().stream()
                 .filter(cE -> Objects.equals(cE.getOrganizacao().getId(), idOrg)).map(cE -> {
                     ContribuicaoDTO gcd = new ContribuicaoDTO();
-                    gcd.setData(cE.getData());
+                    gcd.setData(cE.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
                     gcd.setValor(cE.getValor());
                     gcd.setNomeOrg(cE.getOrganizacao().getNome());
                     gcd.setNomeUsuario(cE.getPessoa().getNome());
@@ -97,7 +98,7 @@ public class ContribuicaoService {
         return contribuicaoRepository.findAllBypessoa_Id(idUser).stream()
                 .filter(cE -> Objects.equals(cE.getPessoa().getId(), idUser)).map(cE -> {
                     ContribuicaoDTO contribuicaoUser = new ContribuicaoDTO();
-                    contribuicaoUser.setData(cE.getData());
+                    contribuicaoUser.setData(cE.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
                     contribuicaoUser.setValor(cE.getValor());
                     contribuicaoUser.setNomeUsuario(cE.getPessoa().getNome());
                     contribuicaoUser.setSobrenome(cE.getPessoa().getSobrenome());

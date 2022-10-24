@@ -6,16 +6,21 @@ import com.entra21.voluntariosApp.model.dto.server.PessoaEventoPresencaDTO;
 import com.entra21.voluntariosApp.model.dto.server.PessoasEventoDTO;
 import com.entra21.voluntariosApp.model.dto.user.EventoDTO;
 import com.entra21.voluntariosApp.model.dto.user.EventoInfosDTO;
+import com.entra21.voluntariosApp.model.dto.user.OrganizacaoDTO;
 import com.entra21.voluntariosApp.model.dto.user.PatrocinadorDTO;
 import com.entra21.voluntariosApp.model.entity.*;
 import com.entra21.voluntariosApp.view.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.xml.crypto.Data;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +33,9 @@ public class EventoService {
     private PessoasEventoRepository pessoasEventoRepository;
 
     @Autowired
+    private TagsRepository tagsRepository;
+
+    @Autowired
     private OrganizacaoRepository organizacaoRepository;
 
     @Autowired
@@ -38,6 +46,11 @@ public class EventoService {
 
     @Autowired
     private PatrocinadorRepository patrocinadorRepository;
+
+    @Autowired
+    private PessoasEventoService pessoasEventoService;
+    @Autowired
+    private TagsService tagsService;
 
     /**
      * Adiciona um Evento ao repositório.<br>
@@ -55,6 +68,7 @@ public class EventoService {
             eventoEntity.setNome(eventoDTOs.getNome());
             eventoEntity.setData(eventoDTOs.getData());
             eventoEntity.setOrganizacao(org);
+            eventoEntity.setTags(tagsService.tagsPorIds(eventoDTOs.getIdTags()));
             eventoRepository.save(eventoEntity);
         }, () -> {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrada!");
@@ -98,16 +112,15 @@ public class EventoService {
     /**
      * Adiciona uma Pessoa à lista de presentes de um Evento de acordo com seus respectivos Ids.<br>
      *
-     * @param idEvento
-     * @param idPessoa
+     * @param pessoasEventoDTO
      */
-    public void adicionarPessoaEvento(Long idPessoa, Long idEvento) {
-        eventoRepository.findById(idEvento).ifPresentOrElse(ev -> {
-            pessoaRepository.findById(idPessoa).ifPresentOrElse(pe -> {
+    public void adicionarPessoaEvento(PessoasEventoDTO pessoasEventoDTO) {
+        eventoRepository.findById(pessoasEventoDTO.getIdEvento()).ifPresentOrElse(ev -> {
+            pessoaRepository.findById(pessoasEventoDTO.getIdPessoa()).ifPresentOrElse(pe -> {
                 PessoasEventoEntity pessoasEventoEntity = new PessoasEventoEntity();
                 pessoasEventoEntity.setPessoa(pe);
                 pessoasEventoEntity.setEvento(ev);
-                pessoasEventoEntity.setPresenca(true);
+                pessoasEventoEntity.setPresenca(Boolean.TRUE);
                 pessoasEventoRepository.save(pessoasEventoEntity);
             }, () -> {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa não encontrada!");
@@ -131,6 +144,19 @@ public class EventoService {
             eBD.setNomeOrganizacao(ev.getOrganizacao().getNome());
             return eBD;
         }).collect(Collectors.toList());
+    }
+
+    public List<EventoInfosDTO> buscarEventoPorListaTags(Long idUser) {
+        List<TagsEntity> tagsUser = tagsService.tagsDoUser(idUser);
+        List<Long> idsEventosTags = new ArrayList<>();
+        tagsUser.forEach(tU -> {
+            eventoRepository.findAll().forEach(eE -> {
+                if (eE.getTags().contains(tU) && !idsEventosTags.contains(eE.getId())){
+                    idsEventosTags.add(eE.getId());
+                }
+            });
+        });
+        return eventosPorIds(idsEventosTags);
     }
 
     /**
@@ -190,10 +216,7 @@ public class EventoService {
     public void addPatrocinadorEventoIds(Long idEvento, Long idPatrocinador) {
         eventoRepository.findById(idEvento).ifPresentOrElse(evento -> {
             patrocinadorRepository.findById(idPatrocinador).ifPresentOrElse(pa -> {
-                PatrocinadoresEventoEntity patrocinadoresEvento = new PatrocinadoresEventoEntity();
-                patrocinadoresEvento.setPatrocinador(pa);
-                patrocinadoresEvento.setEvento(evento);
-                patrocinadorEventoRepository.save(patrocinadoresEvento);
+                evento.getPatrocinadores().add(pa);
             }, () -> {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrado!");
             });
@@ -227,9 +250,8 @@ public class EventoService {
         return patrocinadorRepository.findAllByEventos_Id(idEvento).stream().map(pE -> {
             PatrocinadorDTO patrocinadorDTO = new PatrocinadorDTO();
             patrocinadorDTO.setNome(pE.getNome());
-            patrocinadorDTO.setCaminhoImagem(pE.getCaminhoImagem());
-            patrocinadorDTO.setNomeRepresentante(pE.getRepresentante().getNome());
-            patrocinadorDTO.setSobrenomeRepresentante(pE.getRepresentante().getSobrenome());
+            patrocinadorDTO.setFotoPatrocinador(pE.getFotoPatrocinador());
+            patrocinadorDTO.setRepresentante(pE.getRepresentante());
             return patrocinadorDTO;
         }).collect(Collectors.toList());
     }
@@ -238,11 +260,12 @@ public class EventoService {
         return eventoRepository.findAll().stream().map(eE -> {
             EventoInfosDTO dto = new EventoInfosDTO();
             dto.setNome(eE.getNome());
-            dto.setData(eE.getData());
+            dto.setData(eE.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
             dto.setNomeOrganizacao(eE.getOrganizacao().getNome());
-            dto.setPessoasEvento(eE.getPessoasEvento().stream().map(pEE -> pEE.getPessoa().getNome()).collect(Collectors.toList()));
+//            dto.setPessoasEvento(eE.getPessoasEvento());
             dto.setTagsEvento(eE.getTags().stream().map(TagsEntity::getNome).collect(Collectors.toList()));
-            dto.setPatrocinadores(eE.getPatrocinadores().stream().map(PatrocinadorEntity::getNome).collect(Collectors.toList()));
+            dto.setPatrocinadores(eE.getPatrocinadores());
+            dto.setId(eE.getId());
             return dto;
         }).collect(Collectors.toList());
     }
@@ -251,9 +274,68 @@ public class EventoService {
         return pessoasEventoRepository.findAllByPessoa_Id(idUsuario).stream().map(pessoasEventoEntity -> {
             EventoInfosDTO dto = new EventoInfosDTO();
             dto.setNome(pessoasEventoEntity.getEvento().getNome());
-            dto.setData(pessoasEventoEntity.getEvento().getData());
+            dto.setData(pessoasEventoEntity.getEvento().getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
             dto.setNomeOrganizacao(pessoasEventoEntity.getEvento().getOrganizacao().getNome());
             return dto;
         }).collect(Collectors.toList());
+    }
+
+    public List<EventoInfosDTO> buscarEventoPorIdOrg(Long idOrg) {
+        return eventoRepository.findAllByorganizacao_Id(idOrg).stream().map(eE -> {
+            EventoInfosDTO dto = new EventoInfosDTO();
+            dto.setData(eE.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+//            dto.setPessoasEvento(eE.getPessoasEvento());
+            dto.setTagsEvento(eE.getTags().stream().map(TagsEntity::getNome).collect(Collectors.toList()));
+            dto.setNome(eE.getNome());
+            dto.setId(eE.getId());
+            dto.setPatrocinadores(eE.getPatrocinadores());
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+    public EventoInfosDTO eventoPorId(Long idEvento) {
+        EventoInfosDTO dto = new EventoInfosDTO();
+        eventoRepository.findById(idEvento).ifPresentOrElse(eE -> {
+            dto.setData(eE.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+            dto.setPessoasEvento(pessoasEventoService.getVoluntariosEvento(eE.getId()));
+            dto.setTagsEvento(eE.getTags().stream().map(TagsEntity::getNome).collect(Collectors.toList()));
+            dto.setNome(eE.getNome());
+            dto.setId(eE.getId());
+            dto.setNomeOrganizacao(eE.getOrganizacao().getNome());
+            dto.setPatrocinadores(eE.getPatrocinadores());
+        }, () -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");
+        });
+        return dto;
+    }
+
+    public List<EventoInfosDTO> eventosPorIds(List<Long> ids) {
+        List<EventoEntity> eventoInfosDTOS = new ArrayList<>(eventoRepository.findAllById(ids));
+        return eventoInfosDTOS.stream().map(eE -> {
+            EventoInfosDTO dto = new EventoInfosDTO();
+            dto.setNome(eE.getNome());
+            dto.setData(eE.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+            dto.setNomeOrganizacao(eE.getOrganizacao().getNome());
+//            dto.setPessoasEvento(eE.getPessoasEvento());
+            dto.setTagsEvento(eE.getTags().stream().map(TagsEntity::getNome).collect(Collectors.toList()));
+            dto.setPatrocinadores(eE.getPatrocinadores());
+            dto.setId(eE.getId());
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+    public List<EventoInfosDTO> eventosNaoPresente(Long idUsuario) {
+        List<Long> idsEventos = new ArrayList<>();
+        List<Long> eventoPessoaPresente = new ArrayList<>();
+        pessoasEventoRepository.findAllByPessoa_Id(idUsuario).forEach(pEE -> {
+            eventoPessoaPresente.add(pEE.getEvento().getId());
+        });
+        eventoRepository.findAll().forEach(eE -> {
+            if (!eventoPessoaPresente.contains(eE.getId())){
+                idsEventos.add(eE.getId());
+            }
+        });
+        System.out.println(idsEventos);
+        return eventosPorIds(idsEventos);
     }
 }

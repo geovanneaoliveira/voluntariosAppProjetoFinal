@@ -36,6 +36,11 @@ public class EventoRestController {
         return eventoService.todosEventos();
     }
 
+    @GetMapping("/naopresente")
+    public List<EventoInfosDTO> eventosNaoPresente(@RequestParam("idPessoa") Long idPessoa) {
+        return eventoService.eventosNaoPresente(idPessoa);
+    }
+
     /**
      * Chama um método que Adiciona um novo evento ao banco de daodos
      *
@@ -49,13 +54,11 @@ public class EventoRestController {
     /**
      * Chama um método que Adiciona uma pessoa à lista de presentes de um evento
      *
-     * @param idEvento
-     * @param idPessoa
+     * @param pessoasEventoDTO
      */
     @PostMapping("/presenca")
-    public void adicionarPessoaEvento(@RequestParam(name = "idPessoa") Long idPessoa,
-                                      @RequestParam(name = "idEvento") Long idEvento) {
-        eventoService.adicionarPessoaEvento(idPessoa,idEvento);
+    public void adicionarPessoaEvento(@RequestBody PessoasEventoDTO pessoasEventoDTO) {
+        eventoService.adicionarPessoaEvento(pessoasEventoDTO);
     }
 
     /**
@@ -78,6 +81,11 @@ public class EventoRestController {
     @GetMapping("/idTag")
     public List<EventoDTO> buscarEventoPorIdTag(@RequestParam(name = "idTag") Long idTag) {
         return eventoService.buscarEventoPorTags(idTag);
+    }
+
+    @GetMapping("/tagsuser")
+    public List<EventoInfosDTO> buscarEventoPorIdsTags(@RequestParam(name = "idUser") Long idUser) {
+        return eventoService.buscarEventoPorListaTags(idUser);
     }
 
      /**
@@ -110,8 +118,8 @@ public class EventoRestController {
      * @param idPatrocinador
      */
     @DeleteMapping("/excluirPatrocinador")
-    private void deletarPatrocinadorEvento(@RequestParam(name = "idEvento") Long idEvento,
-                                           @RequestParam(name = "idPatrocinador") Long idPatrocinador) {
+    private void deletarPatrocinadorEvento(@RequestParam(name = "idEvento") Long idEvento
+            , @RequestParam(name = "idPatrocinador") Long idPatrocinador) {
         eventoService.deletarPatrocinadorEvento(idEvento, idPatrocinador);
     }
 
@@ -123,5 +131,15 @@ public class EventoRestController {
     @GetMapping("/porusuario")
     public List<EventoInfosDTO> eventosUsuarioPresente(@RequestParam(name = "idUsuario")Long idUsuario){
         return eventoService.eventosUsuarioPresente(idUsuario);
+    }
+
+    @GetMapping("/porid")
+    public EventoInfosDTO eventoPorId(@RequestParam(name = "idEvento")Long idEvento){
+        return eventoService.eventoPorId(idEvento);
+    }
+
+    @GetMapping("/poridorg")
+    public List<EventoInfosDTO> buscarEventoPorIdOrg(@RequestParam(name = "idOrg") Long idOrg) {
+        return eventoService.buscarEventoPorIdOrg(idOrg);
     }
 }

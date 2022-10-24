@@ -1,5 +1,6 @@
 package com.entra21.voluntariosApp.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -22,8 +23,8 @@ public class PatrocinadorEntity {
     @JoinColumn(name = "id_representante", referencedColumnName = "id")
     private PessoaEntity representante;
 
-    @Column(name = "caminho_imagem")
-    private String caminhoImagem;
+    @Column(name = "foto_patrocinador")
+    private String fotoPatrocinador;
 
     @ManyToMany
     @JoinTable(
@@ -31,5 +32,6 @@ public class PatrocinadorEntity {
             joinColumns = @JoinColumn(name = "id_patrocinador", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "id_evento", referencedColumnName = "id")
     )
+    @JsonIgnore
     private List<EventoEntity> eventos;
 }
