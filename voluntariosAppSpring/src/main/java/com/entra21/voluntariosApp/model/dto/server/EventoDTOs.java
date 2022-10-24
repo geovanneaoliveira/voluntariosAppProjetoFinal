@@ -3,6 +3,7 @@ package com.entra21.voluntariosApp.model.dto.server;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**DTO dedicado para enviar informações de um Evento para o servidor.<br>
  * Atributos:
@@ -15,4 +16,5 @@ public class EventoDTOs {
     private String nome;
     private LocalDateTime data;
     private Long idOrganizacao;
+    private List<Long> idTags;
 }

@@ -6,14 +6,18 @@ import com.entra21.voluntariosApp.model.dto.server.PessoaEventoPresencaDTO;
 import com.entra21.voluntariosApp.model.dto.server.PessoasEventoDTO;
 import com.entra21.voluntariosApp.model.dto.user.EventoDTO;
 import com.entra21.voluntariosApp.model.dto.user.EventoInfosDTO;
+import com.entra21.voluntariosApp.model.dto.user.OrganizacaoDTO;
 import com.entra21.voluntariosApp.model.dto.user.PatrocinadorDTO;
 import com.entra21.voluntariosApp.model.entity.*;
 import com.entra21.voluntariosApp.view.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.xml.crypto.Data;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,6 +43,11 @@ public class EventoService {
     @Autowired
     private PatrocinadorRepository patrocinadorRepository;
 
+    @Autowired
+    private PessoasEventoService pessoasEventoService;
+    @Autowired
+    private TagsService tagsService;
+
     /**
      * Adiciona um Evento ao repositório.<br>
      * Atributos de EventoDTO:
@@ -55,6 +64,7 @@ public class EventoService {
             eventoEntity.setNome(eventoDTOs.getNome());
             eventoEntity.setData(eventoDTOs.getData());
             eventoEntity.setOrganizacao(org);
+            eventoEntity.setTags(tagsService.tagsPorIds(eventoDTOs.getIdTags()));
             eventoRepository.save(eventoEntity);
         }, () -> {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrada!");
@@ -190,10 +200,7 @@ public class EventoService {
     public void addPatrocinadorEventoIds(Long idEvento, Long idPatrocinador) {
         eventoRepository.findById(idEvento).ifPresentOrElse(evento -> {
             patrocinadorRepository.findById(idPatrocinador).ifPresentOrElse(pa -> {
-                PatrocinadoresEventoEntity patrocinadoresEvento = new PatrocinadoresEventoEntity();
-                patrocinadoresEvento.setPatrocinador(pa);
-                patrocinadoresEvento.setEvento(evento);
-                patrocinadorEventoRepository.save(patrocinadoresEvento);
+                evento.getPatrocinadores().add(pa);
             }, () -> {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrado!");
             });
@@ -227,9 +234,8 @@ public class EventoService {
         return patrocinadorRepository.findAllByEventos_Id(idEvento).stream().map(pE -> {
             PatrocinadorDTO patrocinadorDTO = new PatrocinadorDTO();
             patrocinadorDTO.setNome(pE.getNome());
-            patrocinadorDTO.setCaminhoImagem(pE.getCaminhoImagem());
-            patrocinadorDTO.setNomeRepresentante(pE.getRepresentante().getNome());
-            patrocinadorDTO.setSobrenomeRepresentante(pE.getRepresentante().getSobrenome());
+            patrocinadorDTO.setFotoPatrocinador(pE.getFotoPatrocinador());
+            patrocinadorDTO.setRepresentante(pE.getRepresentante());
             return patrocinadorDTO;
         }).collect(Collectors.toList());
     }
@@ -238,11 +244,11 @@ public class EventoService {
         return eventoRepository.findAll().stream().map(eE -> {
             EventoInfosDTO dto = new EventoInfosDTO();
             dto.setNome(eE.getNome());
-            dto.setData(eE.getData());
+            dto.setData(eE.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
             dto.setNomeOrganizacao(eE.getOrganizacao().getNome());
-            dto.setPessoasEvento(eE.getPessoasEvento().stream().map(pEE -> pEE.getPessoa().getNome()).collect(Collectors.toList()));
+//            dto.setPessoasEvento(eE.getPessoasEvento());
             dto.setTagsEvento(eE.getTags().stream().map(TagsEntity::getNome).collect(Collectors.toList()));
-            dto.setPatrocinadores(eE.getPatrocinadores().stream().map(PatrocinadorEntity::getNome).collect(Collectors.toList()));
+            dto.setPatrocinadores(eE.getPatrocinadores());
             return dto;
         }).collect(Collectors.toList());
     }
@@ -251,7 +257,7 @@ public class EventoService {
         return pessoasEventoRepository.findAllByPessoa_Id(idUsuario).stream().map(pessoasEventoEntity -> {
             EventoInfosDTO dto = new EventoInfosDTO();
             dto.setNome(pessoasEventoEntity.getEvento().getNome());
-            dto.setData(pessoasEventoEntity.getEvento().getData());
+            dto.setData(pessoasEventoEntity.getEvento().getData().format(DateTimeFormatter.ISO_DATE_TIME));
             dto.setNomeOrganizacao(pessoasEventoEntity.getEvento().getOrganizacao().getNome());
             return dto;
         }).collect(Collectors.toList());
@@ -260,12 +266,29 @@ public class EventoService {
     public List<EventoInfosDTO> buscarEventoPorIdOrg(Long idOrg) {
         return eventoRepository.findAllByorganizacao_Id(idOrg).stream().map(eE -> {
             EventoInfosDTO dto = new EventoInfosDTO();
-            dto.setData(eE.getData());
-            dto.setPessoasEvento(eE.getPessoasEvento().stream().map(pEE -> pEE.getPessoa().getNome().concat(" "+pEE.getPessoa().getSobrenome())).collect(Collectors.toList()));
+            dto.setData(eE.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+//            dto.setPessoasEvento(eE.getPessoasEvento());
             dto.setTagsEvento(eE.getTags().stream().map(TagsEntity::getNome).collect(Collectors.toList()));
             dto.setNome(eE.getNome());
-            dto.setPatrocinadores(eE.getPatrocinadores().stream().map(PatrocinadorEntity::getNome).collect(Collectors.toList()));
+            dto.setId(eE.getId());
+            dto.setPatrocinadores(eE.getPatrocinadores());
             return dto;
         }).collect(Collectors.toList());
+    }
+
+    public EventoInfosDTO eventoPorId(Long idEvento) {
+        EventoInfosDTO dto = new EventoInfosDTO();
+        eventoRepository.findById(idEvento).ifPresentOrElse(eE -> {
+            dto.setData(eE.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+            dto.setPessoasEvento(pessoasEventoService.getVoluntariosEvento(eE.getId()));
+            dto.setTagsEvento(eE.getTags().stream().map(TagsEntity::getNome).collect(Collectors.toList()));
+            dto.setNome(eE.getNome());
+            dto.setId(eE.getId());
+            dto.setNomeOrganizacao(eE.getOrganizacao().getNome());
+            dto.setPatrocinadores(eE.getPatrocinadores());
+        }, () -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");
+        });
+        return dto;
     }
 }
