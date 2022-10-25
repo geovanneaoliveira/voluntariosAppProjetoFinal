@@ -142,7 +142,7 @@ public class OrganizacaoService {
             dto.setDescricao(orgE.getDescricao());
             dto.setNomeSupervisor(orgE.getSupervisor().getNome());
             dto.setSobrenomeSupervisor(orgE.getSupervisor().getSobrenome());
-            dto.setCaminhoImagem(orgE.getOrgFoto());
+            dto.setOrgFoto(orgE.getOrgFoto());
             dto.setId(orgE.getId());
             return dto;
         }).collect(Collectors.toList());

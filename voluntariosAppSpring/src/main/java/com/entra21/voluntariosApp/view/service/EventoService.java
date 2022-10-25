@@ -1,9 +1,6 @@
 package com.entra21.voluntariosApp.view.service;
 
-import com.entra21.voluntariosApp.model.dto.server.EventoDTOs;
-import com.entra21.voluntariosApp.model.dto.server.PatrocinadorDTOs;
-import com.entra21.voluntariosApp.model.dto.server.PessoaEventoPresencaDTO;
-import com.entra21.voluntariosApp.model.dto.server.PessoasEventoDTO;
+import com.entra21.voluntariosApp.model.dto.server.*;
 import com.entra21.voluntariosApp.model.dto.user.EventoDTO;
 import com.entra21.voluntariosApp.model.dto.user.EventoInfosDTO;
 import com.entra21.voluntariosApp.model.dto.user.OrganizacaoDTO;
@@ -209,17 +206,13 @@ public class EventoService {
     /**
      * Adiciona um patrocinador à lista de patrocinadores do evento.
      *
-     * @param idEvento
-     * @param idPatrocinador
+     * @param dto
      * @throws ResponseStatusException
      */
-    public void addPatrocinadorEventoIds(Long idEvento, Long idPatrocinador) {
-        eventoRepository.findById(idEvento).ifPresentOrElse(evento -> {
-            patrocinadorRepository.findById(idPatrocinador).ifPresentOrElse(pa -> {
-                evento.getPatrocinadores().add(pa);
-            }, () -> {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Organização não encontrado!");
-            });
+    public void addPatrocinadorEventoIds(PatrocinadorEventoDTO dto) {
+        eventoRepository.findById(dto.getIdEvento()).ifPresentOrElse(evento -> {
+            evento.setPatrocinadores(patrocinadorRepository.findAllById(dto.getIdsPatrocinadores()));
+            eventoRepository.save(evento);
         }, () -> {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Evento não encontrado!");
         });
