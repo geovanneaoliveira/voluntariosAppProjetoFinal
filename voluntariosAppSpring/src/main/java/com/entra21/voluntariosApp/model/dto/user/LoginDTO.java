@@ -14,5 +14,8 @@ public class LoginDTO {
     private String login;
     private String senha;
     private String nome;
+    private String sobrenome;
     private String fotoPerfil;
+    private String telefone;
+    private String cpf;
 }

@@ -6,16 +6,10 @@ import com.entra21.voluntariosApp.model.dto.user.LoginSemIdDTO;
 import com.entra21.voluntariosApp.model.entity.PessoaEntity;
 import com.entra21.voluntariosApp.view.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.io.IOException;
 
 @Service
 public class PessoaService implements UserDetailsService {
@@ -103,11 +97,17 @@ public class PessoaService implements UserDetailsService {
         PessoaEntity pE = pessoaRepository.findByLogin(loginSemIdDTO.getUsername());
         if(pE.getPassword().equals(loginSemIdDTO.getPassword())){
             LoginDTO loginDTO = new LoginDTO();
+            loginDTO.setLogin(pE.getLogin());
+            loginDTO.setSenha(pE.getSenha());
             loginDTO.setUsername(pE.getUsername());
             loginDTO.setPassword(pE.getPassword());
             loginDTO.setId(pE.getId());
             loginDTO.setFotoPerfil(pE.getFotoPerfil());
             loginDTO.setNome(pE.getNome());
+            loginDTO.setSobrenome(pE.getSobrenome());
+            loginDTO.setCpf(pE.getCpf());
+            loginDTO.setTelefone(pE.getTelefone());
+            System.out.println(loginDTO);
             return loginDTO;
         }
         return null;
