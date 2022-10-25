@@ -103,6 +103,7 @@ public class EventoRestController {
      */
     @PostMapping("/addpatrocinadorids")
     public void addPatrocinador(@RequestBody PatrocinadorEventoDTO patrocinadorEventoDTO) {
+        System.out.println("chegou");
         eventoService.addPatrocinadorEventoIds(patrocinadorEventoDTO);
     }
 
