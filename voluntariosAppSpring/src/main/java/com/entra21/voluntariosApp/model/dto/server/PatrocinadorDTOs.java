@@ -12,4 +12,5 @@ public class PatrocinadorDTOs {
     private String nome;
     private Long idRepresentante;
     private String fotoPatrocinador;
+    private Long id;
 }

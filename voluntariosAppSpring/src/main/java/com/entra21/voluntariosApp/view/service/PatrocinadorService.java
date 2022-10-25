@@ -37,8 +37,10 @@ public class PatrocinadorService {
             patrocinadorDTOs.setNome(patrocinadorEntity.getNome());
             patrocinadorDTOs.setIdRepresentante(patrocinadorEntity.getRepresentante().getId());
             patrocinadorDTOs.setFotoPatrocinador(patrocinadorEntity.getFotoPatrocinador());
+            patrocinadorDTOs.setId(patrocinadorEntity.getId());
             return patrocinadorDTOs;
         }).collect(Collectors.toList());
+//        pat
     }
 
     /**
