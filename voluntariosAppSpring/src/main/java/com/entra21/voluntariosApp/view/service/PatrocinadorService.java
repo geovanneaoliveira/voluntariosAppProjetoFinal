@@ -40,6 +40,7 @@ public class PatrocinadorService {
             patrocinadorDTOs.setId(patrocinadorEntity.getId());
             return patrocinadorDTOs;
         }).collect(Collectors.toList());
+//        pat
     }
 
     /**
