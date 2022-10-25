@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,7 +36,7 @@ public class PatrocinadorService {
             PatrocinadorDTOs patrocinadorDTOs = new PatrocinadorDTOs();
             patrocinadorDTOs.setNome(patrocinadorEntity.getNome());
             patrocinadorDTOs.setIdRepresentante(patrocinadorEntity.getRepresentante().getId());
-            patrocinadorDTOs.setCaminhoImagem(patrocinadorEntity.getCaminhoImagem());
+            patrocinadorDTOs.setFotoPatrocinador(patrocinadorEntity.getFotoPatrocinador());
             return patrocinadorDTOs;
         }).collect(Collectors.toList());
     }
@@ -54,7 +55,7 @@ public class PatrocinadorService {
         pessoaRepository.findById(patrocinadorDTOs.getIdRepresentante()).ifPresentOrElse(pessoa -> {
             PatrocinadorEntity patrocinadorEntity = new PatrocinadorEntity();
             patrocinadorEntity.setNome(patrocinadorDTOs.getNome());
-            patrocinadorEntity.setCaminhoImagem(patrocinadorDTOs.getCaminhoImagem());
+            patrocinadorEntity.setFotoPatrocinador(patrocinadorDTOs.getFotoPatrocinador());
             patrocinadorEntity.setRepresentante(pessoa);
             patrocinadorRepository.save(patrocinadorEntity);
         }, () -> {

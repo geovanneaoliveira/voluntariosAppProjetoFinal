@@ -4,8 +4,10 @@ import com.entra21.voluntariosApp.model.dto.server.TagDTO;
 import com.entra21.voluntariosApp.model.dto.server.TagsEventoDTO;
 import com.entra21.voluntariosApp.model.dto.server.TagsPessoaDTO;
 import com.entra21.voluntariosApp.model.entity.TagsEntity;
+import com.entra21.voluntariosApp.model.entity.TagsPessoaEntity;
 import com.entra21.voluntariosApp.view.repository.EventoRepository;
 import com.entra21.voluntariosApp.view.repository.PessoaRepository;
+import com.entra21.voluntariosApp.view.repository.TagsPessoaRepository;
 import com.entra21.voluntariosApp.view.repository.TagsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,9 @@ public class TagsService {
 
     @Autowired
     private PessoaRepository pessoaRepository;
+
+    @Autowired
+    private TagsPessoaRepository tagsPessoaRepository;
 
     /**Adiciona uma Tag com o nome passado por parâmetro ao repositório.
      * @param nomeTag
@@ -105,4 +110,13 @@ public class TagsService {
                 }
         ).collect(Collectors.toList());
     }
+
+    public List<TagsEntity> tagsPorIds(List<Long> idTags) {
+        return tagsRepository.findAllById(idTags);
+    }
+
+    public List<TagsEntity> tagsDoUser(Long idUser) {
+        return tagsPessoaRepository.findAllBypessoa_Id(idUser).stream().map(TagsPessoaEntity::getTagsEntity).collect(Collectors.toList());
+    }
+
 }

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  */
 @Data
 public class ContribuicaoDTO {
-    private LocalDateTime data;
+    private String data;
     private Double valor;
     private String nomeUsuario;
     private String sobrenome;
