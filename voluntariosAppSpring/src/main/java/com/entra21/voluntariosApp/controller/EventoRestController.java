@@ -1,9 +1,6 @@
 package com.entra21.voluntariosApp.controller;
 
-import com.entra21.voluntariosApp.model.dto.server.EventoDTOs;
-import com.entra21.voluntariosApp.model.dto.server.PatrocinadorDTOs;
-import com.entra21.voluntariosApp.model.dto.server.PessoaEventoPresencaDTO;
-import com.entra21.voluntariosApp.model.dto.server.PessoasEventoDTO;
+import com.entra21.voluntariosApp.model.dto.server.*;
 import com.entra21.voluntariosApp.model.dto.user.EventoDTO;
 import com.entra21.voluntariosApp.model.dto.user.EventoInfosDTO;
 import com.entra21.voluntariosApp.model.dto.user.PatrocinadorDTO;
@@ -102,13 +99,11 @@ public class EventoRestController {
     /**
      * Chama um método que adiciona um patrocinador à um evento
      *
-     * @param idEvento
-     * @param idPatrocinador
+     * @param patrocinadorEventoDTO
      */
-    @PostMapping("/addPatrocinadorIds")
-    public void addPatrocinador(@RequestParam(name = "idEvento") Long idEvento,
-                                @RequestParam(name = "idPatrocinador") Long idPatrocinador) {
-        eventoService.addPatrocinadorEventoIds(idEvento,idPatrocinador);
+    @PostMapping("/addpatrocinadorids")
+    public void addPatrocinador(@RequestBody PatrocinadorEventoDTO patrocinadorEventoDTO) {
+        eventoService.addPatrocinadorEventoIds(patrocinadorEventoDTO);
     }
 
     /**
