@@ -3,6 +3,7 @@ package com.entra21.voluntariosApp.view.service;
 import com.entra21.voluntariosApp.model.dto.server.*;
 import com.entra21.voluntariosApp.model.dto.user.EventoDTO;
 import com.entra21.voluntariosApp.model.dto.user.EventoInfosDTO;
+import com.entra21.voluntariosApp.model.dto.user.OrganizacaoDTO;
 import com.entra21.voluntariosApp.model.dto.user.PatrocinadorDTO;
 import com.entra21.voluntariosApp.model.entity.*;
 import com.entra21.voluntariosApp.view.repository.*;

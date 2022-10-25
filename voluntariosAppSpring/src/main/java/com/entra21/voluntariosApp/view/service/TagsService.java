@@ -118,5 +118,4 @@ public class TagsService {
     public List<TagsEntity> tagsDoUser(Long idUser) {
         return tagsPessoaRepository.findAllBypessoa_Id(idUser).stream().map(TagsPessoaEntity::getTagsEntity).collect(Collectors.toList());
     }
-
 }
